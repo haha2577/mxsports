@@ -1,0 +1,99 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "羽毛球赛事",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/auth/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/register/index",
+      "style": {
+        "navigationBarTitleText": "赛事报名",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/match/index",
+      "style": {
+        "navigationBarTitleText": "比赛管理",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/match/detail",
+      "style": {
+        "navigationBarTitleText": "比赛详情",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/match/create",
+      "style": {
+        "navigationBarTitleText": "创建赛事",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1DB954",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/icons/home.png",
+        "selectedIconPath": "static/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/match/index",
+        "text": "比赛",
+        "iconPath": "static/icons/match.png",
+        "selectedIconPath": "static/icons/match-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/icons/profile.png",
+        "selectedIconPath": "static/icons/profile-active.png"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "羽毛球赛事",
+    "backgroundColor": "#f5f5f5",
+    "backgroundTextStyle": "light"
+  }
+}

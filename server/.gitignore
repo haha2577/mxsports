@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+badminton.db
+server.log
+server.pid

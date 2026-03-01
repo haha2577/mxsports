@@ -1,0 +1,238 @@
+import httpx
+import random
+import string
+from datetime import datetime, timedelta
+from django.conf import settings
+from django.core.cache import cache
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .models import User
+from .serializers import UserSerializer, UserUpdateSerializer
+
+
+def ok(data=None, message='success'):
+    return Response({'code': 0, 'data': data, 'message': message})
+
+def err(message, status=400):
+    return Response({'code': -1, 'data': None, 'message': message}, status=status)
+
+def make_token(user):
+    refresh = RefreshToken()
+    refresh['user_id'] = user.id
+    return str(refresh.access_token)
+
+
+# ─── 微信登录 ─────────────────────────────────────────────
+class WxLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    async def post(self, request):
+        code = request.data.get('code')
+        if not code:
+            return err('缺少 code 参数')
+
+        if settings.WX_SECRET:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    'https://api.weixin.qq.com/sns/jscode2session',
+                    params={
+                        'appid': settings.WX_APPID,
+                        'secret': settings.WX_SECRET,
+                        'js_code': code,
+                        'grant_type': 'authorization_code',
+                    }
+                )
+            wx = resp.json()
+            if wx.get('errcode'):
+                return err(f"微信登录失败: {wx.get('errmsg')}")
+            openid = wx['openid']
+        else:
+            openid = f'dev_{code}'
+
+        user, _ = await User.objects.aget_or_create(
+            openid=openid,
+            defaults={'nickname': '运动员'}
+        )
+        return ok({'token': make_token(user)}, '登录成功')
+
+
+# ─── 发送短信验证码 ────────────────────────────────────────
+class SendSmsView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        phone = request.data.get('phone', '').strip()
+        if not phone or len(phone) != 11 or not phone.startswith('1'):
+            return err('请输入正确的手机号')
+
+        # 频率限制：60秒内只能发一次
+        cache_key = f'sms_limit_{phone}'
+        if cache.get(cache_key):
+            return err('验证码已发送，请稍后再试')
+
+        # 生成6位验证码
+        code = ''.join(random.choices(string.digits, k=6))
+
+        # 缓存验证码（5分钟有效）
+        cache.set(f'sms_code_{phone}', code, timeout=300)
+        cache.set(cache_key, True, timeout=60)
+
+        # ── 实际项目替换为真实短信服务（阿里云/腾讯云）──
+        if settings.DEBUG:
+            # 开发模式：直接返回验证码（方便测试）
+            print(f'[SMS DEV] {phone} 的验证码: {code}')
+            return ok({'dev_code': code}, f'验证码已发送（开发模式：{code}）')
+
+        # TODO: 接入真实短信 SDK
+        # sms_client.send(phone, code)
+        return ok(None, '验证码已发送')
+
+
+# ─── 手机号 + 验证码登录 ────────────────────────────────────
+class PhoneLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        phone = request.data.get('phone', '').strip()
+        code  = request.data.get('code', '').strip()
+
+        if not phone or not code:
+            return err('手机号和验证码不能为空')
+
+        # 验证码校验
+        cached_code = cache.get(f'sms_code_{phone}')
+        if not cached_code:
+            return err('验证码已过期，请重新获取')
+        if cached_code != code:
+            return err('验证码错误')
+
+        # 清除已使用的验证码
+        cache.delete(f'sms_code_{phone}')
+
+        # 查找或创建用户
+        user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={
+                'openid': f'phone_{phone}',
+                'nickname': f'用户{phone[-4:]}'
+            }
+        )
+        if not created and not user.phone:
+            user.phone = phone
+            user.save(update_fields=['phone'])
+
+        return ok({'token': make_token(user), 'isNew': created}, '登录成功')
+
+
+# ─── 微信手机号一键登录 ─────────────────────────────────────
+class WxPhoneLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    async def post(self, request):
+        phone_code = request.data.get('phone_code')  # getPhoneNumber 返回的 code
+        wx_code    = request.data.get('wx_code')     # wx.login 返回的 code
+
+        if not phone_code or not wx_code:
+            return err('参数缺失')
+
+        if not settings.WX_SECRET:
+            # 开发模式：mock 一个手机号
+            phone = '13800138000'
+            openid = f'dev_{wx_code}'
+        else:
+            # 1. 用 wx_code 换取 openid
+            async with httpx.AsyncClient() as client:
+                wx_resp = await client.get(
+                    'https://api.weixin.qq.com/sns/jscode2session',
+                    params={
+                        'appid': settings.WX_APPID,
+                        'secret': settings.WX_SECRET,
+                        'js_code': wx_code,
+                        'grant_type': 'authorization_code',
+                    }
+                )
+            wx_data = wx_resp.json()
+            if wx_data.get('errcode'):
+                return err(f"微信登录失败: {wx_data.get('errmsg')}")
+
+            openid       = wx_data['openid']
+            session_key  = wx_data['session_key']
+
+            # 2. 用 phone_code 换取手机号
+            async with httpx.AsyncClient() as client:
+                phone_resp = await client.post(
+                    'https://api.weixin.qq.com/wxa/business/getuserphonenumber',
+                    params={'access_token': await self._get_access_token()},
+                    json={'code': phone_code}
+                )
+            phone_data = phone_resp.json()
+            if phone_data.get('errcode', 0) != 0:
+                return err(f"获取手机号失败: {phone_data.get('errmsg')}")
+
+            phone = phone_data['phone_info']['phoneNumber']
+
+        # 查找或创建用户（优先用 openid 关联，同时绑定手机号）
+        user = await User.objects.filter(openid=openid).afirst()
+        if not user:
+            user = await User.objects.filter(phone=phone).afirst()
+        if not user:
+            user = await User.objects.acreate(
+                openid=openid,
+                phone=phone,
+                nickname=f'用户{phone[-4:]}'
+            )
+        else:
+            # 补全信息
+            updated = False
+            if not user.phone and phone:
+                user.phone = phone; updated = True
+            if not user.openid.startswith('phone_') and openid:
+                user.openid = openid; updated = True
+            if updated:
+                await user.asave()
+
+        return ok({'token': make_token(user)}, '登录成功')
+
+    async def _get_access_token(self):
+        cached = cache.get('wx_access_token')
+        if cached:
+            return cached
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                'https://api.weixin.qq.com/cgi-bin/token',
+                params={
+                    'grant_type': 'client_credential',
+                    'appid': settings.WX_APPID,
+                    'secret': settings.WX_SECRET,
+                }
+            )
+        data = resp.json()
+        token = data.get('access_token', '')
+        cache.set('wx_access_token', token, timeout=data.get('expires_in', 7200) - 60)
+        return token
+
+
+# ─── 用户信息 ──────────────────────────────────────────────
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        u = request.user_obj
+        return ok({
+            'id': u.id,
+            'openid': u.openid,
+            'nickname': u.nickname,
+            'avatar': u.avatar,
+            'phone': u.phone,
+            'level': u.level,
+            'isOrganizer': u.is_organizer,
+        })
+
+    def put(self, request):
+        s = UserUpdateSerializer(request.user_obj, data=request.data, partial=True)
+        s.is_valid(raise_exception=True)
+        s.save()
+        return ok(message='更新成功')
