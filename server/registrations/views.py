@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
+from users.views import IsJWTAuthenticated
 
 from .models import Registration
 from .serializers import RegistrationCreateSerializer, RegistrationSerializer, MyRegistrationSerializer
@@ -15,7 +16,7 @@ def err(message, status=400):
 
 
 class RegisterView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsJWTAuthenticated]
 
     def post(self, request, pk):
         try:
@@ -48,7 +49,7 @@ class RegisterView(APIView):
 
 
 class RegistrationListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsJWTAuthenticated]
 
     def get(self, request, pk):
         regs = Registration.objects.filter(match_id=pk).select_related('user')
@@ -56,7 +57,7 @@ class RegistrationListView(APIView):
 
 
 class MyRegistrationView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsJWTAuthenticated]
 
     def get(self, request):
         regs = (Registration.objects

@@ -8,6 +8,29 @@
 require('./load-env')
 const ci = require('miniprogram-ci')
 const path = require('path')
+
+// 读取小程序版本号
+function getVersion() {
+  try {
+    const appJs = fs.readFileSync(path.join(__dirname, '../dist/build/mp-weixin/app.js'), 'utf8')
+    const m = appJs.match(/const VERSION = "([^"]+)"/)
+    return m ? m[1] : 'unknown'
+  } catch(e) { return 'unknown' }
+}
+
+// 自动递增 patch 版本号 (1.0.0 -> 1.0.1)
+function bumpVersion() {
+  const appJsPath = path.join(__dirname, '../dist/build/mp-weixin/app.js')
+  let appJs = fs.readFileSync(appJsPath, 'utf8')
+  const m = appJs.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)"/)
+  if (!m) return getVersion()
+  const [major, minor, patch] = [parseInt(m[1]), parseInt(m[2]), parseInt(m[3])]
+  const newVersion = `${major}.${minor}.${patch + 1}`
+  appJs = appJs.replace(/const VERSION = "\d+\.\d+\.\d+"/, `const VERSION = "${newVersion}"`)
+  fs.writeFileSync(appJsPath, appJs)
+  console.log(`🔢 版本号: ${m[1]}.${m[2]}.${m[3]} → ${newVersion}`)
+  return newVersion
+}
 const fs = require('fs')
 const https = require('https')
 
@@ -43,6 +66,7 @@ async function main() {
   })
 
   // 3. 生成预览二维码
+  const version = bumpVersion()
   console.log('📦 正在上传预览包...')
   const startTime = Date.now()
 
@@ -112,7 +136,7 @@ function sendToTelegram(imagePath, result, elapsed) {
     }
 
     const caption = [
-      '🏸 *羽毛球小程序 - 预览版*',
+      `🏸 *MX Sports 预览版 v${getVersion()}*`,
       '',
       `🕐 ${new Date().toLocaleString('zh-CN')}`,
       `⏱ 构建耗时: ${elapsed}s`,

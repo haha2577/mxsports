@@ -2,7 +2,8 @@ import random
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
+from users.views import IsJWTAuthenticated
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Match, Game
@@ -70,7 +71,7 @@ class MatchListCreateView(APIView):
     def get_permissions(self):
         if self.request.method == 'GET':
             return [AllowAny()]
-        return [IsAuthenticated()]
+        return [IsJWTAuthenticated()]
 
     def get(self, request):
         qs = Match.objects.all()
@@ -95,7 +96,7 @@ class MatchDetailView(APIView):
     def get_permissions(self):
         if self.request.method == 'GET':
             return [AllowAny()]
-        return [IsAuthenticated()]
+        return [IsJWTAuthenticated()]
 
     def get_match(self, pk):
         try:
@@ -123,7 +124,7 @@ class MatchDetailView(APIView):
 
 
 class GenerateDrawView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsJWTAuthenticated]
 
     @transaction.atomic
     def post(self, request, pk):
@@ -168,7 +169,7 @@ class GenerateDrawView(APIView):
 
 
 class UpdateScoreView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsJWTAuthenticated]
 
     def put(self, request, pk, game_id):
         try:

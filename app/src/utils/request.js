@@ -1,6 +1,6 @@
 import { useUserStore } from '../store/modules/user'
 
-const BASE_URL = 'http://localhost:8000/api'
+const BASE_URL = 'https://mxsports.vip/api'
 const TIMEOUT  = 10000 // 10s
 
 let loadingCount = 0

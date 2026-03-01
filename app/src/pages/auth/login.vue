@@ -7,9 +7,14 @@
     </view>
 
     <view class="login-area">
-      <button class="wx-login-btn" @click="handleWxLogin" :loading="loading">
+      <button
+        class="wx-login-btn"
+        open-type="getPhoneNumber"
+        @getphonenumber="handleWxPhoneLogin"
+        :loading="loading"
+      >
         <image src="/static/icons/wechat.png" class="wx-icon" />
-        微信一键登录
+        微信手机号登录
       </button>
       <text class="privacy-tip">登录即代表同意《用户协议》和《隐私政策》</text>
     </view>
@@ -19,18 +24,22 @@
 <script setup>
 import { ref } from 'vue'
 import { useUserStore } from '../../store/modules/user'
-import { wxLogin, getUserInfo } from '../../api/auth'
+import { wxPhoneLogin, getUserInfo } from '../../api/auth'
 
 const userStore = useUserStore()
 const loading = ref(false)
 
-const handleWxLogin = async () => {
+const handleWxPhoneLogin = async (e) => {
+  if (e.detail.errMsg !== 'getPhoneNumber:ok') {
+    uni.showToast({ title: '已取消登录', icon: 'none' })
+    return
+  }
   loading.value = true
   try {
-    // 1. 获取微信 code
+    // 1. 获取 wx_code（用于换取 openid）
     const loginRes = await uni.login({ provider: 'weixin' })
-    // 2. 用 code 换取 token
-    const res = await wxLogin(loginRes.code)
+    // 2. phone_code + wx_code 一起换取 token
+    const res = await wxPhoneLogin(e.detail.code, loginRes.code)
     userStore.setToken(res.data.token)
     // 3. 获取用户信息
     const userRes = await getUserInfo()
@@ -39,9 +48,8 @@ const handleWxLogin = async () => {
     setTimeout(() => {
       uni.switchTab({ url: '/pages/home/index' })
     }, 800)
-  } catch (e) {
-    console.error('登录失败', e)
-    uni.showToast({ title: '登录失败，请重试', icon: 'none' })
+  } catch (err) {
+    console.error('登录失败', err)
   } finally {
     loading.value = false
   }
