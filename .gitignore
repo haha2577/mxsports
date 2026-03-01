@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+*.sqlite3
+server/server.log
+server/static/
+
+# Node
+node_modules/
+npm-debug.log
+
+# 微信小程序
+app/dist/
+
+# 密钥
+*.key
+deploy/.env
+
+# OS
+.DS_Store
+Thumbs.db
