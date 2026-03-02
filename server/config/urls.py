@@ -2,9 +2,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf import settings
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from web_views import index
-import os
 
 WEB_DIR = settings.BASE_DIR.parent / 'web'
 
@@ -13,12 +11,11 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('api/', include('matches.urls')),
     path('api/', include('registrations.urls')),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/',   SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
-    # Web 静态资源
-    re_path(r'^web/(?P<path>.*)$', serve, {'document_root': str(WEB_DIR)}),
+    # UniApp H5 静态资源（assets/ static/ 等）
+    re_path(r'^assets/(?P<path>.*)$', serve, {'document_root': str(WEB_DIR / 'assets')}),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': str(WEB_DIR / 'static')}),
 
-    # SPA 入口 — 所有其他路径返回 index.html
+    # SPA 入口 — 所有非 api/ 路径返回 index.html
     re_path(r'^(?!api/).*$', index),
 ]

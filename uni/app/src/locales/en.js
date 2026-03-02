@@ -1,0 +1,9 @@
+export default {
+  home:    { title:'Choose Your Sport', badminton:'Badminton', badmintonDesc:'Fast & agile · Indoor', tennis:'Tennis', tennisDesc:'Power & skill · Elite', enter:'Enter', comingSoon:'More sports coming soon 🚀' },
+  sport:   { register:'Join Match', registerDesc:'Browse & sign up', organize:'Organize', organizeDesc:'Create your event', latest:'Latest Matches', noData:'No matches yet' },
+  match:   { create:'Create Event', name:'Event Name', location:'Venue', date:'Date', time:'Time', format:'Format', maxPlayers:'Max Players', levels:'Level', desc:'Description', publish:'Publish Now', draft:'Save Draft', status:{ open:'Open', ongoing:'Live', finished:'Ended' }, types:{ round_robin:'Round Robin', knockout:'Knockout', group:'Group Stage' } },
+  auth:    { login:'Sign In', logout:'Sign Out', phone:'Phone', code:'Code', sendCode:'Get Code', loginBtn:'Sign In', welcome:'Welcome! 🎉', autoCreate:'New number auto-creates an account', wxLogin:'💚 Login with WeChat Phone', phoneTip:'Phone is for identification only', logoutConfirm:'Are you sure you want to sign out?', loginModePhone:'Phone Login', loginModeWx:'WeChat Quick Login' },
+  profile: { title:'Profile', notLogin:'Sign in to view profile', myReg:'My Registrations', history:'Match History', points:'My Points', langSetting:'Language', settings:'Settings', stats:{ matches:'Matches', wins:'Wins', rate:'Win Rate' }, setup:{ title:'Complete Profile', sub:'Sync your WeChat avatar & name', avatarTip:'Tap to sync avatar', nickPlaceholder:'Tap to sync WeChat name', save:'Save Profile', skip:'Skip' } },
+  lang:    { title:'Language', follow:'Follow System', zh:'中文', en:'English', saved:'Language updated' },
+  common:  { loading:'Loading...', save:'Save', cancel:'Cancel', all:'All ›', back:'Back', error:'Something went wrong' },
+}

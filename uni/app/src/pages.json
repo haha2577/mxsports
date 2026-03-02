@@ -1,0 +1,27 @@
+{
+  "pages": [
+    { "path": "pages/home/index",        "style": { "navigationStyle": "custom" } },
+    { "path": "pages/badminton/index",   "style": { "navigationBarTitleText": "羽毛球", "navigationBarBackgroundColor": "#1DB954", "navigationBarTextStyle": "white" } },
+    { "path": "pages/tennis/index",      "style": { "navigationBarTitleText": "网球", "navigationBarBackgroundColor": "#d4541f", "navigationBarTextStyle": "white" } },
+    { "path": "pages/match/create",      "style": { "navigationBarTitleText": "创建赛事" } },
+    { "path": "pages/match/detail",      "style": { "navigationBarTitleText": "比赛详情" } },
+    { "path": "pages/match/list",        "style": { "navigationBarTitleText": "赛事列表" } },
+    { "path": "pages/profile/index",     "style": { "navigationBarTitleText": "个人中心", "navigationBarBackgroundColor": "#1a1a2e", "navigationBarTextStyle": "white" } },
+    { "path": "pages/profile/login",     "style": { "navigationBarTitleText": "登录" } },
+    { "path": "pages/settings/language", "style": { "navigationBarTitleText": "语言设置" } }
+  ],
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#1a1a2e",
+    "backgroundColor": "#fff",
+    "list": [
+      { "pagePath": "pages/home/index",    "text": "首页",   "iconText": "🏠" },
+      { "pagePath": "pages/profile/index", "text": "我的",   "iconText": "👤" }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f0f2f5"
+  }
+}

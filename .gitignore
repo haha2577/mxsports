@@ -1,24 +1,19 @@
+# UniApp
+uni/app/node_modules/
+uni/app/dist/
+
 # Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.env
-*.sqlite3
-server/server.log
-server/static/
-
-# Node
-node_modules/
-npm-debug.log
-
-# 微信小程序
-app/dist/
-
-# 密钥
-*.key
-deploy/.env
-
-# OS
-.DS_Store
-Thumbs.db
 server/.venv/
+server/__pycache__/
+server/**/__pycache__/
+server/*.pyc
+server/server.log
+
+# Web build (generated from uni build:h5)
+web/
+
+# Deploy secrets
+app/deploy/.env
+app/deploy/private.*.key
+app/deploy/preview-qrcode.jpg
+app/deploy/node_modules/
