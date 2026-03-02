@@ -1,19 +1,21 @@
 # UniApp
-uni/app/node_modules/
-uni/app/dist/
+frontend/node_modules/
+frontend/dist/
 
 # Python
-server/.venv/
-server/__pycache__/
-server/**/__pycache__/
-server/*.pyc
-server/server.log
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/server.log
+backend/server.pid
 
-# Web build (generated from uni build:h5)
+# Web build (auto-generated)
 web/
 
 # Deploy secrets
-app/deploy/.env
-app/deploy/private.*.key
-app/deploy/preview-qrcode.jpg
-app/deploy/node_modules/
+deploy/.env
+deploy/private.*.key
+deploy/preview-qrcode.jpg
+deploy/node_modules/
+deploy/*.jpg

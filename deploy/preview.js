@@ -5,8 +5,8 @@ const fs   = require('fs')
 const https = require('https')
 
 const APPID        = 'wx686427f3488d40ab'
-const UNI_SRC      = path.resolve(__dirname, '../../uni/app')           // UniApp 源码
-const PROJECT_PATH = path.resolve(__dirname, '../../uni/app/dist/build/mp-weixin')
+const UNI_SRC      = path.resolve(__dirname, '../../frontend')           // UniApp 源码
+const PROJECT_PATH = path.resolve(__dirname, '../../frontend/dist/build/mp-weixin')
 const KEY_PATH     = path.resolve(__dirname, './private.wx686427f3488d40ab.key')
 const QR_OUTPUT    = path.resolve(__dirname, './preview-qrcode.jpg')
 const VERSION_FILE = path.resolve(__dirname, './VERSION')
