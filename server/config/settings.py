@@ -142,3 +142,8 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+
+# Web 静态文件
+STATICFILES_DIRS = [
+    BASE_DIR.parent / 'web',
+]
