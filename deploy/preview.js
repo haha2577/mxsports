@@ -5,11 +5,11 @@ const fs   = require('fs')
 const https = require('https')
 
 const APPID        = 'wx686427f3488d40ab'
-const UNI_SRC      = path.resolve(__dirname, '../../frontend')           // UniApp 源码
-const PROJECT_PATH = path.resolve(__dirname, '../../frontend/dist/build/mp-weixin')
-const KEY_PATH     = path.resolve(__dirname, './private.wx686427f3488d40ab.key')
-const QR_OUTPUT    = path.resolve(__dirname, './preview-qrcode.jpg')
-const VERSION_FILE = path.resolve(__dirname, './VERSION')
+const UNI_SRC      = '/data/mxsports/frontend'           // UniApp 源码
+const PROJECT_PATH = '/data/mxsports/frontend/dist/build/mp-weixin'
+const KEY_PATH     = '/data/mxsports/deploy/private.wx686427f3488d40ab.key'
+const QR_OUTPUT    = '/data/mxsports/deploy/preview-qrcode.jpg'
+const VERSION_FILE = '/data/mxsports/deploy/VERSION'
 const TG_TOKEN     = process.env.TG_TOKEN || ''
 const TG_CHAT      = process.env.TG_CHAT  || ''
 
@@ -27,9 +27,14 @@ function bumpVersion() {
 }
 
 async function buildMP() {
+  if (process.argv.includes('--no-build')) {
+    console.log('⏭  跳过构建（--no-build）')
+    return
+  }
   console.log('🔨 构建微信小程序...')
-  const { execSync } = require('child_process')
-  execSync('npm run build:mp-weixin', { cwd: UNI_SRC, stdio: 'inherit' })
+  const { spawnSync } = require('child_process')
+  const r = spawnSync('/usr/bin/npm', ['run', 'build:mp-weixin'], { cwd: UNI_SRC, stdio: 'inherit' })
+  if (r.error) throw r.error
   console.log('✅ 构建完成')
 }
 
