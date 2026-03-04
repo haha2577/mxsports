@@ -125,6 +125,12 @@ export default {
       showSportPref: false,
       guestSport: '',     // 未登录游客临时选的运动
       statusBarHeight: 20,
+      news: [
+        { id:1, title:'2025羽毛球超级联赛报名通道正式开放', cat:'赛事动态', catColor:'#1DB954', date:'03-04', cover:'' },
+        { id:2, title:'网球发球速度提升的5个实用技巧',       cat:'技术提升', catColor:'#1565c0', date:'03-03', cover:'' },
+        { id:3, title:'2025春季最值得入手的羽毛球拍测评',   cat:'装备测评', catColor:'#f57c00', date:'03-02', cover:'' },
+        { id:4, title:'本地网球协会周末公开赛战报',          cat:'赛事动态', catColor:'#1DB954', date:'03-01', cover:'' },
+      ],
     }
   },
   computed: {
@@ -192,6 +198,8 @@ export default {
       this.loadMatches()
       // TODO: 保存到后端 api.updateProfile({ sport_preference: pref })
     },
+    goNews(id) { uni.navigateTo({ url: `/pages/news/detail?id=${id}` }) },
+    goNewsList() { uni.navigateTo({ url: '/pages/news/list' }) },
     goRegister() { uni.navigateTo({ url: `/pages/match/list?sport=${this.activeSport}` }) },
     goCreate() {
       if (!this.token) { this.showLogin = true; return }
@@ -293,5 +301,18 @@ export default {
 .s-open     { background:#e8f7ee; color:#1DB954; }
 .s-ongoing  { background:#1DB954; color:#fff; }
 .s-finished { background:#f5f5f5; color:#999; }
+
+/* ===== 资讯 ===== */
+.news-section { margin:0 24rpx 0; }
+.dot-n { background:#ff6b35; }
+.more-n { color:#ff6b35; }
+.news-scroll { margin:0 -24rpx; padding:0 24rpx 8rpx; }
+.news-row { display:flex; gap:16rpx; padding-right:24rpx; }
+.news-card { width:260rpx; flex-shrink:0; background:#fff; border-radius:20rpx; overflow:hidden; box-shadow:0 4rpx 16rpx rgba(0,0,0,.06); }
+.news-cover { height:160rpx; display:flex; align-items:center; justify-content:center; }
+.news-cover-icon { font-size:72rpx; }
+.news-cat-tag { display:inline-block; font-size:20rpx; padding:4rpx 14rpx; border-radius:50rpx; margin:12rpx 12rpx 6rpx; font-weight:500; }
+.news-title-txt { display:block; font-size:26rpx; font-weight:bold; color:#1a1a1a; line-height:1.5; padding:0 12rpx; margin-bottom:10rpx; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.news-date { display:block; font-size:20rpx; color:#bbb; padding:0 12rpx 16rpx; }
 .empty { text-align:center; padding:60rpx 0; color:#aaa; font-size:28rpx; }
 </style>
