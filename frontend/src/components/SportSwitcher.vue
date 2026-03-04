@@ -1,10 +1,13 @@
 <!--
   SportSwitcher - 统一运动切换组件
-  - 只在 sportPref === 'both' 时渲染
-  - 用法：<sport-switcher :active="activeSport" @switch="switchSport"/>
+  Props:
+    active   - 当前运动 'badminton' | 'tennis'
+    sportPref - 偏好 'badminton' | 'tennis' | 'both'（父页面传入，响应式）
+  Emit:
+    switch(sport)
 -->
 <template>
-  <view v-if="isDual" class="sport-switcher">
+  <view v-if="sportPref === 'both'" class="sport-switcher">
     <view :class="['ss-tab', active==='badminton' && 'ss-active']" @tap="$emit('switch','badminton')">
       <text class="ss-emoji">🏸</text>
       <text class="ss-label">羽毛球</text>
@@ -20,14 +23,10 @@
 export default {
   name: 'SportSwitcher',
   props: {
-    active: { type: String, default: 'badminton' }
+    active:    { type: String, default: 'badminton' },
+    sportPref: { type: String, default: '' },
   },
   emits: ['switch'],
-  computed: {
-    isDual() {
-      return uni.getStorageSync('sportPref') === 'both'
-    }
-  }
 }
 </script>
 
@@ -41,20 +40,12 @@ export default {
   gap: 4rpx;
 }
 .ss-tab {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  padding: 10rpx 22rpx;
-  border-radius: 50rpx;
+  display: flex; align-items: center; gap: 8rpx;
+  padding: 10rpx 22rpx; border-radius: 50rpx;
   transition: background .2s;
 }
-.ss-active {
-  background: rgba(255,255,255,.9);
-}
-.ss-active .ss-label {
-  color: #1a1a2e;
-  font-weight: bold;
-}
+.ss-active { background: rgba(255,255,255,.9); }
+.ss-active .ss-label { color: #1a1a2e; font-weight: bold; }
 .ss-emoji { font-size: 26rpx; }
 .ss-label { font-size: 22rpx; color: rgba(255,255,255,.9); }
 </style>

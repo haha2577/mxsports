@@ -6,7 +6,7 @@
       <view class="hd-row">
         <view class="back-btn" @tap="$router?$router.back():uni.navigateBack()">‹</view>
         <text class="hd-title">附近的约球</text>
-        <sport-switcher :active="sport" @switch="onSportSwitch"/>
+        <sport-switcher :sport-pref="sportPref" :active="sport" @switch="onSportSwitch"/>
       </view>
 
       <!-- 搜索框 -->
@@ -246,6 +246,7 @@ export default {
   },
   onLoad(options) {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
+    this.sportPref = uni.getStorageSync('sportPref') || ''
     if (options.sport) this.sport = options.sport
   },
   methods: {

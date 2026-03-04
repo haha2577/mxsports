@@ -6,7 +6,7 @@
       <view class="hd-row">
         <view class="back-btn" @tap="uni.navigateBack()">‹</view>
         <text class="hd-title">附近场馆</text>
-        <sport-switcher :active="sport" @switch="s=>{sport=s;loadVenues()}"/>
+        <sport-switcher :sport-pref="sportPref" :active="sport" @switch="s=>{sport=s;loadVenues()}"/>
       </view>
 
       <!-- 定位行 -->
@@ -178,6 +178,7 @@ export default {
     return {
       statusBarHeight: 20,
       sport: uni.getStorageSync('activeSport') || 'badminton',
+      sportPref: uni.getStorageSync('sportPref') || '',
       city: '北京',
       viewMode: 'list',
       filterType: '', filterDist: '', filterPrice: '', filterOpen: false,
@@ -217,6 +218,7 @@ export default {
   },
   onLoad(opts) {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
+    this.sportPref = uni.getStorageSync('sportPref') || ''
     if (opts.sport) this.sport = opts.sport
   },
   methods: {

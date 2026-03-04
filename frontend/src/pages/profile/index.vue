@@ -17,7 +17,7 @@
           <text v-else-if="!token" class="phone-sub" @tap="showLogin=true">点击登录 ›</text>
         </view>
 
-        <sport-switcher v-if="token" :active="activeSport" @switch="switchSport"/>
+        <sport-switcher :sport-pref="sportPref" v-if="token" :active="activeSport" @switch="switchSport"/>
       </view>
 
       <!-- 统计（登录后） -->

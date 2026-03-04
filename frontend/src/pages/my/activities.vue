@@ -6,7 +6,7 @@
       <view class="hd-row">
         <view class="back-btn" @tap="uni.navigateBack()">‹</view>
         <text class="hd-title">我的活动</text>
-        <sport-switcher :active="sport" @switch="s=>{sport=s}"/>
+        <sport-switcher :sport-pref="sportPref" :active="sport" @switch="s=>{sport=s}"/>
       </view>
 
       <!-- 状态 Tab -->
@@ -91,6 +91,7 @@ export default {
     return {
       statusBarHeight: 20,
       sport: uni.getStorageSync('activeSport') || 'badminton',
+      sportPref: uni.getStorageSync('sportPref') || '',
       activeTab: 'all',
       list: [...MOCK],
       tabs: [
@@ -113,6 +114,7 @@ export default {
   },
   onLoad() {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
+    this.sportPref = uni.getStorageSync('sportPref') || ''
   },
   methods: {
     countOf(tab) {

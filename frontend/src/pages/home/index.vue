@@ -41,7 +41,7 @@
         <!-- 顶部行：运动切换 + 头像 -->
         <view class="hero-topbar">
           <view class="tb-left">
-            <sport-switcher :active="activeSport" @switch="switchSport"/>
+            <sport-switcher :sport-pref="sportPref" :active="activeSport" @switch="switchSport"/>
           </view>
           <view class="avatar-btn" @tap="goProfile">
             <image v-if="user&&user.avatar" :src="user.avatar" class="tb-avatar" mode="aspectFill"/>

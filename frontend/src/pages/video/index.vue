@@ -11,7 +11,7 @@
         </view>
       </view>
       <!-- 运动切换（双栖选手） -->
-      <sport-switcher :active="filterSport==='all'?'badminton':filterSport" @switch="s=>{ filterSport=s }" style="margin-bottom:16rpx"/>
+      <sport-switcher :sport-pref="sportPref" :active="filterSport==='all'?'badminton':filterSport" @switch="s=>{ filterSport=s }" style="margin-bottom:16rpx"/>
       <!-- 运动筛选 -->
       <view class="filter-row">
         <view :class="['filter-tag', filterSport==='all'&&'filter-active']" @tap="filterSport='all'">全部</view>
@@ -183,6 +183,7 @@ export default {
   },
   onLoad() {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
+    this.sportPref = uni.getStorageSync('sportPref') || ''
   },
   methods: {
     statusLabel(s) {
@@ -208,6 +209,7 @@ export default {
           this.videos.unshift({
             id: Date.now(), title: '新视频 ' + new Date().toLocaleDateString(),
             sport: uni.getStorageSync('activeSport') || 'badminton',
+      sportPref: uni.getStorageSync('sportPref') || '',
             duration: '--:--', date: new Date().toLocaleDateString().slice(5),
             status: 'processing', thumbnail: '', progress: 10
           })
