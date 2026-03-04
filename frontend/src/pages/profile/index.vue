@@ -55,12 +55,8 @@
     <!-- 我的赛事（需登录） -->
     <view v-if="token" class="section-card">
       <view class="section-title">{{ activeSport === 'badminton' ? '🏸 羽毛球赛事' : '🎾 网球赛事' }}</view>
-      <view class="menu-item" @tap="goRegList">
-        <view class="mi-left"><text class="mi-icon">📋</text><text class="mi-label">我的报名</text></view>
-        <text class="mi-arrow">›</text>
-      </view>
-      <view class="menu-item" @tap="goHistory">
-        <view class="mi-left"><text class="mi-icon">🏆</text><text class="mi-label">比赛记录</text></view>
+      <view class="menu-item" @tap="goActivities">
+        <view class="mi-left"><text class="mi-icon">🏅</text><text class="mi-label">我的活动</text></view>
         <text class="mi-arrow">›</text>
       </view>
       <view class="menu-item" @tap="goVideo">
@@ -174,9 +170,8 @@ export default {
       // TODO: api.updateProfile({ sport_preference: pref })
     },
     goRacket()   { uni.navigateTo({ url: '/pages/racket/recommend' }) },
-    goVideo()    { uni.navigateTo({ url: '/pages/video/index' }) },
-    goRegList()  { uni.showToast({ title: '开发中', icon: 'none' }) },
-    goHistory()  { uni.showToast({ title: '开发中', icon: 'none' }) },
+    goVideo()      { uni.navigateTo({ url: '/pages/video/index' }) },
+    goActivities() { uni.navigateTo({ url: '/pages/my/activities' }) },
     goLang()     { uni.navigateTo({ url: '/pages/settings/language' }) },
     goSettings() { uni.showToast({ title: '开发中', icon: 'none' }) },
     logout() {
