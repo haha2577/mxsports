@@ -71,24 +71,24 @@
         </view>
       </view>
 
-      <!-- 最新赛事 -->
+      <!-- 附近的约球 -->
       <view class="section">
         <view class="sec-hd">
           <view style="display:flex;align-items:center;gap:12rpx">
             <view class="dot" :class="activeSport==='badminton' ? 'dot-b' : 'dot-t'"/>
-            <text class="sec-title">最新赛事</text>
+            <text class="sec-title">附近的约球</text>
           </view>
           <text class="sec-more" :class="activeSport==='badminton' ? 'more-b' : 'more-t'" @tap="goList">全部</text>
         </view>
         <view v-if="loading" class="empty">加载中…</view>
-        <view v-else-if="!matches.length" class="empty">暂无赛事 {{ activeSport === 'badminton' ? '🏸' : '🎾' }}</view>
+        <view v-else-if="!matches.length" class="empty">暂无约球活动 {{ activeSport === 'badminton' ? '🏸' : '🎾' }}</view>
         <view v-for="m in matches" :key="m.id" class="match-item" @tap="goDetail(m.id)">
           <view class="mi-icon-wrap" :class="activeSport==='badminton' ? 'mi-b' : 'mi-t'">
             <text style="font-size:30rpx">{{ activeSport === 'badminton' ? '🏸' : '🎾' }}</text>
           </view>
           <view style="flex:1">
             <text class="mi-name">{{ m.name }}</text>
-            <text class="mi-info">📍{{ m.location||'—' }} · {{ m.registeredCount }}/{{ m.maxPlayers }}</text>
+            <text class="mi-info">📍{{ m.location||'—' }}{{ m.distance ? ' · '+m.distance : '' }} · {{ m.level||'不限水平' }}</text>
           </view>
           <text :class="['badge', `s-${m.status}`]">{{ statusLabel(m.status) }}</text>
         </view>
@@ -174,7 +174,7 @@ export default {
     async loadMatches() {
       this.loading = true
       try {
-        const r = await api.matches(`?sport=${this.activeSport}&size=5`)
+        const r = await api.matches(`?sport=${this.activeSport}&size=5&nearby=1`)
         this.matches = r.data?.list || []
       } catch { this.matches = [] }
       this.loading = false
@@ -198,7 +198,7 @@ export default {
       uni.navigateTo({ url: `/pages/match/create?sport=${this.activeSport}` })
     },
     goDetail(id) { uni.navigateTo({ url: `/pages/match/detail?id=${id}` }) },
-    goList()   { uni.navigateTo({ url: `/pages/match/list?sport=${this.activeSport}` }) },
+    goList()   { uni.navigateTo({ url: `/pages/match/list?sport=${this.activeSport}&mode=nearby` }) },
     goProfile(){ uni.switchTab({ url: '/pages/profile/index' }) },
     statusLabel(s) { return { open:'报名中', ongoing:'进行中', finished:'已结束' }[s] || s }
   }
