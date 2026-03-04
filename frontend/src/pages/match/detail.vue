@@ -50,7 +50,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.page{background:#f0f2f5;min-height:100vh;padding-bottom:100rpx}
+.page{background:#f0f2f5;padding-bottom:100rpx}
 .loading{display:flex;justify-content:center;align-items:center;height:400rpx;color:#aaa;font-size:28rpx}
 .hero{background:linear-gradient(145deg,#1a1a2e,#0f3460);padding:60rpx 40rpx 50rpx;display:flex;flex-direction:column;align-items:center;gap:16rpx}
 .sport-icon{font-size:90rpx}

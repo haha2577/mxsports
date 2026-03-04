@@ -2,7 +2,7 @@
   <view class="page">
 
     <!-- Hero -->
-    <view class="hero" :class="heroCls">
+    <view class="hero" :style="`padding-top:${statusBarHeight + 12}px`">
       <text class="hero-deco">{{ activeSport === 'badminton' ? '🏸' : '🎾' }}</text>
 
       <!-- 用户信息行 -->
@@ -17,17 +17,7 @@
           <text v-else-if="!token" class="phone-sub" @tap="showLogin=true">点击登录 ›</text>
         </view>
 
-        <!-- 双栖选手才显示切换 Tab -->
-        <view v-if="token && sportPref === 'both'" class="sport-tabs">
-          <view :class="['st', activeSport==='badminton' && 'st-active']" @tap="switchSport('badminton')">
-            <text class="st-emoji">🏸</text>
-            <text class="st-label">羽毛球</text>
-          </view>
-          <view :class="['st', activeSport==='tennis' && 'st-active']" @tap="switchSport('tennis')">
-            <text class="st-emoji">🎾</text>
-            <text class="st-label">网球</text>
-          </view>
-        </view>
+        <sport-switcher v-if="token" :active="activeSport" @switch="switchSport"/>
       </view>
 
       <!-- 统计（登录后） -->
@@ -73,6 +63,13 @@
         <view class="mi-left"><text class="mi-icon">🏆</text><text class="mi-label">比赛记录</text></view>
         <text class="mi-arrow">›</text>
       </view>
+      <view class="menu-item" @tap="goVideo">
+        <view class="mi-left"><text class="mi-icon">🎬</text><text class="mi-label">我的视频</text></view>
+        <view style="display:flex;align-items:center;gap:8rpx">
+          <text style="font-size:22rpx;color:#1DB954;background:#e8f7ee;padding:4rpx 14rpx;border-radius:50rpx;">智能剪辑·AI评价</text>
+          <text class="mi-arrow">›</text>
+        </view>
+      </view>
     </view>
 
     <!-- 设置 -->
@@ -112,12 +109,13 @@
 
 <script>
 import LoginSheet     from '../../components/LoginSheet.vue'
+import SportSwitcher  from '../../components/SportSwitcher.vue'
 import SportPrefSheet from '../../components/SportPrefSheet.vue'
 
 const emptyStats = () => ({ matches: 0, wins: 0, rate: '0%', points: 0 })
 
 export default {
-  components: { LoginSheet, SportPrefSheet },
+  components: { LoginSheet, SportPrefSheet, SportSwitcher },
   data() {
     return {
       token: '',
@@ -127,14 +125,17 @@ export default {
       statsMap: { badminton: emptyStats(), tennis: emptyStats() },
       showLogin: false,
       showSportPref: false,
+      statusBarHeight: 20,
     }
   },
   computed: {
     stats()    { return this.statsMap[this.activeSport] },
-    heroCls()  { return this.activeSport === 'badminton' ? 'hero-b' : 'hero-t' },
     prefLabel() {
       return { badminton: '🏸 羽毛球', tennis: '🎾 网球', both: '🏸🎾 双栖' }[this.sportPref] || '未设置'
     }
+  },
+  onLoad() {
+    try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
   },
   onShow() {
     this.token = getApp().globalData.token || ''
@@ -173,6 +174,7 @@ export default {
       // TODO: api.updateProfile({ sport_preference: pref })
     },
     goRacket()   { uni.navigateTo({ url: '/pages/racket/recommend' }) },
+    goVideo()    { uni.navigateTo({ url: '/pages/video/index' }) },
     goRegList()  { uni.showToast({ title: '开发中', icon: 'none' }) },
     goHistory()  { uni.showToast({ title: '开发中', icon: 'none' }) },
     goLang()     { uni.navigateTo({ url: '/pages/settings/language' }) },
@@ -192,11 +194,9 @@ export default {
 </script>
 
 <style lang="scss">
-.page { background:#f0f2f5; min-height:100vh; padding-bottom:80rpx; }
+.page { background:#f0f2f5;  padding-bottom:80rpx; }
 
-.hero { padding:80rpx 40rpx 40rpx; position:relative; overflow:hidden; }
-.hero-b { background:linear-gradient(145deg,#0a7a38,#1DB954,#25d366); }
-.hero-t { background:linear-gradient(145deg,#8a3010,#d4541f,#e8712a); }
+.hero { padding:0 40rpx 40rpx; position:relative; overflow:hidden; background: linear-gradient(145deg, #1a1a2e, #0f3460); }
 .hero-deco { position:absolute; font-size:200rpx; opacity:.08; right:-20rpx; top:20rpx; line-height:1; }
 
 .hero-row { display:flex; align-items:center; gap:20rpx; position:relative; z-index:2; }
@@ -208,10 +208,6 @@ export default {
 .phone        { font-size:22rpx; color:rgba(255,255,255,.6); }
 .phone-sub    { font-size:22rpx; color:rgba(255,255,255,.5); }
 
-.sport-tabs { display:flex; flex-direction:column; gap:8rpx; flex-shrink:0; }
-.st { display:flex; align-items:center; gap:8rpx; padding:10rpx 20rpx; border-radius:50rpx; background:rgba(255,255,255,.15); border:1rpx solid rgba(255,255,255,.2); }
-.st-active { background:rgba(255,255,255,.9); }
-.st-active .st-label { color:#1a1a1a; font-weight:bold; }
 .st-emoji { font-size:26rpx; }
 .st-label { font-size:22rpx; color:rgba(255,255,255,.9); }
 

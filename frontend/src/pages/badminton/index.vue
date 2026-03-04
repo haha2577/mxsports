@@ -59,7 +59,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.page{background:#f4faf4;min-height:100vh;padding-bottom:80rpx}
+.page{background:#f4faf4;padding-bottom:80rpx}
 .hero{background:linear-gradient(145deg,#0faa4e,#1DB954,#25d366);padding:60rpx 40rpx 50rpx;position:relative;overflow:hidden}
 .deco1,.deco2{position:absolute;opacity:.18}
 .deco1{font-size:80rpx;top:10rpx;right:20rpx;transform:rotate(-20deg)}

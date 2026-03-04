@@ -32,7 +32,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.page{background:#f5f5f5;min-height:100vh;padding:20rpx;padding-bottom:80rpx}
+.page{background:#f5f5f5;padding:20rpx;padding-bottom:80rpx}
 .search-bar{background:#fff;border-radius:20rpx;padding:16rpx 24rpx;margin-bottom:20rpx}
 .search-inp{width:100%;font-size:28rpx}
 .match-item{background:#fff;border-radius:20rpx;padding:28rpx;margin-bottom:16rpx;display:flex;align-items:center;gap:16rpx;box-shadow:0 2rpx 10rpx rgba(0,0,0,.05)}

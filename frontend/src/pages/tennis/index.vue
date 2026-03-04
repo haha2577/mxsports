@@ -67,7 +67,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.page{background:#fdf6f0;min-height:100vh;padding-bottom:80rpx}
+.page{background:#fdf6f0;padding-bottom:80rpx}
 .hero{background:linear-gradient(145deg,#b5451b,#d4541f,#e8712a);padding:70rpx 40rpx 50rpx;position:relative;overflow:hidden}
 .court-lines{position:absolute;inset:0;opacity:.1}
 .hl{position:absolute;height:2rpx;left:0;right:0;background:#fff}

@@ -3,9 +3,8 @@
 
     <!-- ① 未登录：双入口卡片 -->
     <view v-if="!token">
-      <view class="topbar-unlogged">
-        <text class="app-name">🏟️ MX Sports</text>
-        <view class="login-btn-sm" @tap="showLogin = true">登录</view>
+      <view class="topbar-unlogged" :style="`padding-top:${statusBarHeight + 8}px`">
+        <text class="app-name">铭心乐Go</text>
       </view>
       <view class="hero-unlogged">
         <text class="hero-unlogged-title">选择你的运动</text>
@@ -27,43 +26,34 @@
           <view class="sc-btn sc-btn-t"><text class="sc-btn-txt sc-btn-txt-t">进入 →</text></view>
         </view>
       </view>
-      <text class="guest-tip">登录后可记录赛事数据、报名参赛</text>
+      <view class="guest-login-row" @tap="showLogin = true">
+        <text class="guest-login-txt">已有账号？登录后记录赛事数据 ›</text>
+      </view>
     </view>
 
     <!-- ② 已登录 -->
     <view v-else>
 
-      <!-- 顶部导航 -->
-      <view class="topbar" :style="topbarStyle">
-        <view class="tb-left">
-          <!-- 双栖：显示切换 Tab -->
-          <view v-if="sportPref === 'both'" class="sport-tabs">
-            <view :class="['st', activeSport==='badminton'&&'st-active-b']" @tap="switchSport('badminton')">🏸 羽毛球</view>
-            <view :class="['st', activeSport==='tennis'&&'st-active-t']"    @tap="switchSport('tennis')">🎾 网球</view>
-          </view>
-          <!-- 单项：只显示运动名 -->
-          <view v-else class="sport-label">
-            <text class="sl-emoji">{{ activeSport === 'badminton' ? '🏸' : '🎾' }}</text>
-            <text class="sl-name">{{ activeSport === 'badminton' ? '羽毛球' : '网球' }}</text>
-          </view>
-        </view>
-        <view class="avatar-btn" @tap="goProfile">
-          <image v-if="user&&user.avatar" :src="user.avatar" class="tb-avatar" mode="aspectFill"/>
-          <text v-else class="tb-avatar-emoji">🙋</text>
-        </view>
-      </view>
-
-      <!-- Hero -->
-      <view class="hero" :class="activeSport === 'badminton' ? 'hero-b' : 'hero-t'">
-        <view v-if="activeSport === 'tennis'" class="court-lines">
-          <view class="hl top"/><view class="hl mid"/><view class="vl"/>
-        </view>
+      <!-- Hero（含顶部导航） -->
+      <view class="hero" :style="`padding-top:${statusBarHeight + 12}px`">
         <text class="hero-deco">{{ activeSport === 'badminton' ? '🏸' : '🎾' }}</text>
+
+        <!-- 顶部行：运动切换 + 头像 -->
+        <view class="hero-topbar">
+          <view class="tb-left">
+            <sport-switcher :active="activeSport" @switch="switchSport"/>
+          </view>
+          <view class="avatar-btn" @tap="goProfile">
+            <image v-if="user&&user.avatar" :src="user.avatar" class="tb-avatar" mode="aspectFill"/>
+            <text v-else class="tb-avatar-emoji">🙋</text>
+          </view>
+        </view>
+
+        <!-- Hero 内容 -->
         <view class="hero-inner">
-          <text v-if="activeSport==='tennis'" class="badge-txt">TENNIS</text>
-          <text class="hero-title">{{ activeSport === 'badminton' ? '🏸 羽毛球赛事' : '🎾 网球赛事' }}</text>
+          <text class="hero-greeting">Hi，{{ user ? (user.nickname||'运动员') : '运动员' }} 👋</text>
+          <text class="hero-title">{{ activeSport === 'badminton' ? '羽毛球赛事' : '网球赛事' }}</text>
           <text class="hero-sub">{{ activeSport === 'badminton' ? '报名、组织、记录你的每一场比赛' : '专业赛事管理，积分排名实时更新' }}</text>
-          <view v-if="activeSport==='tennis'" class="score-bar"><text class="score-txt">ACE  15  30  40</text></view>
         </view>
       </view>
 
@@ -116,12 +106,13 @@
 </template>
 
 <script>
-import LoginSheet    from '../../components/LoginSheet.vue'
+import LoginSheet     from '../../components/LoginSheet.vue'
+import SportSwitcher  from '../../components/SportSwitcher.vue'
 import SportPrefSheet from '../../components/SportPrefSheet.vue'
 import { api } from '../../api/index.js'
 
 export default {
-  components: { LoginSheet, SportPrefSheet },
+  components: { LoginSheet, SportPrefSheet, SportSwitcher },
   data() {
     return {
       token: '',
@@ -133,15 +124,22 @@ export default {
       showLogin: false,
       showSportPref: false,
       guestSport: '',     // 未登录游客临时选的运动
+      statusBarHeight: 20,
     }
   },
   computed: {
     themeCls() { return this.activeSport === 'badminton' ? 'theme-b' : 'theme-t' },
     topbarStyle() {
-      return this.activeSport === 'badminton'
-        ? 'background:#fff; border-bottom:2rpx solid #e8f7ee;'
-        : 'background:#fff; border-bottom:2rpx solid #fde3d0;'
+      const pt = this.statusBarHeight + 8
+      const color = this.activeSport === 'badminton' ? '#e8f7ee' : '#fde3d0'
+      return `background:#fff; border-bottom:2rpx solid ${color}; padding-top:${pt}px;`
     }
+  },
+  onLoad() {
+    try {
+      const info = uni.getSystemInfoSync()
+      this.statusBarHeight = info.statusBarHeight || 20
+    } catch(e) {}
   },
   onShow() {
     this.token = getApp().globalData.token || ''
@@ -208,19 +206,16 @@ export default {
 </script>
 
 <style lang="scss">
-.page { min-height:100vh; background:#f4f5f7; padding-bottom:80rpx; }
+.page {  background:#f4f5f7; padding-bottom:80rpx; }
 
 /* ===== 未登录 ===== */
 .topbar-unlogged {
+  position: sticky; top: 0; z-index: 100;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 88rpx 40rpx 20rpx;
+  padding: 0 40rpx 20rpx;
   background: #fff;
 }
 .app-name   { font-size: 34rpx; font-weight: bold; color: #1a1a1a; }
-.login-btn-sm {
-  background: #1a1a2e; color: #fff;
-  font-size: 26rpx; padding: 14rpx 32rpx; border-radius: 50rpx;
-}
 .hero-unlogged {
   background: #1a1a2e; padding: 48rpx 40rpx 36rpx;
   text-align: center;
@@ -244,33 +239,27 @@ export default {
 .sc-btn-txt   { color:#1DB954; font-size:26rpx; font-weight:bold; }
 .sc-btn-txt-t { color:#d4541f; }
 .guest-tip { display:block; text-align:center; color:#bbb; font-size:23rpx; margin-top:24rpx; }
+.guest-login-row { margin:20rpx 24rpx 0; background:#fff; border-radius:20rpx; padding:28rpx; text-align:center; box-shadow:0 4rpx 16rpx rgba(0,0,0,.05); }
+.guest-login-txt { font-size:28rpx; color:#555; }
 
-/* ===== 已登录 topbar ===== */
-.topbar {
-  position:sticky; top:0; z-index:100;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:88rpx 32rpx 20rpx;
-}
+/* ===== 已登录 Hero topbar ===== */
+.hero-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:32rpx; position:relative; z-index:2; }
 .tb-left { flex:1; }
-.sport-tabs { display:inline-flex; background:#f0f2f5; border-radius:50rpx; padding:6rpx; gap:4rpx; }
-.st { padding:16rpx 28rpx; border-radius:50rpx; font-size:28rpx; color:#888; font-weight:500; }
-.st-active-b { background:#1DB954; color:#fff; }
-.st-active-t { background:#d4541f; color:#fff; }
-.sport-label { display:inline-flex; align-items:center; gap:10rpx; padding:14rpx 24rpx; background:#f0f2f5; border-radius:50rpx; }
-.sl-emoji { font-size:34rpx; }
-.sl-name  { font-size:30rpx; font-weight:bold; color:#1a1a1a; }
-.avatar-btn { width:72rpx; height:72rpx; background:#f0f2f5; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.st-emoji { font-size:26rpx; }
+.st-label { font-size:22rpx; color:rgba(255,255,255,.9); }
+.sl-emoji    { font-size:30rpx; }
+.avatar-btn { width:72rpx; height:72rpx; background:rgba(255,255,255,.15); border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; border:2rpx solid rgba(255,255,255,.25); }
 .tb-avatar  { width:100%; height:100%; }
 .tb-avatar-emoji { font-size:40rpx; }
+.hero-greeting { display:block; font-size:28rpx; color:rgba(255,255,255,.8); margin-bottom:8rpx; }
 
 /* ===== Hero ===== */
 .hero { padding:40rpx 40rpx 50rpx; position:relative; overflow:hidden; }
-.hero-b { background:linear-gradient(145deg,#0faa4e,#1DB954,#25d366); }
-.hero-t { background:linear-gradient(145deg,#b5451b,#d4541f,#e8712a); }
+.hero { background: linear-gradient(145deg, #1a1a2e, #0f3460); }
 .hero-deco { position:absolute; font-size:120rpx; opacity:.15; top:10rpx; right:20rpx; }
 .hero-inner { position:relative; z-index:2; }
 .badge-txt { display:inline-block; background:rgba(255,255,255,.2); color:rgba(255,255,255,.9); font-size:20rpx; font-weight:bold; padding:6rpx 20rpx; border-radius:50rpx; letter-spacing:4rpx; margin-bottom:16rpx; border:1rpx solid rgba(255,255,255,.3); }
-.hero-title { display:block; font-size:44rpx; font-weight:bold; color:#fff; margin-bottom:10rpx; }
+.hero-title { display:block; font-size:48rpx; font-weight:bold; color:#fff; margin-bottom:10rpx; }
 .hero-sub   { display:block; font-size:26rpx; color:rgba(255,255,255,.8); margin-bottom:20rpx; }
 .court-lines { position:absolute; inset:0; opacity:.1; }
 .hl { position:absolute; height:2rpx; left:0; right:0; background:#fff; }

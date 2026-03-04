@@ -59,7 +59,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.page{background:#f5f5f5;min-height:100vh;padding:24rpx;padding-bottom:100rpx}
+.page{background:#f5f5f5;padding:24rpx;padding-bottom:100rpx}
 .section{background:#fff;border-radius:24rpx;padding:30rpx;margin-bottom:20rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
 .sec-label{display:block;font-size:28rpx;font-weight:bold;color:#1a1a1a;margin-bottom:20rpx}
 .inp{display:block;width:100%;background:#f8f8f8;border-radius:16rpx;padding:24rpx 28rpx;font-size:30rpx;margin-bottom:16rpx;box-sizing:border-box}
