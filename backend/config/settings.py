@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'users',
     'matches',
     'registrations',
+    'rackets',
 ]
 
 MIDDLEWARE = [

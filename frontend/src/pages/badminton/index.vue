@@ -51,7 +51,7 @@ export default {
     },
     goRegister() { uni.navigateTo({ url:'/pages/match/list?sport=badminton' }) },
     goCreate() {
-      if (!getApp().globalData.token) { uni.navigateTo({ url:'/pages/profile/index' }); return }
+      if (!getApp().globalData.token) { uni.switchTab({ url:'/pages/profile/index' }); return }
       uni.navigateTo({ url:'/pages/match/create?sport=badminton' })
     },
     goDetail(id) { uni.navigateTo({ url:`/pages/match/detail?id=${id}` }) }

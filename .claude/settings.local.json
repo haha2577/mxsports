@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export:*)",
+      "Bash(bash:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(python3:*)",
+      "WebSearch",
+      "WebFetch(domain:www.amazon.com)",
+      "WebFetch(domain:prokicksports.com)",
+      "WebFetch(domain:www.badmintonwarehouse.com)",
+      "WebFetch(domain:joybadminton.com)",
+      "WebFetch(domain:e78.us)",
+      "WebFetch(domain:masterbadmintonshop.com)",
+      "WebFetch(domain:courtsidetennis.com)",
+      "WebFetch(domain:www.tennis-warehouse.com)",
+      "WebFetch(domain:www.badmintonalley.com)",
+      "WebFetch(domain:tadssportinggoods.ca)",
+      "WebFetch(domain:tennisexpress.com)",
+      "WebFetch(domain:www.proracket.net)",
+      "WebFetch(domain:www.cappellasports.com)",
+      "WebFetch(domain:badminton-racket-review.com)",
+      "WebFetch(domain:www.babolat.com)"
+    ]
+  }
+}

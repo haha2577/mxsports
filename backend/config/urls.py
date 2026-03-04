@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('api/', include('matches.urls')),
     path('api/', include('registrations.urls')),
+    path('api/', include('rackets.urls')),
 
     # UniApp H5 静态资源（assets/ static/ 等）
     re_path(r'^assets/(?P<path>.*)$', serve, {'document_root': str(WEB_DIR / 'assets')}),

@@ -6,11 +6,13 @@
       <text class="hero-sub">{{ t.auth.autoCreate }}</text>
     </view>
     <view class="form">
-      <!-- 微信手机号（仅小程序） -->
-      <view v-if="isMP" class="wx-btn-wrap">
+      <!-- 微信手机号（仅小程序，编译时剔除） -->
+      <!-- #ifdef MP-WEIXIN -->
+      <view class="wx-btn-wrap">
         <button open-type="getPhoneNumber" @getphonenumber="onWxPhone" class="wx-btn">{{ t.auth.wxLogin }}</button>
         <text class="divider">—— 或 ——</text>
       </view>
+      <!-- #endif -->
       <!-- 手机号 + 验证码 -->
       <input class="inp" type="number" v-model="phone" :placeholder="t.auth.phone" maxlength="11" />
       <view class="code-row">
@@ -27,7 +29,6 @@ import { t } from '../../locales/index.js'
 import { api } from '../../api/index.js'
 export default {
   data() { return { t:t(), phone:'', code:'', countdown:0, sending:false, loading:false } },
-  computed: { isMP() { return typeof wx!=='undefined' } },
   methods: {
     async sendCode() {
       if (!/^1[3-9]\d{9}$/.test(this.phone)) { uni.showToast({title:'请输入正确手机号',icon:'none'}); return }
@@ -56,10 +57,14 @@ export default {
       } catch(e) { uni.showModal({ title:'登录失败', content:e.message }) }
       this.loading=false
     },
+    // #ifdef MP-WEIXIN
     async onWxPhone(e) {
       if (!e.detail.code) return
       try {
-        const r=await api.wxPhoneLogin({ phoneCode:e.detail.code })
+        const wx_code = await new Promise((resolve, reject) =>
+          uni.login({ success: r => resolve(r.code), fail: reject })
+        )
+        const r=await api.wxPhoneLogin({ phone_code: e.detail.code, wx_code })
         if (r.data?.token) {
           uni.setStorageSync('token', r.data.token)
           getApp().globalData.token=r.data.token
@@ -69,7 +74,8 @@ export default {
           setTimeout(()=>uni.navigateBack(), 1000)
         }
       } catch(e) { uni.showModal({ title:'登录失败', content:e.message }) }
-    }
+    },
+    // #endif
   }
 }
 </script>

@@ -3,27 +3,20 @@ const ci   = require('miniprogram-ci')
 const path = require('path')
 const fs   = require('fs')
 const https = require('https')
+const os    = require('os')
 
 const APPID        = 'wx686427f3488d40ab'
-const UNI_SRC      = '/data/mxsports/frontend'           // UniApp 源码
-const PROJECT_PATH = '/data/mxsports/frontend/dist/build/mp-weixin'
-const KEY_PATH     = '/data/mxsports/deploy/private.wx686427f3488d40ab.key'
-const QR_OUTPUT    = '/data/mxsports/deploy/preview-qrcode.jpg'
-const VERSION_FILE = '/data/mxsports/deploy/VERSION'
+const ROOT         = path.resolve(__dirname, '..')
+const UNI_SRC      = path.join(ROOT, 'frontend')
+const PROJECT_PATH = path.join(ROOT, 'frontend/dist/build/mp-weixin')
+const KEY_PATH     = path.join(__dirname, 'private.wx686427f3488d40ab.key')
+const QR_OUTPUT    = path.join(__dirname, 'preview-qrcode.jpg')
+const MANIFEST_FILE = path.join(UNI_SRC, 'src/manifest.json')
 const TG_TOKEN     = process.env.TG_TOKEN || ''
 const TG_CHAT      = process.env.TG_CHAT  || ''
 
 function getVersion() {
-  try { return fs.readFileSync(VERSION_FILE, 'utf8').trim() } catch { return '1.0.0' }
-}
-function bumpVersion() {
-  const cur   = getVersion()
-  const parts = cur.split('.').map(Number)
-  parts[2]++
-  const next  = parts.join('.')
-  fs.writeFileSync(VERSION_FILE, next)
-  console.log(`🔢 版本: ${cur} → ${next}`)
-  return next
+  return JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8')).versionName || '0.0.1'
 }
 
 async function buildMP() {
@@ -42,6 +35,7 @@ async function main() {
   console.log('🏸 MX Sports 小程序 - 自动构建 + 预览')
   console.log('━'.repeat(40))
 
+  const version = getVersion()
   await buildMP()
 
   if (!fs.existsSync(PROJECT_PATH)) { console.error('❌ 构建产物不存在'); process.exit(1) }
@@ -50,14 +44,13 @@ async function main() {
     appid: APPID, type: 'miniProgram', projectPath: PROJECT_PATH,
     privateKeyPath: KEY_PATH, ignores: ['node_modules/**/*'],
   })
-
-  const version = bumpVersion()
   console.log('📦 上传预览包...')
   const t0 = Date.now()
 
   try {
     const r = await ci.preview({
       project,
+      version,
       desc: `预览 ${new Date().toLocaleString('zh-CN')}`,
       setting: { es6: true, minify: false, autoPrefixWXSS: true },
       qrcodeFormat: 'image',
@@ -77,7 +70,7 @@ async function main() {
       })
     }
 
-    const ws = '/root/.openclaw/workspace/preview-qrcode.jpg'
+    const ws = path.join(os.homedir(), '.openclaw/workspace/preview-qrcode.jpg')
     fs.copyFileSync(QR_OUTPUT, ws)
 
     if (TG_TOKEN && TG_CHAT) {

@@ -1,22 +1,94 @@
 {
   "pages": [
-    { "path": "pages/home/index",        "style": { "navigationStyle": "custom" } },
-    { "path": "pages/badminton/index",   "style": { "navigationBarTitleText": "羽毛球", "navigationBarBackgroundColor": "#1DB954", "navigationBarTextStyle": "white" } },
-    { "path": "pages/tennis/index",      "style": { "navigationBarTitleText": "网球", "navigationBarBackgroundColor": "#d4541f", "navigationBarTextStyle": "white" } },
-    { "path": "pages/match/create",      "style": { "navigationBarTitleText": "创建赛事" } },
-    { "path": "pages/match/detail",      "style": { "navigationBarTitleText": "比赛详情" } },
-    { "path": "pages/match/list",        "style": { "navigationBarTitleText": "赛事列表" } },
-    { "path": "pages/profile/index",     "style": { "navigationBarTitleText": "个人中心", "navigationBarBackgroundColor": "#1a1a2e", "navigationBarTextStyle": "white" } },
-    { "path": "pages/profile/login",     "style": { "navigationBarTitleText": "登录" } },
-    { "path": "pages/settings/language", "style": { "navigationBarTitleText": "语言设置" } }
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/badminton/index",
+      "style": {
+        "navigationBarTitleText": "\u7fbd\u6bdb\u7403",
+        "navigationBarBackgroundColor": "#1DB954",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/tennis/index",
+      "style": {
+        "navigationBarTitleText": "\u7f51\u7403",
+        "navigationBarBackgroundColor": "#d4541f",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/match/create",
+      "style": {
+        "navigationBarTitleText": "\u521b\u5efa\u8d5b\u4e8b"
+      }
+    },
+    {
+      "path": "pages/match/detail",
+      "style": {
+        "navigationBarTitleText": "\u6bd4\u8d5b\u8be6\u60c5"
+      }
+    },
+    {
+      "path": "pages/match/list",
+      "style": {
+        "navigationBarTitleText": "\u8d5b\u4e8b\u5217\u8868"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "\u4e2a\u4eba\u4e2d\u5fc3",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/profile/login",
+      "style": {
+        "navigationBarTitleText": "\u767b\u5f55"
+      }
+    },
+    {
+      "path": "pages/settings/language",
+      "style": {
+        "navigationBarTitleText": "\u8bed\u8a00\u8bbe\u7f6e"
+      }
+    },
+    {
+      "path": "pages/racket/recommend",
+      "style": {
+        "navigationBarTitleText": "\u7403\u62cd\u63a8\u8350",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    }
   ],
   "tabBar": {
     "color": "#999",
     "selectedColor": "#1a1a2e",
     "backgroundColor": "#fff",
+    "fontSize": "13px",
+    "iconWidth": "26px",
+    "spacing": "4px",
     "list": [
-      { "pagePath": "pages/home/index",    "text": "首页",   "iconText": "🏠" },
-      { "pagePath": "pages/profile/index", "text": "我的",   "iconText": "👤" }
+      {
+        "pagePath": "pages/home/index",
+        "text": "\u9996\u9875",
+        "iconPath": "/static/tabbar/home.png",
+        "selectedIconPath": "/static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "\u6211\u7684",
+        "iconPath": "/static/tabbar/profile.png",
+        "selectedIconPath": "/static/tabbar/profile-active.png"
+      }
     ]
   },
   "globalStyle": {
