@@ -69,6 +69,11 @@
           <text class="ac-title">创建赛事</text>
           <text class="ac-desc">组织一场属于你的比赛</text>
         </view>
+        <view class="action-card" @tap="goVenue">
+          <view class="ac-icon" style="background:#e8f0fd">🏟️</view>
+          <text class="ac-title">附近场馆</text>
+          <text class="ac-desc">查看场地 · 在线预约</text>
+        </view>
       </view>
 
       <!-- 附近的约球 -->
@@ -198,6 +203,7 @@ export default {
       this.loadMatches()
       // TODO: 保存到后端 api.updateProfile({ sport_preference: pref })
     },
+    goVenue() { uni.navigateTo({ url: `/pages/venue/list?sport=${this.activeSport}` }) },
     goNews(id) { uni.navigateTo({ url: `/pages/news/detail?id=${id}` }) },
     goNewsList() { uni.navigateTo({ url: '/pages/news/list' }) },
     goRegister() { uni.navigateTo({ url: `/pages/match/list?sport=${this.activeSport}` }) },

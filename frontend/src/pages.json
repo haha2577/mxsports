@@ -99,6 +99,22 @@
         "navigationBarBackgroundColor": "#1a1a2e",
         "navigationBarTextStyle": "white"
       }
+    },
+    {
+      "path": "pages/venue/list",
+      "style": {
+        "navigationBarTitleText": "\u9644\u8fd1\u573a\u9986",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/venue/detail",
+      "style": {
+        "navigationBarTitleText": "\u573a\u9986\u8be6\u60c5",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
     }
   ],
   "tabBar": {
