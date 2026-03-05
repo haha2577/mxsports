@@ -165,6 +165,7 @@ export default {
   data() {
     return {
       statusBarHeight: 20,
+      activeSport: uni.getStorageSync('activeSport') || 'badminton',
       filterSport: 'all',
       videos: [...mockVideos],
       uploading: false,
@@ -183,9 +184,16 @@ export default {
   },
   onLoad() {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
-    this.sportPref = uni.getStorageSync('sportPref') || ''
+    this.sportPref   = uni.getStorageSync('sportPref') || ''
+    this.activeSport = uni.getStorageSync('activeSport') || 'badminton'
+    this.filterSport = this.activeSport
   },
   methods: {
+    onSportSwitch(s) {
+      this.activeSport = s
+      this.filterSport = s
+      uni.setStorageSync('activeSport', s)
+    },
     statusLabel(s) {
       return { uploading: '上传中', processing: 'AI处理中', error: '失败' }[s] || ''
     },
@@ -241,7 +249,8 @@ export default {
 
 /* ── 顶部 ── */
 .header {  padding: 0 32rpx 28rpx; }
-.hd-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; }
+.hd-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
+.hd-title { display: block; font-size: 40rpx; font-weight: bold; color: #fff; margin-bottom: 16rpx; }
 .hd-title { font-size: 44rpx; font-weight: bold; color: #fff; }
 .upload-btn { display: flex; align-items: center; gap: 8rpx; background: rgba(255,255,255,.15); border: 1rpx solid rgba(255,255,255,.25); border-radius: 50rpx; padding: 14rpx 28rpx; }
 .upload-icon { font-size: 36rpx; color: #fff; line-height: 1; }
