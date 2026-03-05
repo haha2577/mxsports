@@ -115,14 +115,6 @@
         "navigationBarBackgroundColor": "#1a1a2e",
         "navigationBarTextStyle": "white"
       }
-    },
-    {
-      "path": "pages/racket/recommend",
-      "style": {
-        "navigationBarTitleText": "\u7403\u62cd\u63a8\u8350",
-        "navigationBarBackgroundColor": "#1a1a2e",
-        "navigationBarTextStyle": "white"
-      }
     }
   ],
   "tabBar": {
