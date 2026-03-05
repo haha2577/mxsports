@@ -138,7 +138,8 @@ export default {
       this.statusBarHeight = info.statusBarHeight || 20
       // 小程序读取版本号
       const appInfo = uni.getAccountInfoSync ? uni.getAccountInfoSync() : null
-      this.version = (appInfo && appInfo.miniProgram && appInfo.miniProgram.version) || '__UNI_APP_VERSION__'
+      // UniApp 编译时常量，始终有值
+      this.version = process.env.UNI_APP_VERSION || '__UNI_APP_VERSION__'
     } catch(e) { this.statusBarHeight = 20 }
   },
   onShow() {
