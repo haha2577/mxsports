@@ -2,8 +2,6 @@
   <view class="page">
     <view class="header" :style="`padding-top:${statusBarHeight + 12}px;background:${sport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <view class="hd-row">
-        <view class="back-btn" @tap="uni.navigateBack()">‹</view>
-        <text class="hd-title">最新资讯</text>
       </view>
       <scroll-view scroll-x class="cat-scroll">
         <view class="cat-row">

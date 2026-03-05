@@ -4,8 +4,6 @@
     <!-- 顶部 -->
     <view class="header" :style="`padding-top:${statusBarHeight + 12}px;background:${activeSport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <view class="hd-row">
-        <view class="back-btn" @tap="uni.navigateBack()">‹</view>
-        <text class="hd-title">附近场馆</text>
         <sport-switcher :sport-pref="sportPref" :active="sport" @switch="onSportSwitch"/>
       </view>
 

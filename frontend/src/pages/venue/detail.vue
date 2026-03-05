@@ -2,8 +2,6 @@
   <view class="page">
     <view class="header" :style="`padding-top:${statusBarHeight+12}px`">
       <view class="hd-row">
-        <view class="back-btn" @tap="uni.navigateBack()">‹</view>
-        <text class="hd-title">场馆详情</text>
       </view>
     </view>
     <view class="placeholder">

@@ -2,8 +2,8 @@
   "name": "MX Sports",
   "appid": "wx686427f3488d40ab",
   "description": "羽毛球 & 网球赛事平台",
-  "versionName": "0.0.10",
-  "versionCode": "10",
+  "versionName": "0.0.11",
+  "versionCode": "11",
   "transformPx": false,
   "mp-weixin": {
     "appid": "wx686427f3488d40ab",

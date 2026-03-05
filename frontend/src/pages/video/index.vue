@@ -10,7 +10,6 @@
           <text class="upload-txt">上传</text>
         </view>
       </view>
-      <text class="hd-title">我的视频</text>
     </view>
 
     <!-- 空状态 -->
