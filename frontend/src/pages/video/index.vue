@@ -2,7 +2,7 @@
   <view class="page">
 
     <!-- 顶部 -->
-    <view class="header" :style="`padding-top:${statusBarHeight + 12}px`">
+    <view class="header" :style="`padding-top:${statusBarHeight + 12}px;background:${activeSport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <view class="hd-top">
         <text class="hd-title">我的视频</text>
         <view class="upload-btn" @tap="chooseVideo">
@@ -240,7 +240,7 @@ export default {
 .page { background: #f0f2f5; padding-bottom: 40rpx; }
 
 /* ── 顶部 ── */
-.header { background: linear-gradient(145deg, #1a1a2e, #0f3460); padding: 0 32rpx 28rpx; }
+.header {  padding: 0 32rpx 28rpx; }
 .hd-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; }
 .hd-title { font-size: 44rpx; font-weight: bold; color: #fff; }
 .upload-btn { display: flex; align-items: center; gap: 8rpx; background: rgba(255,255,255,.15); border: 1rpx solid rgba(255,255,255,.25); border-radius: 50rpx; padding: 14rpx 28rpx; }

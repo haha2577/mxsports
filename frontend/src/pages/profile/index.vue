@@ -2,7 +2,7 @@
   <view class="page">
 
     <!-- Hero -->
-    <view class="hero" :style="`padding-top:${statusBarHeight + 12}px`">
+    <view class="hero" :style="`padding-top:${statusBarHeight + 12}px;background:${activeSport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <text class="hero-deco">{{ activeSport === 'badminton' ? '🏸' : '🎾' }}</text>
 
       <!-- 用户信息行 -->
@@ -191,7 +191,7 @@ export default {
 <style lang="scss">
 .page { background:#f0f2f5;  padding-bottom:80rpx; }
 
-.hero { padding:0 40rpx 40rpx; position:relative; overflow:hidden; background: linear-gradient(145deg, #1a1a2e, #0f3460); }
+.hero { padding:0 40rpx 40rpx; position:relative; overflow:hidden;  }
 .hero-deco { position:absolute; font-size:200rpx; opacity:.08; right:-20rpx; top:20rpx; line-height:1; }
 
 .hero-row { display:flex; align-items:center; gap:20rpx; position:relative; z-index:2; }

@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <view class="header" :style="`padding-top:${statusBarHeight + 12}px`">
+    <view class="header" :style="`padding-top:${statusBarHeight + 12}px;background:${sport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <view class="hd-row">
         <view class="back-btn" @tap="uni.navigateBack()">‹</view>
         <text class="hd-title">最新资讯</text>
@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss">
 .page { background:#f0f2f5; padding-bottom:40rpx; }
-.header { background:linear-gradient(145deg,#1a1a2e,#0f3460); padding:0 32rpx 0; }
+.header {  padding:0 32rpx 0; }
 .hd-row { display:flex; align-items:center; gap:16rpx; padding-bottom:20rpx; }
 .back-btn { font-size:56rpx; color:#fff; width:60rpx; line-height:1; margin-top:-4rpx; }
 .hd-title { font-size:36rpx; font-weight:bold; color:#fff; }

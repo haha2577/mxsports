@@ -2,7 +2,7 @@
   <view class="page">
 
     <!-- 顶部 -->
-    <view class="header" :style="`padding-top:${statusBarHeight + 12}px`">
+    <view class="header" :style="`padding-top:${statusBarHeight + 12}px;background:${activeSport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <view class="hd-row">
         <view class="back-btn" @tap="$router?$router.back():uni.navigateBack()">‹</view>
         <text class="hd-title">附近的约球</text>
@@ -273,7 +273,7 @@ export default {
 .page { background: #f0f2f5; padding-bottom: 120rpx; }
 
 /* ── 顶部 ── */
-.header { background: linear-gradient(145deg, #1a1a2e, #0f3460); padding: 0 32rpx 0; }
+.header {  padding: 0 32rpx 0; }
 .hd-row { display: flex; align-items: center; gap: 16rpx; padding-bottom: 20rpx; }
 .back-btn { font-size: 56rpx; color: #fff; width: 60rpx; line-height: 1; margin-top: -4rpx; }
 .hd-title { flex: 1; font-size: 36rpx; font-weight: bold; color: #fff; }

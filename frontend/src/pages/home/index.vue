@@ -35,7 +35,7 @@
     <view v-else>
 
       <!-- Hero（含顶部导航） -->
-      <view class="hero" :style="`padding-top:${statusBarHeight + 12}px`">
+      <view class="hero" :style="`padding-top:${statusBarHeight + 12}px;background:${activeSport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
         <text class="hero-deco">{{ activeSport === 'badminton' ? '🏸' : '🎾' }}</text>
 
         <!-- 顶部行：运动切换 + 头像 -->
@@ -269,7 +269,7 @@ export default {
 
 /* ===== Hero ===== */
 .hero { padding:40rpx 40rpx 50rpx; position:relative; overflow:hidden; }
-.hero { background: linear-gradient(145deg, #1a1a2e, #0f3460); }
+.hero {  }
 .hero-deco { position:absolute; font-size:120rpx; opacity:.15; top:10rpx; right:20rpx; }
 .hero-inner { position:relative; z-index:2; }
 .badge-txt { display:inline-block; background:rgba(255,255,255,.2); color:rgba(255,255,255,.9); font-size:20rpx; font-weight:bold; padding:6rpx 20rpx; border-radius:50rpx; letter-spacing:4rpx; margin-bottom:16rpx; border:1rpx solid rgba(255,255,255,.3); }
