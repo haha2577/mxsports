@@ -77,23 +77,20 @@
 
 <script>
 import SportSwitcher from '../../components/SportSwitcher.vue'
-
-const MOCK = [
-  { id:1, name:'周末羽毛球双打约战', sport:'badminton', location:'朝阳体育馆',   date:'3月6日', time:'19:00', status:'open',    role:'participant', joined:3, maxPlayers:8, result:null,  reviewed:false },
-  { id:2, name:'网球精英内部赛',     sport:'tennis',    location:'海淀网球中心', date:'3月1日', time:'09:00', status:'ongoing', role:'organizer',   joined:4, maxPlayers:4, result:null,  reviewed:false },
-  { id:3, name:'羽毛球单打联赛',     sport:'badminton', location:'国贸体育中心', date:'2月22日',time:'18:30', status:'done',    role:'participant', joined:6, maxPlayers:6, result:'win', reviewed:true  },
-  { id:4, name:'网球新手训练赛',     sport:'tennis',    location:'望京网球馆',   date:'2月15日',time:'10:00', status:'done',    role:'participant', joined:3, maxPlayers:6, result:'lose',reviewed:false },
-]
+import { MY_ACTIVITIES } from '../../store/mockData.js'
 
 export default {
   components: { SportSwitcher },
+  watch: {
+    sport(s) { this.list = MY_ACTIVITIES[s] || [] }
+  },
   data() {
     return {
       statusBarHeight: 20,
       sport: uni.getStorageSync('activeSport') || 'badminton',
       sportPref: uni.getStorageSync('sportPref') || '',
       activeTab: 'all',
-      list: [...MOCK],
+      list: MY_ACTIVITIES[this.sport] || [],
       tabs: [
         { label: '全部',   value: 'all' },
         { label: '进行中', value: 'ongoing' },

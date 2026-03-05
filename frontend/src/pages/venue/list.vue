@@ -6,7 +6,7 @@
       <view class="hd-row">
         <view class="back-btn" @tap="uni.navigateBack()">‹</view>
         <text class="hd-title">附近场馆</text>
-        <sport-switcher :sport-pref="sportPref" :active="sport" @switch="s=>{sport=s;loadVenues()}"/>
+        <sport-switcher :sport-pref="sportPref" :active="sport" @switch="onSportSwitch"/>
       </view>
 
       <!-- 定位行 -->
@@ -163,14 +163,7 @@
 
 <script>
 import SportSwitcher from '../../components/SportSwitcher.vue'
-
-const MOCK_VENUES = [
-  { id:1, name:'朝阳体育馆',     address:'朝阳区朝阳路88号',     distance:'1.2km', priceFrom:60,  rating:4.8, reviewCount:234, isOpen:true,  tags:['室内','停车场','更衣室'] },
-  { id:2, name:'国贸网球中心',   address:'朝阳区建国路1号',       distance:'2.1km', priceFrom:120, rating:4.9, reviewCount:189, isOpen:true,  tags:['专业场地','灯光场','教练'] },
-  { id:3, name:'海淀体育馆',     address:'海淀区中关村大街1号',   distance:'3.4km', priceFrom:50,  rating:4.6, reviewCount:312, isOpen:false, tags:['室内','空调','停车场'] },
-  { id:4, name:'望京运动公园',   address:'朝阳区望京街10号',      distance:'3.8km', priceFrom:40,  rating:4.5, reviewCount:156, isOpen:true,  tags:['室外','免费停车'] },
-  { id:5, name:'亚运村羽毛球馆', address:'朝阳区北辰路2号',       distance:'4.2km', priceFrom:80,  rating:4.7, reviewCount:98,  isOpen:true,  tags:['专业场地','更衣室','淋浴'] },
-]
+import { VENUES } from '../../store/mockData.js'
 
 export default {
   components: { SportSwitcher },
@@ -185,7 +178,7 @@ export default {
       activeFilter: null,
       showCityPicker: false,
       showSearch: false,
-      venues: [...MOCK_VENUES],
+      venues: [],
       typeOptions: ['室内场馆','室外场地','专业球馆','社区场馆','学校场馆'],
       distOptions: [
         { label:'1km以内',  value:'1' },
@@ -220,9 +213,11 @@ export default {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
     this.sportPref = uni.getStorageSync('sportPref') || ''
     if (opts.sport) this.sport = opts.sport
+    this.loadVenues()
   },
   methods: {
-    loadVenues() { /* TODO: 调后端 */ },
+    loadVenues() { this.venues = VENUES[this.sport] || [] },
+    onSportSwitch(s) { this.sport = s; uni.setStorageSync('activeSport', s); this.loadVenues() },
     chooseCity() { this.showCityPicker = true },
     openFilter(t) { this.activeFilter = t },
     resetCurrent() {

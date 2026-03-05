@@ -59,20 +59,17 @@
 
       <!-- 功能入口 -->
       <view class="action-row">
-        <view class="action-card" @tap="goRegister">
-          <view class="ac-icon" :style="activeSport==='badminton' ? 'background:#e8f7ee' : 'background:#fdf0e8'">📋</view>
-          <text class="ac-title">报名参赛</text>
-          <text class="ac-desc">浏览并报名公开赛事</text>
-        </view>
         <view class="action-card" @tap="goCreate">
           <view class="ac-icon" :style="activeSport==='badminton' ? 'background:#d0f0dc' : 'background:#fde3d0'">🏆</view>
-          <text class="ac-title">创建赛事</text>
-          <text class="ac-desc">组织一场属于你的比赛</text>
+          <text class="ac-title">创建活动</text>
         </view>
         <view class="action-card" @tap="goVenue">
           <view class="ac-icon" style="background:#e8f0fd">🏟️</view>
           <text class="ac-title">附近场馆</text>
-          <text class="ac-desc">查看场地 · 在线预约</text>
+        </view>
+        <view class="action-card" @tap="goNewsList">
+          <view class="ac-icon" style="background:#fff0e0">📰</view>
+          <text class="ac-title">最新资讯</text>
         </view>
       </view>
 
@@ -115,6 +112,7 @@ import LoginSheet     from '../../components/LoginSheet.vue'
 import SportSwitcher  from '../../components/SportSwitcher.vue'
 import SportPrefSheet from '../../components/SportPrefSheet.vue'
 import { api } from '../../api/index.js'
+import { MATCHES, NEWS, VENUES } from '../../store/mockData.js'
 
 export default {
   components: { LoginSheet, SportPrefSheet, SportSwitcher },
@@ -130,12 +128,7 @@ export default {
       showSportPref: false,
       guestSport: '',     // 未登录游客临时选的运动
       statusBarHeight: 20,
-      news: [
-        { id:1, title:'2025羽毛球超级联赛报名通道正式开放', cat:'赛事动态', catColor:'#1DB954', date:'03-04', cover:'' },
-        { id:2, title:'网球发球速度提升的5个实用技巧',       cat:'技术提升', catColor:'#1565c0', date:'03-03', cover:'' },
-        { id:3, title:'2025春季最值得入手的羽毛球拍测评',   cat:'装备测评', catColor:'#f57c00', date:'03-02', cover:'' },
-        { id:4, title:'本地网球协会周末公开赛战报',          cat:'赛事动态', catColor:'#1DB954', date:'03-01', cover:'' },
-      ],
+      news: [],
     }
   },
   computed: {
@@ -182,12 +175,11 @@ export default {
       // 未登录游客点击入口，直接跳转对应运动页
       uni.navigateTo({ url: `/pages/${sport}/index` })
     },
-    async loadMatches() {
+    loadMatches() {
       this.loading = true
-      try {
-        const r = await api.matches(`?sport=${this.activeSport}&size=5&nearby=1`)
-        this.matches = r.data?.list || []
-      } catch { this.matches = [] }
+      // TODO: 替换为 api.matches()
+      this.matches = (MATCHES[this.activeSport] || []).slice(0, 3)
+      this.news    = (NEWS[this.activeSport]    || []).slice(0, 4)
       this.loading = false
     },
     onLoginSuccess(userInfo) {

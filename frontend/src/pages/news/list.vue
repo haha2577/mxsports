@@ -41,12 +41,25 @@ const ALL_NEWS = [
   { id:5, title:'羽毛球双打站位战术详解',              cat:'技术提升', catColor:'#1565c0', sport:'badminton', date:'02-28' },
   { id:6, title:'新人必看：选择球拍的3个核心指标',     cat:'装备测评', catColor:'#f57c00', sport:'both',      date:'02-27' },
 ]
+import { NEWS } from '../../store/mockData.js'
 export default {
-  data() { return { statusBarHeight:20, activeCat:'全部', cats:['全部','赛事动态','技术提升','装备测评'], news:ALL_NEWS } },
+  data() { return {
+    statusBarHeight: 20,
+    activeCat: '全部',
+    cats: ['全部','赛事动态','技术提升','装备测评'],
+    sport: uni.getStorageSync('activeSport') || 'badminton',
+    sportPref: uni.getStorageSync('sportPref') || '',
+    news: []
+  } },
   computed: {
     filteredNews() { return this.activeCat==='全部' ? this.news : this.news.filter(n=>n.cat===this.activeCat) }
   },
-  onLoad() { try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight||20 } catch(e){} },
+  onLoad(opts) {
+    try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight||20 } catch(e){}
+    this.sport    = opts.sport || uni.getStorageSync('activeSport') || 'badminton'
+    this.sportPref = uni.getStorageSync('sportPref') || ''
+    this.news     = NEWS[this.sport] || []
+  },
   methods: {
     catIcon(c) { return {赛事动态:'🏆',技术提升:'💡',装备测评:'🎽'}[c]||'📰' },
     goDetail(id) { uni.navigateTo({ url:`/pages/news/detail?id=${id}` }) }

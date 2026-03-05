@@ -174,13 +174,7 @@
 
 <script>
 import SportSwitcher from '../../components/SportSwitcher.vue'
-
-const MOCK = [
-  { id:1, name:'周末羽毛球约战', sport:'badminton', location:'朝阳区体育馆', distance:'1.2km', date:'3月6日(周四)', time:'19:00-21:00', level:'业余', joined:3, maxPlayers:8, fee:30, status:'open', organizer:'王小明' },
-  { id:2, name:'网球双打约球', sport:'tennis', location:'海淀网球中心', distance:'2.8km', date:'3月7日(周五)', time:'08:00-10:00', level:'中级', joined:2, maxPlayers:4, fee:50, status:'open', organizer:'李梅' },
-  { id:3, name:'羽毛球内部赛', sport:'badminton', location:'国贸体育中心', distance:'4.5km', date:'3月5日(周三)', time:'18:30-21:30', level:'高级', joined:6, maxPlayers:6, fee:0, status:'full', organizer:'张伟' },
-  { id:4, name:'网球初学者训练', sport:'tennis', location:'望京网球馆', distance:'3.1km', date:'3月8日(周六)', time:'10:00-12:00', level:'入门', joined:1, maxPlayers:6, fee:20, status:'open', organizer:'陈欣' },
-]
+import { MATCHES } from '../../store/mockData.js'
 
 export default {
   components: { SportSwitcher },
@@ -192,7 +186,7 @@ export default {
       filterArea: '', filterTime: '', filterLevel: '', filterFee: '',
       sortMode: 'distance',
       loading: false,
-      list: [...MOCK],
+      list: [],
       activeFilter: null,
       areas: ['朝阳区','海淀区','西城区','东城区','丰台区','通州区','顺义区','昌平区'],
       timeOptions: [
@@ -248,9 +242,10 @@ export default {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
     this.sportPref = uni.getStorageSync('sportPref') || ''
     if (options.sport) this.sport = options.sport
+    this.list = MATCHES[this.sport] || []
   },
   methods: {
-    onSportSwitch(s) { this.sport = s; uni.setStorageSync('activeSport', s) },
+    onSportSwitch(s) { this.sport = s; uni.setStorageSync('activeSport', s); this.list = MATCHES[s] || [] },
     doSearch() { /* 触发 computed 自动过滤 */ },
     toggleSort() { this.sortMode = this.sortMode === 'distance' ? 'time' : 'distance' },
     openFilter(type) { this.activeFilter = type },
