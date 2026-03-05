@@ -11,7 +11,7 @@ backend/server.log
 backend/server.pid
 
 # Web build (auto-generated)
-web/
+
 
 # Deploy secrets
 deploy/.env

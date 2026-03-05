@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="铭心乐Go — 专为羽毛球、网球爱好者打造的赛事管理与约球平台"/>
+  <title>铭心乐Go — 打球更有趣</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --dark:#1a1a2e;--mid:#0f3460;
+      --green:#1DB954;--green-d:#0a7a38;
+      --orange:#d4541f;--orange-d:#8a3010;
+      --text:#1a1a1a;--sub:#555;--pale:#f0f2f5;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,46,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-size:20px;font-weight:800;color:#fff;letter-spacing:.5px}
+    .nav-logo span{color:var(--green)}
+    .nav-links{display:flex;gap:32px}
+    .nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:14px;transition:.2s}
+    .nav-links a:hover{color:#fff}
+    .nav-cta{background:var(--green);color:#fff;border:none;border-radius:50px;padding:9px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+    .nav-cta:hover{background:#17a348;transform:translateY(-1px)}
+
+    /* HERO */
+    .hero{min-height:100vh;background:linear-gradient(160deg,var(--dark) 0%,var(--mid) 60%,#0a2540 100%);display:flex;align-items:center;justify-content:center;padding:80px 5% 60px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'🏸';font-size:340px;position:absolute;right:-60px;top:50%;transform:translateY(-50%);opacity:.04;line-height:1;pointer-events:none}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(29,185,84,.15);border:1px solid rgba(29,185,84,.3);border-radius:50px;padding:6px 16px;font-size:13px;color:var(--green);font-weight:600;margin-bottom:28px}
+    .hero h1{font-size:clamp(40px,7vw,80px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+    .hero h1 span{background:linear-gradient(90deg,var(--green),#25d366);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.55);max-width:520px;margin:0 auto 40px;line-height:1.7}
+    .hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{background:var(--green);color:#fff;border:none;border-radius:50px;padding:16px 36px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;transition:.25s;display:inline-block}
+    .btn-primary:hover{background:#17a348;transform:translateY(-2px);box-shadow:0 12px 32px rgba(29,185,84,.35)}
+    .btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.2);border-radius:50px;padding:14px 34px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;transition:.25s;display:inline-block}
+    .btn-ghost:hover{border-color:rgba(255,255,255,.5);transform:translateY(-2px)}
+    .hero-stats{margin-top:64px;display:flex;gap:48px;justify-content:center;flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat-n{font-size:36px;font-weight:800;color:#fff}
+    .stat-l{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
+
+    /* SPORTS */
+    .sports{padding:100px 5%;background:var(--pale)}
+    .sec-label{font-size:13px;font-weight:700;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+    .sec-title{font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--dark);margin-bottom:16px;line-height:1.2}
+    .sec-sub{font-size:16px;color:var(--sub);max-width:500px;line-height:1.7;margin-bottom:56px}
+    .sports-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:900px}
+    @media(max-width:640px){.sports-grid{grid-template-columns:1fr}}
+    .sport-card{border-radius:28px;padding:48px 40px;position:relative;overflow:hidden;cursor:default}
+    .sport-card-b{background:linear-gradient(145deg,var(--green-d),var(--green),#25d366);box-shadow:0 20px 60px rgba(29,185,84,.25)}
+    .sport-card-t{background:linear-gradient(145deg,var(--orange-d),var(--orange),#e8712a);box-shadow:0 20px 60px rgba(212,84,31,.25)}
+    .sport-card::after{content:attr(data-emoji);position:absolute;font-size:180px;right:-20px;bottom:-30px;opacity:.12;line-height:1;pointer-events:none}
+    .sport-card h3{font-size:32px;font-weight:800;color:#fff;margin-bottom:10px}
+    .sport-card p{font-size:15px;color:rgba(255,255,255,.7);line-height:1.6;max-width:240px}
+    .sport-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+    .sport-tag{background:rgba(255,255,255,.18);color:#fff;font-size:13px;padding:5px 14px;border-radius:50px;font-weight:500}
+
+    /* FEATURES */
+    .features{padding:100px 5%;max-width:1100px;margin:0 auto}
+    .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;margin-top:56px}
+    .feat-card{background:#fff;border:1.5px solid #f0f0f0;border-radius:24px;padding:36px;transition:.3s;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+    .feat-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.1);border-color:var(--green)}
+    .feat-icon{font-size:40px;margin-bottom:20px}
+    .feat-card h4{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px}
+    .feat-card p{font-size:14px;color:var(--sub);line-height:1.7}
+
+    /* QR / CTA */
+    .qr-section{background:linear-gradient(145deg,var(--dark),var(--mid));padding:100px 5%;text-align:center}
+    .qr-section h2{font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;margin-bottom:16px}
+    .qr-section p{font-size:16px;color:rgba(255,255,255,.5);margin-bottom:56px}
+    .qr-box{display:inline-flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:40px;gap:20px}
+    .qr-ph{width:180px;height:180px;background:rgba(255,255,255,.08);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:80px}
+    .qr-label{font-size:14px;color:rgba(255,255,255,.45)}
+    .qr-tip{font-size:18px;font-weight:600;color:#fff}
+
+    /* FOOTER */
+    footer{background:var(--dark);padding:48px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid rgba(255,255,255,.07)}
+    .footer-logo{font-size:18px;font-weight:800;color:#fff}
+    .footer-logo span{color:var(--green)}
+    footer p{font-size:13px;color:rgba(255,255,255,.25)}
+
+    /* SCROLL REVEAL */
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* MOBILE NAV */
+    @media(max-width:640px){
+      .nav-links{display:none}
+      .hero-stats{gap:28px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">铭心乐<span>Go</span></div>
+  <div class="nav-links">
+    <a href="#sports">运动项目</a>
+    <a href="#features">核心功能</a>
+    <a href="#download">立即体验</a>
+  </div>
+  <a href="#download" class="nav-cta">扫码体验</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">🏅 专业赛事管理平台</div>
+    <h1>打球，<span>更有趣</span></h1>
+    <p class="hero-sub">铭心乐Go 帮你轻松发起约球、参加比赛、记录成长，羽毛球和网球都支持。</p>
+    <div class="hero-btns">
+      <a href="#download" class="btn-primary">📱 扫码体验小程序</a>
+      <a href="#features" class="btn-ghost">了解功能</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n">2+</div><div class="stat-l">运动项目</div></div>
+      <div class="stat"><div class="stat-n">∞</div><div class="stat-l">约球活动</div></div>
+      <div class="stat"><div class="stat-n">AI</div><div class="stat-l">智能剪辑评价</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPORTS -->
+<section class="sports" id="sports">
+  <div class="reveal">
+    <div class="sec-label">运动项目</div>
+    <h2 class="sec-title">羽毛球 &amp; 网球<br/>都在这里</h2>
+    <p class="sec-sub">双栖选手一个 App 搞定，数据分开管理，互不干扰。</p>
+  </div>
+  <div class="sports-grid reveal">
+    <div class="sport-card sport-card-b" data-emoji="🏸">
+      <h3>🏸 羽毛球</h3>
+      <p>轻盈快速、室内竞技，从休闲约球到专业赛事全覆盖。</p>
+      <div class="sport-tags">
+        <span class="sport-tag">约球报名</span>
+        <span class="sport-tag">积分排名</span>
+        <span class="sport-tag">球拍推荐</span>
+        <span class="sport-tag">视频剪辑</span>
+      </div>
+    </div>
+    <div class="sport-card sport-card-t" data-emoji="🎾">
+      <h3>🎾 网球</h3>
+      <p>力量与技巧的碰撞，精英对决，一键组织标准赛制比赛。</p>
+      <div class="sport-tags">
+        <span class="sport-tag">赛事管理</span>
+        <span class="sport-tag">场馆预约</span>
+        <span class="sport-tag">AI 评价</span>
+        <span class="sport-tag">战绩记录</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="reveal">
+    <div class="sec-label">核心功能</div>
+    <h2 class="sec-title">从约球到复盘<br/>一站式搞定</h2>
+    <p class="sec-sub">每一个功能都是为了让打球这件事变得更简单、更有趣。</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">🏆</div>
+      <h4>发起 &amp; 报名约球</h4>
+      <p>几秒钟发起一场约球，设置时间、地点、水平要求，等人报名就行。</p>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🏟️</div>
+      <h4>附近场馆</h4>
+      <p>查看周边羽毛球和网球场馆，实时营业状态、价格、一键预约。</p>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🎬</div>
+      <h4>视频 + AI 评价</h4>
+      <p>上传打球视频，AI 自动剪辑精彩片段，并给出技术改进建议。</p>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">📊</div>
+      <h4>战绩 &amp; 积分</h4>
+      <p>每场比赛都有记录，胜率、场次、积分排名实时更新，看着涨才有动力。</p>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🏸</div>
+      <h4>智能球拍推荐</h4>
+      <p>根据你的打法风格和水平，精准推荐最适合你的球拍，不再踩坑。</p>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">📰</div>
+      <h4>赛事资讯</h4>
+      <p>最新赛事动态、技术教学、装备测评，打球之余也能学点干货。</p>
+    </div>
+  </div>
+</section>
+
+<!-- QR / DOWNLOAD -->
+<section class="qr-section" id="download">
+  <h2 class="reveal">立即体验小程序</h2>
+  <p class="reveal">微信扫码，免费使用全部功能</p>
+  <div class="qr-box reveal">
+    <div class="qr-ph">📱</div>
+    <div class="qr-tip">微信扫一扫</div>
+    <div class="qr-label">铭心乐Go · 微信小程序</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">铭心乐<span>Go</span></div>
+  <p>© 2026 铭心乐Go · 让每一场球都值得被记住</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const els = document.querySelectorAll('.reveal')
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target) } })
+  }, { threshold: 0.12 })
+  els.forEach(el => io.observe(el))
+
+  // Nav shrink on scroll
+  const nav = document.querySelector('nav')
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 40 ? 'rgba(26,26,46,.98)' : 'rgba(26,26,46,.92)'
+  })
+</script>
+</body>
+</html>
