@@ -1,0 +1,32 @@
+.page{background:#f0f2f5;padding-bottom:80rpx}
+.hero{padding:0 40rpx 40rpx;position:relative;overflow:hidden}
+.hero-deco{position:absolute;font-size:200rpx;opacity:.08;right:-20rpx;top:20rpx;line-height:1}
+.hero-row{display:flex;align-items:center;gap:20rpx;position:relative;z-index:2;margin-bottom:28rpx}
+.avatar-wrap{width:100rpx;height:100rpx;border-radius:50%;border:3rpx solid rgba(255,255,255,.3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15)}
+.av-emoji{font-size:56rpx}
+.hero-info{flex:1;min-width:0}
+.username{display:block;font-size:34rpx;font-weight:bold;color:#fff;margin-bottom:6rpx}
+.phone-txt,.phone-sub{font-size:22rpx;color:rgba(255,255,255,.6)}
+.stat-row{display:flex;align-items:center;background:rgba(255,255,255,.15);border-radius:20rpx;padding:24rpx 0;position:relative;z-index:2}
+.stat-col{flex:1;text-align:center}
+.stat-n{display:block;font-size:38rpx;font-weight:bold;color:#fff;margin-bottom:4rpx}
+.stat-l{font-size:20rpx;color:rgba(255,255,255,.6)}
+.stat-sep{width:1rpx;height:36rpx;background:rgba(255,255,255,.2)}
+.login-hint{margin-top:28rpx;background:rgba(255,255,255,.15);border-radius:20rpx;padding:24rpx;text-align:center;position:relative;z-index:2}
+.lh-txt{font-size:28rpx;color:rgba(255,255,255,.85)}
+.racket-banner{margin:24rpx 24rpx 0;background:linear-gradient(135deg,#2c3e50,#4a5568);border-radius:24rpx;padding:28rpx 30rpx;display:flex;align-items:center;box-shadow:0 8rpx 28rpx rgba(0,0,0,.18)}
+.rb-body{display:flex;align-items:center;gap:20rpx;flex:1}
+.rb-emoji{font-size:56rpx}
+.rb-title{display:block;font-size:30rpx;font-weight:bold;color:#fff;margin-bottom:6rpx}
+.rb-sub{font-size:22rpx;color:rgba(255,255,255,.65)}
+.rb-arrow{font-size:44rpx;color:rgba(255,255,255,.5)}
+.section-card{margin:24rpx 24rpx 0;background:#fff;border-radius:24rpx;overflow:hidden;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05)}
+.sec-title{font-size:22rpx;color:#aaa;font-weight:600;padding:20rpx 30rpx 12rpx;display:block;letter-spacing:1rpx}
+.menu-item{display:flex;align-items:center;justify-content:space-between;padding:28rpx 30rpx;border-top:1rpx solid #f5f5f5}
+.mi-l{display:flex;align-items:center;gap:20rpx}
+.mi-icon{font-size:34rpx;width:44rpx;text-align:center}
+.mi-label{font-size:30rpx;color:#1a1a1a}
+.mi-arrow{font-size:36rpx;color:#ccc}
+.mi-val{font-size:26rpx;color:#999}
+.logout-btn{margin:24rpx 24rpx 0;background:transparent;color:#e53935;border:2rpx solid #ffcdd2;border-radius:50rpx;height:88rpx;font-size:30rpx;width:calc(100% - 48rpx)}
+.version-txt{display:block;text-align:center;font-size:22rpx;color:#ccc;margin-top:20rpx}

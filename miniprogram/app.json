@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/profile/index",
+    "pages/video/index/index",
+    "pages/match/list/index",
+    "pages/match/create/index",
+    "pages/match/detail/index",
+    "pages/my/activities/index",
+    "pages/news/list/index",
+    "pages/news/detail/index",
+    "pages/venue/list/index",
+    "pages/venue/detail/index",
+    "pages/racket/recommend/index"
+  ],
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "#1a1a2e",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/tabbar/profile.png",
+        "selectedIconPath": "images/tabbar/profile-active.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarTitleText": "铭心乐Go",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "sport-switcher": "/components/sport-switcher/index",
+    "login-sheet": "/components/login-sheet/index",
+    "sport-pref-sheet": "/components/sport-pref-sheet/index"
+  },
+  "sitemapLocation": "sitemap.json"
+}

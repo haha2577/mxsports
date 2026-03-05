@@ -1,0 +1,22 @@
+<view wx:if="{{visible}}" class="sp-wrap">
+  <view class="sp-mask"/>
+  <view class="sp-sheet sp-show">
+    <view class="sp-handle"/>
+    <text class="sp-title">你主要打什么球？</text>
+    <text class="sp-sub">选完随时可以在设置里调整</text>
+    <view class="sp-cards">
+      <view class="sp-card sp-b {{selected==='badminton'?'sp-selected':''}}" bindtap="selB">
+        <text wx:if="{{selected==='badminton'}}" class="sp-check">✓</text>
+        <text class="sp-emoji">🏸</text><text class="sp-name">羽毛球</text>
+      </view>
+      <view class="sp-card sp-t {{selected==='tennis'?'sp-selected':''}}" bindtap="selT">
+        <text wx:if="{{selected==='tennis'}}" class="sp-check">✓</text>
+        <text class="sp-emoji">🎾</text><text class="sp-name">网球</text>
+      </view>
+    </view>
+    <view class="sp-both {{selected==='both'?'sp-both-selected':''}}" bindtap="selBoth">
+      <text class="sp-both-txt">🏸🎾 两个都打（双栖选手）{{selected==='both'?' ✓':''}}</text>
+    </view>
+    <view class="sp-confirm {{!selected?'sp-disabled':''}}" bindtap="confirm">确认</view>
+  </view>
+</view>

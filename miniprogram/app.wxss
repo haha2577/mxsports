@@ -1,0 +1,4 @@
+page { background: #f0f2f5; font-family: -apple-system, sans-serif; }
+view, text, input, button { box-sizing: border-box; }
+button { all: unset; }
+button::after { border: none; }

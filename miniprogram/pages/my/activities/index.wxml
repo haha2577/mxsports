@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="header" style="background:{{heroGrad}}">
+    <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
+    <view class="status-tabs">
+      <view wx:for="{{tabs}}" wx:key="value" class="stab {{activeTab===item.value?'stab-a':''}}" bindtap="setTab" data-v="{{item.value}}">
+        {{item.label}}
+        <text wx:if="{{counts[item.value]}}" class="stab-count">{{counts[item.value]}}</text>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!filteredList.length}}" class="empty">
+    <text class="ei">{{sport==='badminton'?'🏸':'🎾'}}</text>
+    <text class="et">暂无活动</text>
+  </view>
+  <view wx:else class="list">
+    <view wx:for="{{filteredList}}" wx:key="id" class="activity-card" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="card-bar {{item.sport==='badminton'?'bar-b':'bar-t'}}"/>
+      <view class="card-body">
+        <view class="card-top">
+          <text class="card-title">{{item.name}}</text>
+          <view class="sp-{{item.status}}">{{item.status==='open'?'报名中':item.status==='ongoing'?'进行中':'已完成'}}</view>
+        </view>
+        <text class="ci">📍 {{item.location}}</text>
+        <text class="ci">🗓️ {{item.date}} {{item.time}}</text>
+        <view class="card-tags">
+          <view class="sport-tag {{item.sport==='badminton'?'tag-b':'tag-t'}}">{{item.sport==='badminton'?'🏸 羽毛球':'🎾 网球'}}</view>
+          <view class="role-tag">{{item.role==='organizer'?'🎤 发起人':'🙋 参与者'}}</view>
+          <view wx:if="{{item.result}}" class="result-tag {{item.result==='win'?'tag-win':'tag-lose'}}">{{item.result==='win'?'🏆 胜':'😤 负'}}</view>
+        </view>
+        <view class="card-footer">
+          <text class="cf-p">👥 {{item.joined}}/{{item.maxPlayers}} 人</text>
+          <view wx:if="{{item.status==='done'}}" class="action-sm" catchtap="goReview" data-id="{{item.id}}">
+            {{item.reviewed?'查看评价':'写评价'}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,36 @@
+<view wx:if="{{visible}}" class="ls-wrap">
+  <view class="ls-mask" bindtap="onClose"/>
+  <view class="ls-sheet ls-show">
+    <view class="ls-handle"/>
+    <block wx:if="{{step==='options'}}">
+      <text class="ls-title">登录 铭心乐Go</text>
+      <text class="ls-sub">登录后享受完整功能</text>
+      <view class="ls-btn ls-wechat" bindtap="wxLogin">
+        <text class="ls-btn-icon">💬</text>
+        <text class="ls-btn-txt">{{loading?'登录中...':'微信快速登录'}}</text>
+      </view>
+      <view class="ls-btn ls-sms" bindtap="goSms">
+        <text class="ls-btn-icon">📱</text>
+        <text class="ls-btn-txt">短信登录</text>
+      </view>
+      <text wx:if="{{errorMsg}}" class="ls-error">{{errorMsg}}</text>
+      <text class="ls-agree">登录即同意用户协议和隐私政策</text>
+    </block>
+    <block wx:if="{{step==='sms'}}">
+      <text class="ls-back" bindtap="goOptions">‹ 返回</text>
+      <text class="ls-title">短信登录</text>
+      <view class="ls-input-wrap">
+        <text class="ls-prefix">+86</text>
+        <input class="ls-input" value="{{phone}}" bindinput="onPhone" type="number" maxlength="11" placeholder="请输入手机号"/>
+      </view>
+      <view class="ls-input-wrap">
+        <input class="ls-input" value="{{code}}" bindinput="onCode" type="number" maxlength="6" placeholder="请输入验证码"/>
+        <text class="ls-sms-btn {{countdown>0?'ls-sms-cd':''}}" bindtap="sendCode">{{countdown>0?countdown+'s':'获取验证码'}}</text>
+      </view>
+      <text wx:if="{{errorMsg}}" class="ls-error">{{errorMsg}}</text>
+      <view class="ls-btn ls-confirm {{!phone||!code?'ls-disabled':''}}" bindtap="doLogin">
+        <text class="ls-btn-txt">{{loading?'登录中...':'登录'}}</text>
+      </view>
+    </block>
+  </view>
+</view>

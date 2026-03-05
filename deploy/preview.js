@@ -8,7 +8,7 @@ const os    = require('os')
 const APPID        = 'wx686427f3488d40ab'
 const ROOT         = path.resolve(__dirname, '..')
 const UNI_SRC      = path.join(ROOT, 'frontend')
-const PROJECT_PATH = path.join(ROOT, 'frontend/dist/build/mp-weixin')
+const PROJECT_PATH = path.join(ROOT, 'miniprogram')
 const KEY_PATH     = path.join(__dirname, 'private.wx686427f3488d40ab.key')
 const QR_OUTPUT    = path.join(__dirname, 'preview-qrcode.jpg')
 const MANIFEST_FILE = path.join(UNI_SRC, 'src/manifest.json')
@@ -34,15 +34,7 @@ function getVersion() {
 }
 
 async function buildMP() {
-  if (process.argv.includes('--no-build')) {
-    console.log('⏭  跳过构建（--no-build）')
-    return
-  }
-  console.log('🔨 构建微信小程序...')
-  const { spawnSync } = require('child_process')
-  const r = spawnSync('/usr/bin/npm', ['run', 'build:mp-weixin'], { cwd: UNI_SRC, stdio: 'inherit' })
-  if (r.error) throw r.error
-  console.log('✅ 构建完成')
+  console.log('⏭  原生小程序，无需编译构建')
 }
 
 async function main() {

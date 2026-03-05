@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="header" style="background:{{heroGrad}}">
+    <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
+    <text class="hd-sub">根据你的水平和打法，精准匹配最适合的球拍</text>
+  </view>
+  <view class="quiz-card" bindtap="startQuiz">
+    <view class="qc-l"><text class="qc-title">开始测评</text><text class="qc-sub">3分钟找到你的专属球拍</text></view>
+    <text class="qc-arrow">›</text>
+  </view>
+  <text class="sec-t">热门推荐</text>
+  <view class="list">
+    <view wx:for="{{rackets}}" wx:key="id" class="racket-card" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="rc-cover"><text style="font-size:60rpx;opacity:.5">{{sport==='badminton'?'🏸':'🎾'}}</text></view>
+      <view class="rc-body">
+        <text class="rc-name">{{item.name}}</text>
+        <view class="rc-tags"><text wx:for="{{item.tags}}" wx:key="*this" class="rc-tag">{{item}}</text></view>
+        <view class="rc-footer"><text class="rc-price">¥{{item.price}}</text><text class="rc-level">{{item.level}}</text></view>
+      </view>
+    </view>
+  </view>
+</view>

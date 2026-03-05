@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="header" style="background:{{heroGrad}}">
+    <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
+    <view class="loc-bar">
+      <text class="loc-icon">📍</text><text class="loc-city" bindtap="pickCity">{{city}} ▾</text>
+      <view class="loc-div"/>
+      <view class="loc-search"><text>🔍 搜索场馆</text></view>
+    </view>
+    <scroll-view scroll-x class="filter-scroll">
+      <view class="filter-row">
+        <view class="chip {{filterOpen?'chip-a':''}}" bindtap="toggleOpen">🟢 {{filterOpen?'营业中 ✓':'营业中'}}</view>
+        <view wx:if="{{hasFilter}}" class="chip chip-reset" bindtap="resetAll">✕ 清除</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="result-bar"><text class="rt">找到 {{list.length}} 家场馆</text></view>
+  <view wx:if="{{!list.length}}" class="empty"><text class="ei">🏟️</text><text class="et">附近暂无场馆</text></view>
+  <view wx:else class="list">
+    <view wx:for="{{list}}" wx:key="id" class="venue-card" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="vc-cover" style="background:{{sport==='badminton'?'#e8f7ee':'#fdf0e8'}}">
+        <text style="font-size:80rpx;opacity:.5">{{sport==='badminton'?'🏸':'🎾'}}</text>
+        <view wx:if="{{item.isOpen}}" class="open-badge">营业中</view>
+        <view wx:else class="closed-badge">已关闭</view>
+      </view>
+      <view class="vc-body">
+        <view class="vc-top"><text class="vc-name">{{item.name}}</text><text class="vc-dist">📏 {{item.distance}}</text></view>
+        <text class="vc-addr">📍 {{item.address}}</text>
+        <view class="vc-tags"><text wx:for="{{item.tags}}" wx:key="*this" class="vc-tag">{{item}}</text></view>
+        <view class="vc-bottom">
+          <view class="vc-price"><text class="pf">¥</text><text class="pn">{{item.priceFrom}}</text><text class="pu">/小时起</text></view>
+          <view class="vc-rating"><text class="star">★</text><text class="rn">{{item.rating}}</text></view>
+          <view class="book-btn" catchtap="goBook" data-id="{{item.id}}">预约</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

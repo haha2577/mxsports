@@ -1,0 +1,32 @@
+.page{background:#f0f2f5;padding-bottom:120rpx}
+.header{padding:100rpx 32rpx 0}
+.search-bar{background:rgba(255,255,255,.12);border-radius:20rpx;display:flex;align-items:center;padding:0 20rpx;margin:16rpx 0;border:1rpx solid rgba(255,255,255,.15)}
+.si{font-size:30rpx;margin-right:12rpx}
+.si-input{flex:1;height:72rpx;font-size:28rpx;color:#fff}
+.filter-scroll{margin:0 -32rpx;padding:0 32rpx 20rpx}
+.filter-row{display:flex;gap:12rpx;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:6rpx;padding:12rpx 22rpx;background:rgba(255,255,255,.12);border:1rpx solid rgba(255,255,255,.2);border-radius:50rpx;font-size:24rpx;color:rgba(255,255,255,.8);flex-shrink:0}
+.chip-a{background:rgba(255,255,255,.9);color:#1a1a2e;font-weight:bold}
+.chip-reset{background:rgba(220,53,69,.2);color:#ff8080}
+.result-bar{padding:16rpx 32rpx}
+.rt{font-size:24rpx;color:#999}
+.empty{display:flex;flex-direction:column;align-items:center;padding:80rpx}
+.ei{font-size:80rpx;margin-bottom:16rpx}.et{font-size:30rpx;color:#999}
+.list{padding:0 24rpx;display:flex;flex-direction:column;gap:16rpx}
+.match-card{background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
+.mc-top{display:flex;justify-content:space-between;margin-bottom:14rpx}
+.sport-tag{font-size:22rpx;padding:6rpx 18rpx;border-radius:50rpx;font-weight:500}
+.tag-b{background:#e8f7ee;color:#1DB954}.tag-t{background:#fdf0e8;color:#d4541f}
+.status-dot{font-size:22rpx;padding:6rpx 18rpx;border-radius:50rpx}
+.s-open{background:#e8f7ee;color:#1DB954}.s-full{background:#f0f0f0;color:#999}
+.mc-title{display:block;font-size:34rpx;font-weight:bold;color:#1a1a1a;margin-bottom:12rpx}
+.mc-info{display:block;font-size:24rpx;color:#666;margin-bottom:8rpx}
+.mc-tags{display:flex;gap:10rpx;flex-wrap:wrap;margin:16rpx 0}
+.mt-tag{font-size:22rpx;padding:6rpx 18rpx;border-radius:50rpx}
+.level-tag{background:#fff8e1;color:#f57c00}.people-tag{background:#e8f4fd;color:#1565c0}.fee-tag{background:#f3e5f5;color:#7b1fa2}
+.mc-footer{display:flex;justify-content:space-between;align-items:center;border-top:1rpx solid #f5f5f5;padding-top:20rpx;margin-top:4rpx}
+.org{font-size:24rpx;color:#888}
+.join-btn{background:#1a1a2e;color:#fff;font-size:26rpx;padding:14rpx 32rpx;border-radius:50rpx}
+.join-dis{background:#e0e0e0;color:#999}
+.fab{position:fixed;bottom:48rpx;right:32rpx;background:#1a1a2e;border-radius:50rpx;padding:22rpx 36rpx;box-shadow:0 8rpx 28rpx rgba(26,26,46,.35)}
+.fab-t{font-size:28rpx;color:#fff;font-weight:500}

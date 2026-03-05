@@ -1,0 +1,44 @@
+<view class="page">
+  <view class="header" style="background:{{heroGrad}}">
+    <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
+    <view class="search-bar">
+      <text class="si">🔍</text>
+      <input class="si-input" value="{{keyword}}" bindinput="onKeyword" placeholder="搜索地点、活动名称"/>
+    </view>
+    <scroll-view scroll-x class="filter-scroll">
+      <view class="filter-row">
+        <view class="chip {{filterLevel?'chip-a':''}}" bindtap="openLevel">⭐ {{filterLevel||'水平'}} ▾</view>
+        <view class="chip {{filterFee?'chip-a':''}}" bindtap="openFee">💰 {{feeLabel||'费用'}} ▾</view>
+        <view wx:if="{{hasFilter}}" class="chip chip-reset" bindtap="resetAll">✕ 清除</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="result-bar">
+    <text class="rt">共 {{list.length}} 个约球</text>
+  </view>
+  <view wx:if="{{!list.length}}" class="empty">
+    <text class="ei">{{sport==='badminton'?'🏸':'🎾'}}</text>
+    <text class="et">附近暂无约球活动</text>
+  </view>
+  <view wx:else class="list">
+    <view wx:for="{{list}}" wx:key="id" class="match-card" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="mc-top">
+        <view class="sport-tag {{item.sport==='badminton'?'tag-b':'tag-t'}}">{{item.sport==='badminton'?'🏸 羽毛球':'🎾 网球'}}</view>
+        <text class="status-dot s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
+      </view>
+      <text class="mc-title">{{item.name}}</text>
+      <text class="mc-info">📍{{item.location}} · 📏{{item.distance}}</text>
+      <text class="mc-info">🗓️{{item.date}} · ⏰{{item.time}}</text>
+      <view class="mc-tags">
+        <view class="mt-tag level-tag">⭐ {{item.level}}</view>
+        <view class="mt-tag people-tag">👥 {{item.joined}}/{{item.maxPlayers}}人</view>
+        <view class="mt-tag fee-tag">💰 {{item.fee>0?item.fee+'元/人':'免费'}}</view>
+      </view>
+      <view class="mc-footer">
+        <text class="org">{{item.organizer}} 发起</text>
+        <view class="join-btn {{item.status!=='open'?'join-dis':''}}">{{item.status==='open'?'报名参加':'已截止'}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="fab" bindtap="goCreate"><text class="fab-t">＋ 发起约球</text></view>
+</view>

@@ -1,0 +1,17 @@
+.sp-wrap{position:fixed;top:0;left:0;right:0;bottom:0;z-index:998}
+.sp-mask{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5)}
+.sp-sheet{position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:32rpx 32rpx 0 0;padding:24rpx 40rpx 60rpx}
+.sp-handle{width:60rpx;height:8rpx;background:#e0e0e0;border-radius:4rpx;margin:0 auto 32rpx}
+.sp-title{display:block;font-size:40rpx;font-weight:bold;color:#1a1a1a;margin-bottom:8rpx}
+.sp-sub{display:block;font-size:24rpx;color:#aaa;margin-bottom:40rpx}
+.sp-cards{display:flex;gap:20rpx;margin-bottom:20rpx}
+.sp-card{flex:1;border-radius:24rpx;padding:36rpx 20rpx;display:flex;flex-direction:column;align-items:center;gap:12rpx;position:relative;border:3rpx solid transparent}
+.sp-b{background:linear-gradient(145deg,#0faa4e,#1DB954)}.sp-t{background:linear-gradient(145deg,#b5451b,#d4541f)}
+.sp-selected{border-color:rgba(255,255,255,.8)}
+.sp-check{position:absolute;top:14rpx;right:18rpx;background:#fff;color:#1a1a1a;border-radius:50%;width:36rpx;height:36rpx;font-size:22rpx;font-weight:bold;display:flex;align-items:center;justify-content:center}
+.sp-emoji{font-size:72rpx}.sp-name{font-size:32rpx;font-weight:bold;color:#fff}
+.sp-both{background:#f5f5f5;border-radius:20rpx;padding:28rpx;text-align:center;border:3rpx solid transparent;margin-bottom:32rpx}
+.sp-both-selected{background:#f0f0f0;border-color:#1a1a2e}
+.sp-both-txt{font-size:30rpx;color:#555}
+.sp-confirm{background:#1a1a2e;color:#fff;border-radius:50rpx;height:96rpx;line-height:96rpx;text-align:center;font-size:32rpx}
+.sp-disabled{opacity:.35}

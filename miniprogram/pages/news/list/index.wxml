@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="header" style="background:{{heroGrad}}">
+    <scroll-view scroll-x class="cat-scroll">
+      <view class="cat-row">
+        <view wx:for="{{cats}}" wx:key="*this" class="cat-tag {{activeCat===item?'cat-a':''}}" bindtap="setCat" data-cat="{{item}}">{{item}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="list">
+    <view wx:for="{{filteredNews}}" wx:key="id" class="news-item" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="ni-cover" style="background:{{item.catColor}}15">
+        <text class="ni-icon">{{item.cat==='赛事动态'?'🏆':item.cat==='技术提升'?'💡':'🎽'}}</text>
+      </view>
+      <view class="ni-body">
+        <text class="ni-cat" style="color:{{item.catColor}};background:{{item.catColor}}15">{{item.cat}}</text>
+        <text class="ni-title">{{item.title}}</text>
+        <text class="ni-date">{{item.date}}</text>
+      </view>
+    </view>
+  </view>
+</view>
