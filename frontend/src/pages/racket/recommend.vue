@@ -2,9 +2,6 @@
   <view class="page">
     <view class="header" :style="`padding-top:${statusBarHeight+12}px;background:${sport==='badminton'?'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)':'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'}`">
       <view class="hd-row">
-        <view class="back-btn" @tap="uni.navigateBack()">‹</view>
-        <text class="hd-title">智能球拍推荐</text>
-        <!-- 只有双栖才显示切换 -->
         <sport-switcher :sport-pref="sportPref" :active="sport" @switch="onSwitch"/>
       </view>
       <text class="hd-sub">根据你的水平和打法，精准匹配最适合的球拍</text>
