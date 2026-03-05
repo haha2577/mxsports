@@ -10,9 +10,10 @@
         <text class="ls-sub">登录后享受完整功能</text>
 
         <!-- 微信登录 -->
-        <view class="ls-btn ls-wechat" @tap="wxLogin">
-          <text class="ls-btn-icon">💬</text>
-          <text class="ls-btn-txt">微信快速登录</text>
+        <view class="ls-btn ls-wechat" :class="{'ls-loading': loading}" @tap="wxLogin">
+          <view v-if="loading" class="ls-spinner"/>
+          <text v-else class="ls-btn-icon">💬</text>
+          <text class="ls-btn-txt">{{ loading ? '登录中...' : '微信快速登录' }}</text>
         </view>
 
         <!-- 短信登录 -->
@@ -21,6 +22,7 @@
           <text class="ls-btn-txt">短信登录</text>
         </view>
 
+        <text v-if="errorMsg" class="ls-error">{{ errorMsg }}</text>
         <text class="ls-agree">登录即同意 <text class="ls-link">用户协议</text> 和 <text class="ls-link">隐私政策</text></text>
       </view>
 
@@ -41,8 +43,9 @@
           </view>
         </view>
 
-        <view :class="['ls-btn ls-confirm', (!phone||!code)&&'ls-disabled']" @tap="doLogin">
-          <text class="ls-btn-txt">登录</text>
+        <view :class="['ls-btn ls-confirm', (!phone||!code||loading)&&'ls-disabled']" @tap="doLogin">
+          <view v-if="loading" class="ls-spinner ls-spinner-dark"/>
+          <text class="ls-btn-txt">{{ loading ? '登录中...' : '登录' }}</text>
         </view>
       </view>
 
@@ -56,21 +59,30 @@ export default {
   name: 'LoginSheet',
   props: { visible: { type: Boolean, default: false } },
   emits: ['close', 'success'],
-  data() { return { step: 'options', phone: '', code: '', countdown: 0, timer: null } },
+  data() { return { step: 'options', phone: '', code: '', countdown: 0, timer: null, errorMsg: '', loading: false } },
   watch: {
     visible(v) { if (v) { this.step = 'options'; this.phone = ''; this.code = '' } }
   },
   methods: {
     async wxLogin() {
+      if (this.loading) return
+      this.errorMsg = ''
+      this.loading = true
       // #ifdef MP-WEIXIN
       try {
-        const { code } = await new Promise((res, rej) => wx.login({ success: res, fail: rej }))
-        const r = await api.wxLogin({ code })
+        const loginRes = await new Promise((res, rej) => wx.login({ success: res, fail: rej }))
+        const r = await api.wxLogin({ code: loginRes.code })
         this._onSuccess(r.data)
-      } catch(e) { uni.showToast({ title: '微信登录失败', icon: 'none' }) }
+      } catch(e) {
+        const msg = e?.errMsg || e?.message || JSON.stringify(e)
+        this.errorMsg = `微信登录失败：${msg}`
+      } finally {
+        this.loading = false
+      }
       // #endif
       // #ifndef MP-WEIXIN
-      uni.showToast({ title: '请在小程序中使用微信登录', icon: 'none' })
+      this.errorMsg = '当前环境不支持微信登录（仅小程序可用）'
+      this.loading = false
       // #endif
     },
     async sendCode() {
@@ -89,11 +101,18 @@ export default {
       } catch(e) { uni.showToast({ title: '发送失败，请重试', icon: 'none' }) }
     },
     async doLogin() {
-      if (!this.phone || !this.code) return
+      if (!this.phone || !this.code || this.loading) return
+      this.errorMsg = ''
+      this.loading = true
       try {
         const r = await api.phoneLogin({ phone: this.phone, code: this.code })
         this._onSuccess(r.data)
-      } catch(e) { uni.showToast({ title: '登录失败，请检查验证码', icon: 'none' }) }
+      } catch(e) {
+        const msg = e?.errMsg || e?.message || JSON.stringify(e)
+        this.errorMsg = `登录失败：${msg}`
+      } finally {
+        this.loading = false
+      }
     },
     _onSuccess(data) {
       const token = data.access || data.token
@@ -139,6 +158,20 @@ export default {
 .ls-sms .ls-btn-txt     { font-size: 32rpx; font-weight: 600; color: #1a1a1a; }
 .ls-confirm .ls-btn-txt { font-size: 32rpx; font-weight: 600; color: #fff; }
 
+.ls-loading { opacity: .75; pointer-events: none; }
+.ls-spinner {
+  width: 36rpx; height: 36rpx;
+  border: 4rpx solid rgba(255,255,255,.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.ls-spinner-dark {
+  border-color: rgba(255,255,255,.3);
+  border-top-color: #fff;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.ls-error { display: block; font-size: 22rpx; color: #e53935; background: #fff0f0; border-radius: 12rpx; padding: 16rpx 20rpx; margin-bottom: 16rpx; line-height: 1.6; word-break: break-all; }
 .ls-agree { display: block; text-align: center; font-size: 22rpx; color: #bbb; margin-top: 24rpx; }
 .ls-link  { color: #888; }
 

@@ -23,6 +23,7 @@ export const api = {
   put:  (url, data) => request('PUT', url, data),
   sendSms:       phone        => request('POST', '/auth/send-sms', { phone }),
   phoneLogin:    (phone, code)=> request('POST', '/auth/phone-login', { phone, code }),
+  wxLogin:       d            => request('POST', '/auth/wx-login', d),
   wxPhoneLogin:  d            => request('POST', '/auth/wx-phone-login', d),
   getProfile:    ()           => request('GET',  '/auth/profile'),
   updateProfile: d            => request('PUT',  '/auth/update-profile', d),
