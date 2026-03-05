@@ -93,6 +93,7 @@
     </view>
 
     <button v-if="token" class="logout-btn" @tap="logout">退出登录</button>
+  <text class="version-txt">v{{ version }}</text>
 
     <!-- 登录弹窗 -->
     <login-sheet :visible="showLogin" @close="showLogin=false" @success="onLoginSuccess"/>
@@ -122,6 +123,7 @@ export default {
       showLogin: false,
       showSportPref: false,
       statusBarHeight: 20,
+      version: '',
     }
   },
   computed: {
@@ -131,7 +133,13 @@ export default {
     }
   },
   onLoad() {
-    try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
+    try {
+      const info = uni.getSystemInfoSync()
+      this.statusBarHeight = info.statusBarHeight || 20
+      // 小程序读取版本号
+      const appInfo = uni.getAccountInfoSync ? uni.getAccountInfoSync() : null
+      this.version = (appInfo && appInfo.miniProgram && appInfo.miniProgram.version) || '__UNI_APP_VERSION__'
+    } catch(e) { this.statusBarHeight = 20 }
   },
   onShow() {
     this.token = getApp().globalData.token || ''
@@ -234,5 +242,6 @@ export default {
 .mi-arrow { font-size:36rpx; color:#ccc; }
 .mi-pref-val { font-size:26rpx; color:#999; }
 
+.version-txt { display:block; text-align:center; font-size:22rpx; color:#ccc; margin-top:20rpx; }
 .logout-btn { margin:24rpx 24rpx 0; background:transparent; color:#e53935; border:2rpx solid #ffcdd2; border-radius:50rpx; height:88rpx; font-size:30rpx; width:calc(100% - 48rpx); }
 </style>

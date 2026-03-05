@@ -15,6 +15,20 @@ const MANIFEST_FILE = path.join(UNI_SRC, 'src/manifest.json')
 const TG_TOKEN     = process.env.TG_TOKEN || ''
 const TG_CHAT      = process.env.TG_CHAT  || ''
 
+function bumpVersion() {
+  const raw = fs.readFileSync(MANIFEST_FILE, 'utf8')
+  const data = JSON.parse(raw)
+  const [major, minor, patch] = (data.versionName || '0.0.1').split('.').map(Number)
+  const newName = `${major}.${minor}.${patch + 1}`
+  const newCode = String((parseInt(data.versionCode || '1') + 1))
+  const updated = raw
+    .replace(/"versionName":\s*"[^"]+"/, `"versionName": "${newName}"`)
+    .replace(/"versionCode":\s*"[^"]+"/, `"versionCode": "${newCode}"`)
+  fs.writeFileSync(MANIFEST_FILE, updated)
+  console.log(`📦 版本号: ${newName} (code: ${newCode})`)
+  return newName
+}
+
 function getVersion() {
   return JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8')).versionName || '0.0.1'
 }
@@ -35,7 +49,7 @@ async function main() {
   console.log('🏸 MX Sports 小程序 - 自动构建 + 预览')
   console.log('━'.repeat(40))
 
-  const version = getVersion()
+  const version = bumpVersion()
   await buildMP()
 
   if (!fs.existsSync(PROJECT_PATH)) { console.error('❌ 构建产物不存在'); process.exit(1) }
