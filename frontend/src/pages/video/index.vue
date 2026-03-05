@@ -166,7 +166,6 @@ export default {
     return {
       statusBarHeight: 20,
       activeSport: uni.getStorageSync('activeSport') || 'badminton',
-      filterSport: 'all',
       videos: [...mockVideos],
       uploading: false,
       uploadProgress: 0,
@@ -178,15 +177,13 @@ export default {
   },
   computed: {
     filteredList() {
-      if (this.filterSport === 'all') return this.videos
-      return this.videos.filter(v => v.sport === this.filterSport)
+      return this.videos.filter(v => v.sport === this.activeSport)
     }
   },
   onLoad() {
     try { this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 20 } catch(e) {}
     this.sportPref   = uni.getStorageSync('sportPref') || ''
     this.activeSport = uni.getStorageSync('activeSport') || 'badminton'
-    this.filterSport = this.activeSport
   },
   methods: {
     onSportSwitch(s) {
