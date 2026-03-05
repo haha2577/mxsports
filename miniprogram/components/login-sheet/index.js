@@ -16,7 +16,10 @@ Component({
         const res=await new Promise((ok,err)=>wx.login({success:ok,fail:err}))
         const r=await api.wxLogin({code:res.code})
         this._success(r.data)
-      }catch(e){this.setData({errorMsg:'微信登录失败，请稍后重试'+(e&&e.data&&e.data.detail?'：'+e.data.detail:'')})}
+      }catch(e){
+        const msg=(e&&e.data&&e.data.message)||'微信登录失败，请重试'
+        this.setData({errorMsg:msg})
+      }
       finally{this.setData({loading:false})}
     },
     async sendCode(){
@@ -48,8 +51,9 @@ Component({
       finally{this.setData({loading:false})}
     },
     _success(data){
-      const token=data.access||data.token
-      const userInfo=data.user||data.userInfo||{}
+      const inner=data.data||data
+      const token=inner.access||inner.token||data.access||data.token
+      const userInfo=inner.user||inner.userInfo||data.user||data.userInfo||{}
       wx.setStorageSync('token',token)
       wx.setStorageSync('userInfo',userInfo)
       getApp().globalData.token=token
