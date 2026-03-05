@@ -7,30 +7,31 @@ const os    = require('os')
 
 const APPID        = 'wx686427f3488d40ab'
 const ROOT         = path.resolve(__dirname, '..')
-const UNI_SRC      = path.join(ROOT, 'frontend')
 const PROJECT_PATH = path.join(ROOT, 'miniprogram')
 const KEY_PATH     = path.join(__dirname, 'private.wx686427f3488d40ab.key')
 const QR_OUTPUT    = path.join(__dirname, 'preview-qrcode.jpg')
-const MANIFEST_FILE = path.join(UNI_SRC, 'src/manifest.json')
+const VERSION_FILE = path.join(PROJECT_PATH, 'version.json')
 const TG_TOKEN     = process.env.TG_TOKEN || ''
 const TG_CHAT      = process.env.TG_CHAT  || ''
 
 function bumpVersion() {
-  const raw = fs.readFileSync(MANIFEST_FILE, 'utf8')
-  const data = JSON.parse(raw)
+  let data = { versionName: '0.0.1', versionCode: '1' }
+  if (fs.existsSync(VERSION_FILE)) {
+    data = JSON.parse(fs.readFileSync(VERSION_FILE, 'utf8'))
+  }
   const [major, minor, patch] = (data.versionName || '0.0.1').split('.').map(Number)
   const newName = `${major}.${minor}.${patch + 1}`
-  const newCode = String((parseInt(data.versionCode || '1') + 1))
-  const updated = raw
-    .replace(/"versionName":\s*"[^"]+"/, `"versionName": "${newName}"`)
-    .replace(/"versionCode":\s*"[^"]+"/, `"versionCode": "${newCode}"`)
-  fs.writeFileSync(MANIFEST_FILE, updated)
+  const newCode = String(parseInt(data.versionCode || '1') + 1)
+  data.versionName = newName
+  data.versionCode = newCode
+  fs.writeFileSync(VERSION_FILE, JSON.stringify(data, null, 2))
   console.log(`📦 版本号: ${newName} (code: ${newCode})`)
   return newName
 }
 
 function getVersion() {
-  return JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8')).versionName || '0.0.1'
+  if (!fs.existsSync(VERSION_FILE)) return '0.0.1'
+  return JSON.parse(fs.readFileSync(VERSION_FILE, 'utf8')).versionName || '0.0.1'
 }
 
 async function buildMP() {

@@ -16,7 +16,7 @@ Component({
         const res=await new Promise((ok,err)=>wx.login({success:ok,fail:err}))
         const r=await api.wxLogin({code:res.code})
         this._success(r.data)
-      }catch(e){this.setData({errorMsg:'微信登录失败：'+(e.errMsg||e.message||JSON.stringify(e))})}
+      }catch(e){this.setData({errorMsg:'微信登录失败，请稍后重试'+(e&&e.data&&e.data.detail?'：'+e.data.detail:'')})}
       finally{this.setData({loading:false})}
     },
     async sendCode(){
@@ -41,7 +41,10 @@ Component({
       try{
         const r=await api.phoneLogin({phone,code})
         this._success(r.data)
-      }catch(e){this.setData({errorMsg:'登录失败：'+(e.errMsg||e.message||JSON.stringify(e))})}
+      }catch(e){
+        const msg=e&&e.data?(e.data.detail||e.data.message||e.data.error||'验证码错误或已过期'):'网络连接失败，请检查网络'
+        this.setData({errorMsg:msg})
+      }
       finally{this.setData({loading:false})}
     },
     _success(data){
