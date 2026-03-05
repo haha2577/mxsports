@@ -4,20 +4,13 @@
     <!-- 顶部 -->
     <view class="header" :style="`padding-top:${statusBarHeight + 12}px;background:${activeSport==='badminton'?'linear-gradient(145deg, #0a7a38, #1DB954, #25d366)':'linear-gradient(145deg, #8a3010, #d4541f, #e8712a)'}`">
       <view class="hd-top">
-        <text class="hd-title">我的视频</text>
+        <sport-switcher :sport-pref="sportPref" :active="activeSport" @switch="onSportSwitch"/>
         <view class="upload-btn" @tap="chooseVideo">
           <text class="upload-icon">＋</text>
           <text class="upload-txt">上传</text>
         </view>
       </view>
-      <!-- 运动切换（双栖选手） -->
-      <sport-switcher :sport-pref="sportPref" :active="filterSport==='all'?'badminton':filterSport" @switch="s=>{ filterSport=s }" style="margin-bottom:16rpx"/>
-      <!-- 运动筛选 -->
-      <view class="filter-row">
-        <view :class="['filter-tag', filterSport==='all'&&'filter-active']" @tap="filterSport='all'">全部</view>
-        <view :class="['filter-tag', filterSport==='badminton'&&'filter-active']" @tap="filterSport='badminton'">🏸 羽毛球</view>
-        <view :class="['filter-tag', filterSport==='tennis'&&'filter-active']" @tap="filterSport='tennis'">🎾 网球</view>
-      </view>
+      <text class="hd-title">我的视频</text>
     </view>
 
     <!-- 空状态 -->
