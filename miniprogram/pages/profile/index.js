@@ -4,13 +4,18 @@ Page({
   data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,sbh:20,version:''},
   onLoad(){
     try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
-    // 优先从 version.json 读取，预览版也能正确显示
+    // 读取版本号
     try{
-      const vj=require('../../version.json')
+      const fs=wx.getFileSystemManager()
+      const content=fs.readFileSync('/version.json','utf8')
+      const vj=JSON.parse(content)
       if(vj&&vj.versionName)this.setData({version:vj.versionName})
     }catch(e){
-      const v=wx.getAccountInfoSync&&wx.getAccountInfoSync()
-      if(v&&v.miniProgram&&v.miniProgram.version)this.setData({version:v.miniProgram.version})
+      // fallback：从小程序 API 读取（仅正式版有效）
+      try{
+        const v=wx.getAccountInfoSync&&wx.getAccountInfoSync()
+        if(v&&v.miniProgram&&v.miniProgram.version)this.setData({version:v.miniProgram.version})
+      }catch(e2){}
     }
   },
   onShow(){
