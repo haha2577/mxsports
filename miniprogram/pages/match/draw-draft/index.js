@@ -10,9 +10,11 @@ Page({
     players: [],    // [{id, name, games}]
     swapping: null, // {gameIdx, team:'team1'|'team2', slot:0|1}
     confirming: false,
+    sbh: 20,
   },
 
   onLoad() {
+    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
     const d = getApp().globalData.drawDraft
     if (!d) { wx.navigateBack(); return }
     this.setData({
@@ -81,6 +83,7 @@ Page({
     this.setData({ draft, players })
   },
 
+  navigateBack() { wx.navigateBack() },
   // 重新随机
   async reshufle() {
     const { matchId, type } = this.data

@@ -1,7 +1,10 @@
 const { api } = require('../../../utils/api')
 Page({
-  data: { list: [], loading: true },
-  onLoad() { this._load() },
+  data: { sbh: 20, list: [], loading: true },
+  onLoad() {
+    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
+    this._load()
+  },
   onShow() { this._load() },
   async _load() {
     this.setData({ loading: true })
@@ -14,6 +17,7 @@ Page({
       this.setData({ loading: false })
     }
   },
+  navigateBack() { wx.navigateBack() },
   goMatch(e) {
     wx.navigateTo({ url: '/pages/match/detail/index?id=' + e.currentTarget.dataset.id })
   },

@@ -2,3 +2,8 @@ page { background: #f0f2f5; font-family: -apple-system, sans-serif; }
 view, text, input, button { box-sizing: border-box; }
 button { all: unset; }
 button::after { border: none; }
+
+/* 自定义导航返回按钮（全局） */
+.nav-row{display:flex;align-items:center;margin-bottom:8rpx}
+.back-btn{width:64rpx;height:64rpx;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15);border-radius:50%}
+.back-arrow{font-size:40rpx;color:#fff;font-weight:300;line-height:1;margin-top:-4rpx}

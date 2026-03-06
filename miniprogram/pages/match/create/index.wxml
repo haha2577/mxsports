@@ -1,7 +1,10 @@
 <view class="page">
 
   <!-- Header -->
-  <view class="header">
+  <view class="header" style="padding-top:{{sbh+8}}px">
+    <view class="nav-row">
+      <view class="back-btn" bindtap="navigateBack"><text class="back-arrow">‹</text></view>
+    </view>
     <text class="hd-emoji">{{sport==='badminton'?'🏸':'🎾'}}</text>
     <view class="hd-text">
       <text class="hd-title">创建活动</text>

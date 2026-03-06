@@ -35,6 +35,8 @@ Page({
     if (this.data.id && !this.data.loading) this._load()
   },
 
+  navigateBack() { wx.navigateBack() },
+
   async _loadGames() {
     const { id, match } = this.data
     if (!match || match.status !== 'ongoing' && match.status !== 'finished') return

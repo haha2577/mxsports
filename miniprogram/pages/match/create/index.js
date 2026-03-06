@@ -1,6 +1,7 @@
 const { api } = require('../../../utils/api')
 Page({
   data: {
+    sbh: 20,
     sport: 'badminton',
     sportPref: '',
     // 必填
@@ -34,6 +35,7 @@ Page({
     today: '',
   },
   onLoad() {
+    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
     const pref = wx.getStorageSync('sportPref') || ''
     const sport = pref === 'both' ? (wx.getStorageSync('activeSport') || 'badminton') : (pref || wx.getStorageSync('activeSport') || 'badminton')
     this.setData({ sportPref: pref })
@@ -139,6 +141,7 @@ Page({
     this.setData({ showSuccess: false })
     this.goDetail()
   },
+  navigateBack() { wx.navigateBack() },
   onShareAppMessage() {
     return {
       title: this.data.name || '快来参加我的活动！',

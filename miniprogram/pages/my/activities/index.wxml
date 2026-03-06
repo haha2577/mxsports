@@ -1,5 +1,5 @@
 <view class="page">
-  <view class="header" style="background:{{heroGrad}}">
+  <view class="header" style="background:{{heroGrad}};padding-top:{{sbh}}px">
     <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
     <view class="status-tabs">
       <view wx:for="{{tabs}}" wx:key="value" class="stab {{activeTab===item.value?'stab-a':''}}" bindtap="setTab" data-v="{{item.value}}">

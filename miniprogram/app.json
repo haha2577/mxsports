@@ -39,7 +39,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1a1a2e",
     "navigationBarTitleText": "铭心乐Go",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom"
   },
   "usingComponents": {
     "sport-switcher": "/components/sport-switcher/index",

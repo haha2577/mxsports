@@ -1,10 +1,11 @@
 const { api } = require('../../../utils/api')
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
-  data:{sport:'badminton',sportPref:'',heroGrad:GRAD_B,activeTab:'all',tabs:[{label:'全部',value:'all'},{label:'进行中',value:'ongoing'},{label:'已完成',value:'done'}],list:[],filteredList:[],counts:{},loading:false},
+  data:{sbh:20,sport:'badminton',sportPref:'',heroGrad:GRAD_B,activeTab:'all',tabs:[{label:'全部',value:'all'},{label:'进行中',value:'ongoing'},{label:'已完成',value:'done'}],list:[],filteredList:[],counts:{},loading:false},
   onLoad(){
     const sport=wx.getStorageSync('activeSport')||'badminton'
     const pref=wx.getStorageSync('sportPref')||''
+    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
     this.setData({sport,sportPref:pref,heroGrad:sport==='badminton'?GRAD_B:GRAD_T})
     this._load()
   },
