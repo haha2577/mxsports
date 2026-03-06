@@ -63,6 +63,29 @@
       </view>
     </view>
 
+    <!-- 进行中的比赛 -->
+    <view wx:if="{{ongoingMatches.length}}" class="section">
+      <view class="sec-hd">
+        <view class="sec-hd-l"><view class="dot dot-live"/><text class="sec-title">进行中的比赛</text></view>
+        <text class="sec-more" bindtap="goActivities">我的活动 ›</text>
+      </view>
+      <view wx:for="{{ongoingMatches}}" wx:key="id" class="ongoing-card" bindtap="goMatchDetail" data-id="{{item.id}}">
+        <view class="oc-left">
+          <view class="oc-live-dot"/>
+          <view class="oc-info">
+            <text class="oc-name">{{item.name}}</text>
+            <text class="oc-meta">📍{{item.location}}</text>
+          </view>
+        </view>
+        <view class="oc-right">
+          <view class="oc-role {{item.role==='organizer'?'role-org':'role-player'}}">
+            <text>{{item.role==='organizer'?'我创建':'我报名'}}</text>
+          </view>
+          <text class="oc-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 附近约球 -->
     <view class="section">
       <view class="sec-hd">

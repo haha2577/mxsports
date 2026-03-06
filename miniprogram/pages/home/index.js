@@ -2,7 +2,7 @@ const { api } = require('../../utils/api')
 const GRAD_B = 'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)'
 const GRAD_T = 'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
-  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],sbh:20,showLogin:false,showSportPref:false},
+  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],sbh:20,showLogin:false,showSportPref:false},
   onLoad(){
     try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
   },
@@ -19,10 +19,29 @@ Page({
   },
   async _loadData(sport){
     try{
-      const r=await api.matches(`?status=open&sport=${sport}&size=3`)
-      const list=(r.data.data&&r.data.data.list)||r.data.data||[]
-      this.setData({matches:list.slice(0,3)})
-    }catch(e){ this.setData({matches:[]}) }
+      const [r1, r2, r3] = await Promise.allSettled([
+        api.matches(`?status=open&sport=${sport}&size=3`),
+        api.myMatches(),
+        api.myRegs(),
+      ])
+      // 附近约球
+      const list = r1.status==='fulfilled' ? ((r1.value.data.data&&r1.value.data.data.list)||r1.value.data.data||[]) : []
+      this.setData({matches: list.slice(0,3)})
+      // 进行中活动（我创建的 + 我报名的，状态 ongoing）
+      const mine  = r2.status==='fulfilled' ? (r2.value.data.data||[]) : []
+      const regs  = r3.status==='fulfilled' ? (r3.value.data.data||[]) : []
+      const ongoingIds = new Set()
+      const ongoing = []
+      const push = (m, role) => {
+        if(m.status==='ongoing' && !ongoingIds.has(m.id)){
+          ongoingIds.add(m.id)
+          ongoing.push({...m, role})
+        }
+      }
+      mine.forEach(m => push(m, 'organizer'))
+      regs.forEach(r => push(r, 'player'))
+      this.setData({ongoingMatches: ongoing})
+    }catch(e){ this.setData({matches:[], ongoingMatches:[]}) }
   },
   onSwitchSport(e){
     const sport=e.detail
@@ -47,6 +66,7 @@ Page({
     if(!pref)this.setData({showSportPref:true})
     else this._loadData(this.data.activeSport)
   },
+  goActivities(){wx.navigateTo({url:'/pages/my/activities/index'})},
   guestBadminton(){wx.navigateTo({url:'/pages/match/list/index?sport=badminton'})},
   guestTennis(){wx.navigateTo({url:'/pages/match/list/index?sport=tennis'})},
   goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},

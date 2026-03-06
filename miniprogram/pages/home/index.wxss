@@ -48,3 +48,18 @@
 .mi-badge{font-size:22rpx;padding:8rpx 18rpx;border-radius:50rpx}
 .s-open{background:#e8f7ee;color:#1DB954}.s-full{background:#f5f5f5;color:#999}.s-finished{background:#f5f5f5;color:#bbb}
 .empty{text-align:center;padding:40rpx 0;color:#aaa;font-size:28rpx}
+/* 进行中比赛 */
+.dot-live{background:#ff3b30;box-shadow:0 0 8rpx #ff3b30;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.ongoing-card{display:flex;align-items:center;justify-content:space-between;padding:24rpx 0;border-bottom:1rpx solid #f5f5f5}
+.ongoing-card:last-child{border-bottom:none}
+.oc-left{display:flex;align-items:center;gap:20rpx;flex:1;min-width:0}
+.oc-live-dot{width:16rpx;height:16rpx;background:#ff3b30;border-radius:50%;flex-shrink:0;box-shadow:0 0 8rpx rgba(255,59,48,.5)}
+.oc-info{flex:1;min-width:0}
+.oc-name{display:block;font-size:28rpx;font-weight:bold;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.oc-meta{font-size:22rpx;color:#aaa;margin-top:4rpx}
+.oc-right{display:flex;align-items:center;gap:12rpx;flex-shrink:0}
+.oc-role{padding:6rpx 16rpx;border-radius:50rpx;font-size:22rpx}
+.role-org{background:#e8f7ee;color:#0a7a38}
+.role-player{background:#e8f0fd;color:#1565c0}
+.oc-arrow{font-size:32rpx;color:#ccc}
