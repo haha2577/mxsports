@@ -141,17 +141,17 @@ Page({
     if (count < 4) {
       wx.showToast({ title: `至少需要4名报名选手（当前${count}人）`, icon: 'none' }); return
     }
-    const res = await wx.showModal({
-      title: '开始比赛',
-      content: `赛制：${fmt.name}\n共 ${count} 名选手，确认开始？`,
-    })
-    if (!res.confirm) return
+    wx.showLoading({ title: '生成排布中...' })
     try {
-      const r = await api.startMatch(id, fmt.type)
-      wx.showToast({ title: `已生成${r.data.data.gamesCount}场对阵`, icon: 'success' })
-      this._load()
+      const r = await api.previewDraw(id, fmt.type)
+      const { draft, players } = r.data.data
+      wx.hideLoading()
+      // 传数据到草稿页
+      getApp().globalData.drawDraft = { matchId: id, matchName: match.name, type: fmt.type, typeName: fmt.name, draft, players }
+      wx.navigateTo({ url: '/pages/match/draw-draft/index' })
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '开始失败', icon: 'none' })
+      wx.hideLoading()
+      wx.showToast({ title: e?.data?.message || '生成失败', icon: 'none' })
     }
   },
 

@@ -205,10 +205,22 @@ class MatchStatusView(APIView):
         return ok(message='活动已删除')
 
 
+def _serialize_draft_game(g, idx):
+    def p(u): return {'id': u.id, 'name': u.nickname} if u else None
+    return {
+        'idx': idx,
+        'team1': [p(g.player1), p(g.partner1)],
+        'team2': [p(g.player2), p(g.partner2)],
+    }
+
+
 class GenerateDrawView(APIView):
+    """
+    preview=true  → 只返回草稿，不保存，match 保持 open
+    preview=false → 接收前端确认的 games 列表，保存并开始
+    """
     permission_classes = [IsJWTAuthenticated]
 
-    @transaction.atomic
     def post(self, request, pk):
         try:
             match = Match.objects.get(pk=pk)
@@ -219,40 +231,70 @@ class GenerateDrawView(APIView):
         if match.organizer_id != user.id and not user.is_organizer:
             return err('无权操作', 403)
 
+        from users.models import User as UserModel
         players = list(
             Registration.objects.filter(match=match, status='approved')
-            .select_related('user')
-            .values_list('user', flat=True)
+            .values_list('user_id', flat=True)
         )
-        from users.models import User as UserModel
         player_objs = list(UserModel.objects.filter(id__in=players))
 
-        if len(player_objs) < 2:
-            return err('至少需要2名报名选手')
-
-        # 删除旧对阵
-        match.games.all().delete()
-
         draw_type = request.data.get('type', match.match_type)
-        if draw_type == 'rotation_doubles':
-            if len(player_objs) < 4:
-                return err('多人轮转双打至少需要4名选手')
-            games = gen_rotation_doubles(player_objs)
-        elif draw_type == 'round_robin':
-            games = gen_round_robin(player_objs)
-        elif draw_type == 'knockout':
-            games = gen_knockout(player_objs)
-        else:
-            games = gen_group(player_objs, match.group_size)
+        preview   = request.data.get('preview', True)
 
-        for g in games:
-            g.match = match
-        Game.objects.bulk_create(games)
+        # ── 预览模式：生成草稿返回，不保存 ──
+        if preview:
+            if draw_type == 'rotation_doubles':
+                if len(player_objs) < 4:
+                    return err('多人轮转双打至少需要4名选手')
+                games = gen_rotation_doubles(player_objs)
+            elif draw_type == 'round_robin':
+                games = gen_round_robin(player_objs)
+            elif draw_type == 'knockout':
+                games = gen_knockout(player_objs)
+            else:
+                games = gen_group(player_objs, match.group_size)
+            draft = [_serialize_draft_game(g, i) for i, g in enumerate(games)]
+            # 统计场次分布
+            count_map = {}
+            for g in draft:
+                for p in g['team1'] + g['team2']:
+                    if p:
+                        count_map[p['id']] = count_map.get(p['id'], 0) + 1
+            players_info = [{'id': u.id, 'name': u.nickname, 'games': count_map.get(u.id, 0)}
+                            for u in player_objs]
+            return ok({'draft': draft, 'players': players_info, 'type': draw_type})
 
-        match.match_type = draw_type
-        match.status = 'ongoing'
-        match.save(update_fields=['status', 'match_type'])
-        return ok({'gamesCount': len(games), 'type': draw_type}, '对阵生成成功')
+        # ── 确认模式：接收 games 列表，保存并开始 ──
+        provided = request.data.get('games')
+        if not provided:
+            return err('缺少 games 数据')
+
+        id_map = {u.id: u for u in player_objs}
+
+        @transaction.atomic
+        def confirm():
+            match.games.all().delete()
+            to_create = []
+            for row in provided:
+                t1 = row.get('team1', [])
+                t2 = row.get('team2', [])
+                def uid(cell): return cell.get('id') if cell else None
+                to_create.append(Game(
+                    match=match,
+                    player1=id_map.get(uid(t1[0] if len(t1) > 0 else None)),
+                    partner1=id_map.get(uid(t1[1] if len(t1) > 1 else None)),
+                    player2=id_map.get(uid(t2[0] if len(t2) > 0 else None)),
+                    partner2=id_map.get(uid(t2[1] if len(t2) > 1 else None)),
+                    round_num=1,
+                ))
+            Game.objects.bulk_create(to_create)
+            match.match_type = draw_type
+            match.status = 'ongoing'
+            match.save(update_fields=['status', 'match_type'])
+            return len(to_create)
+
+        n = confirm()
+        return ok({'gamesCount': n, 'type': draw_type}, '比赛已开始')
 
 
 class MatchGamesView(APIView):

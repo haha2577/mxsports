@@ -42,8 +42,8 @@
       </view>
     </view>
 
-    <!-- 活动信息 -->
-    <view class="card">
+    <!-- 活动信息（进行中/已结束时隐藏） -->
+    <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card">
       <text class="card-title">活动信息</text>
       <view class="info-row">
         <text class="info-icon">🏟️</text>
@@ -82,8 +82,8 @@
       </view>
     </view>
 
-    <!-- 报名列表 -->
-    <view class="card">
+    <!-- 报名列表（进行中/已结束时隐藏） -->
+    <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card">
       <view class="card-hd">
         <text class="card-title">报名选手</text>
         <text class="card-count">{{match.registeredCount}}人</text>

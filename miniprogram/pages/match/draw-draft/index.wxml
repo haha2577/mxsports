@@ -1,0 +1,59 @@
+<view class="page">
+
+  <!-- 顶部信息 -->
+  <view class="header">
+    <view class="hd-top">
+      <text class="hd-title">{{matchName}}</text>
+      <text class="hd-badge">{{typeName}}</text>
+    </view>
+    <text class="hd-sub">共 {{draft.length}} 场 · 点击选手名可替换 · 可重新随机</text>
+  </view>
+
+  <!-- 场次分布 -->
+  <view class="dist-card">
+    <text class="dist-title">场次分布</text>
+    <view class="dist-row">
+      <view wx:for="{{players}}" wx:key="id" class="dist-item">
+        <text class="di-name">{{item.name}}</text>
+        <text class="di-cnt">{{item.games}}场</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 场次列表 -->
+  <view class="games-list">
+    <view wx:for="{{draft}}" wx:key="idx" class="game-card">
+      <view class="game-no"><text>第 {{index+1}} 场</text></view>
+      <view class="game-body">
+        <!-- 队伍1 -->
+        <view class="team">
+          <view wx:for="{{item.team1}}" wx:key="index" wx:for-item="p" wx:for-index="si"
+            class="player-chip {{p?'chip-filled':'chip-empty'}}"
+            bindtap="onPlayerTap" data-game-idx="{{index}}" data-team="team1" data-slot="{{si}}">
+            <text>{{p?p.name:'空位'}}</text>
+          </view>
+        </view>
+        <view class="vs-badge"><text>VS</text></view>
+        <!-- 队伍2 -->
+        <view class="team">
+          <view wx:for="{{item.team2}}" wx:key="index" wx:for-item="p" wx:for-index="si"
+            class="player-chip {{p?'chip-filled':'chip-empty'}}"
+            bindtap="onPlayerTap" data-game-idx="{{index}}" data-team="team2" data-slot="{{si}}">
+            <text>{{p?p.name:'空位'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar">
+    <view class="reshuffle-btn" bindtap="reshufle">
+      <text>🔀 重新随机</text>
+    </view>
+    <view class="confirm-btn {{confirming?'confirm-loading':''}}" bindtap="confirm">
+      <text>{{confirming?'开始中...':'▶ 确认开始比赛'}}</text>
+    </view>
+  </view>
+
+</view>
