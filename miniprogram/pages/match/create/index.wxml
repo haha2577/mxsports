@@ -7,8 +7,8 @@
       <text class="hd-title">创建活动</text>
       <text class="hd-sub">填写基本信息，一键分享报名</text>
     </view>
-    <!-- 运动切换 -->
-    <view class="sport-tabs">
+    <!-- 仅双栖用户显示切换 -->
+    <view wx:if="{{sportPref==='both'}}" class="sport-tabs">
       <view class="stab {{sport==='badminton'?'stab-a':''}}" bindtap="setSport" data-v="badminton">🏸 羽毛球</view>
       <view class="stab {{sport==='tennis'?'stab-a':''}}" bindtap="setSport" data-v="tennis">🎾 网球</view>
     </view>

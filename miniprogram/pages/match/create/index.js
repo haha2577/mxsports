@@ -2,6 +2,7 @@ const { api } = require('../../../utils/api')
 Page({
   data: {
     sport: 'badminton',
+    sportPref: '',
     // 必填
     name: '',
     date: '',
@@ -22,8 +23,11 @@ Page({
     today: '',
   },
   onLoad() {
-    const sport = wx.getStorageSync('activeSport') || 'badminton'
+    const pref = wx.getStorageSync('sportPref') || ''
+    const sport = pref === 'both' ? (wx.getStorageSync('activeSport') || 'badminton') : (pref || wx.getStorageSync('activeSport') || 'badminton')
+    this.setData({ sportPref: pref })
     const now = new Date()
+
     const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`
     // 默认明天
     const tom = new Date(now.getTime() + 86400000)
