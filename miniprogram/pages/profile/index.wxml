@@ -47,6 +47,13 @@
         <text class="mi-arrow">›</text>
       </view>
     </view>
+    <view class="menu-item" bindtap="goRacket">
+      <view class="mi-l"><text class="mi-icon">{{activeSport==='badminton'?'🏸':'🎾'}}</text><text class="mi-label">智能球拍推荐</text></view>
+      <view style="display:flex;align-items:center;gap:8rpx">
+        <text style="font-size:22rpx;color:#f57c00;background:#fff3e0;padding:4rpx 14rpx;border-radius:50rpx">AI精准匹配</text>
+        <text class="mi-arrow">›</text>
+      </view>
+    </view>
   </view>
 
   <view class="section-card">
