@@ -12,6 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    sportPref = serializers.CharField(source='sport_pref', required=False, allow_blank=True)
+
     class Meta:
         model = User
-        fields = ['nickname', 'avatar', 'phone', 'level']
+        fields = ['nickname', 'avatar', 'phone', 'level', 'sportPref']

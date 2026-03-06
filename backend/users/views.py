@@ -33,6 +33,19 @@ def make_token(user):
     refresh['user_id'] = user.id
     return str(refresh.access_token)
 
+def user_data(user):
+    """登录成功后返回的用户信息"""
+    return {
+        'token': make_token(user),
+        'user': {
+            'id': user.id,
+            'nickname': user.nickname,
+            'phone': user.phone or '',
+            'avatar': user.avatar or '',
+            'sportPref': user.sport_pref or '',
+        }
+    }
+
 
 # ─── 微信登录 ─────────────────────────────────────────────
 class WxLoginView(APIView):
@@ -65,7 +78,7 @@ class WxLoginView(APIView):
             openid=openid,
             defaults={'nickname': '运动员'}
         )
-        return ok({'token': make_token(user)}, '登录成功')
+        return ok(user_data(user), '登录成功')
 
 
 # ─── 发送短信验证码 ────────────────────────────────────────
@@ -134,7 +147,9 @@ class PhoneLoginView(APIView):
             user.phone = phone
             user.save(update_fields=['phone'])
 
-        return ok({'token': make_token(user), 'isNew': created}, '登录成功')
+        d = user_data(user)
+        d['isNew'] = created
+        return ok(d, '登录成功')
 
 
 # ─── 微信手机号一键登录 ─────────────────────────────────────
@@ -216,7 +231,7 @@ class WxPhoneLoginView(APIView):
             logger.info('[wx-phone-login] 已有用户 id=%s updated=%s', user.id, updated)
 
         logger.info('[wx-phone-login] 登录成功 user_id=%s', user.id)
-        return ok({'token': make_token(user)}, '登录成功')
+        return ok(user_data(user), '登录成功')
 
     def _get_access_token(self):
         cached = cache.get('wx_access_token')
@@ -251,6 +266,7 @@ class ProfileView(APIView):
             'phone': u.phone,
             'level': u.level,
             'isOrganizer': u.is_organizer,
+            'sportPref': u.sport_pref or '',
         })
 
     def put(self, request):

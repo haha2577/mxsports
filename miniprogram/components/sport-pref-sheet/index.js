@@ -9,6 +9,12 @@ Component({
       if(!this.data.selected)return
       wx.setStorageSync('sportPref',this.data.selected)
       this.triggerEvent('confirm',this.data.selected)
+      // 同步到后端
+      const token=wx.getStorageSync('token')
+      if(token){
+        const {api}=require('../../utils/api')
+        api.updateProfile({sportPref:this.data.selected}).catch(()=>{})
+      }
     }
   }
 })

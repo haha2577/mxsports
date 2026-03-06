@@ -58,6 +58,12 @@ Component({
       wx.setStorageSync('userInfo',userInfo)
       getApp().globalData.token=token
       getApp().globalData.userInfo=userInfo
+      // 恢复后端保存的运动偏好
+      if(userInfo.sportPref){
+        wx.setStorageSync('sportPref',userInfo.sportPref)
+        const sport=userInfo.sportPref==='both'?'badminton':userInfo.sportPref
+        wx.setStorageSync('activeSport',sport)
+      }
       this.triggerEvent('success',userInfo)
       this.triggerEvent('close')
     }
