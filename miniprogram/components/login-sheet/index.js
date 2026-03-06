@@ -17,7 +17,7 @@ Component({
         const r=await api.wxLogin({code:res.code})
         this._success(r.data)
       }catch(e){
-        const msg=(e&&e.data&&e.data.message)||'微信登录失败，请重试'
+        const msg=(e&&e.data&&e.data.message)||(e&&e.errMsg)||'微信登录失败，请重试'
         this.setData({errorMsg:msg})
       }
       finally{this.setData({loading:false})}

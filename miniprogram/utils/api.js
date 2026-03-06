@@ -21,13 +21,13 @@ function request(method, url, data) {
 }
 
 const api = {
-  sendSms:      (data) => request('POST', '/auth/send-sms/', data),
-  phoneLogin:   (data) => request('POST', '/auth/phone-login/', data),
-  wxLogin:      (data) => request('POST', '/auth/wx-login/', data),
-  getProfile:   ()     => request('GET',  '/users/me/'),
-  updateProfile:(data) => request('PATCH','/users/me/', data),
-  matches:      (qs)   => request('GET',  '/matches/' + (qs||'')),
-  createMatch:  (data) => request('POST', '/matches/', data),
+  sendSms:      (data) => request('POST', '/auth/send-sms', data),
+  phoneLogin:   (data) => request('POST', '/auth/phone-login', data),
+  wxLogin:      (data) => request('POST', '/auth/wx-login', data),
+  getProfile:   ()     => request('GET',  '/auth/profile'),
+  updateProfile:(data) => request('PUT',  '/auth/update-profile', data),
+  matches:      (qs)   => request('GET',  '/matches' + (qs||'')),
+  createMatch:  (data) => request('POST', '/matches', data),
 }
 
 module.exports = { api, request }
