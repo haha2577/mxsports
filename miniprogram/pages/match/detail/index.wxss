@@ -1,0 +1,67 @@
+.page{background:#f0f2f5;padding-bottom:160rpx;min-height:100vh}
+
+/* 加载 */
+.loading{display:flex;align-items:center;justify-content:center;height:400rpx}
+.loading-txt{color:#aaa;font-size:28rpx}
+
+/* hero */
+.hero{background:linear-gradient(145deg,#1a1a2e,#0f3460);padding:48rpx 32rpx 40rpx;position:relative;overflow:hidden}
+.hero-deco{position:absolute;font-size:240rpx;opacity:.07;right:-20rpx;top:0;line-height:1}
+.hero-inner{position:relative;z-index:2}
+.hero-top{display:flex;align-items:center;gap:12rpx;margin-bottom:16rpx}
+.status-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;font-weight:600}
+.status-open{background:#e8f7ee;color:#1DB954}
+.status-ongoing{background:#fff3e0;color:#f57c00}
+.status-done,.status-finished{background:#f5f5f5;color:#999}
+.status-draft{background:#e8eaf6;color:#5c6bc0}
+.fee-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;background:rgba(255,255,255,.15);color:#fff;font-weight:600}
+.fee-free{background:rgba(29,185,84,.2);color:#1DB954}
+.hero-name{display:block;font-size:40rpx;font-weight:bold;color:#fff;line-height:1.4;margin-bottom:20rpx}
+.hero-meta{display:flex;flex-direction:column;gap:8rpx}
+.meta-item{font-size:26rpx;color:rgba(255,255,255,.7)}
+
+/* 统计栏 */
+.stat-bar{margin:0 24rpx;background:#fff;border-radius:24rpx;display:flex;padding:28rpx 0;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06);transform:translateY(-20rpx)}
+.stat-item{flex:1;text-align:center}
+.stat-n{display:block;font-size:40rpx;font-weight:bold;color:#1a1a1a;margin-bottom:4rpx}
+.stat-l{font-size:22rpx;color:#888}
+.stat-sep{width:1rpx;background:#f0f0f0}
+
+/* 卡片 */
+.card{margin:0 24rpx 24rpx;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05)}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20rpx}
+.card-title{font-size:30rpx;font-weight:bold;color:#1a1a1a;margin-bottom:20rpx;display:block}
+.card-hd .card-title{margin-bottom:0}
+.card-count{font-size:24rpx;color:#888}
+
+/* 信息行 */
+.info-row{display:flex;gap:16rpx;padding:14rpx 0;border-bottom:1rpx solid #f8f8f8}
+.info-row:last-child{border-bottom:none}
+.info-icon{font-size:32rpx;width:40rpx;flex-shrink:0;margin-top:2rpx}
+.info-body{flex:1}
+.info-label{display:block;font-size:22rpx;color:#aaa;margin-bottom:4rpx}
+.info-val{font-size:28rpx;color:#1a1a1a}
+.desc{line-height:1.7;white-space:pre-wrap}
+
+/* 报名列表 */
+.empty-players{padding:32rpx 0;text-align:center;color:#bbb;font-size:26rpx}
+.players-grid{display:flex;flex-wrap:wrap;gap:20rpx;padding-top:8rpx}
+.player-item{display:flex;flex-direction:column;align-items:center;gap:8rpx;width:120rpx}
+.player-avatar{width:80rpx;height:80rpx;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.pa-emoji{font-size:40rpx}
+.player-name{font-size:22rpx;color:#333;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.player-level{font-size:18rpx;color:#aaa;text-align:center}
+
+/* 底部操作栏 */
+.action-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:16rpx 24rpx 40rpx;display:flex;gap:16rpx;box-shadow:0 -4rpx 20rpx rgba(0,0,0,.08)}
+.share-btn{width:96rpx;height:96rpx;border-radius:20rpx;background:#f5f5f5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4rpx;flex-shrink:0;font-size:32rpx}
+.share-txt{font-size:18rpx;color:#666}
+.reg-btn{flex:1;height:96rpx;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:20rpx;display:flex;align-items:center;justify-content:center}
+.reg-btn text{font-size:30rpx;font-weight:bold;color:#fff}
+.reg-cancel{background:linear-gradient(135deg,#e8f7ee,#c8efd8)}
+.reg-cancel text{color:#0a7a38}
+.reg-loading{opacity:.6}
+.reg-disabled{background:#f5f5f5}
+.reg-disabled text{color:#aaa}
+.org-badge{flex:1;height:96rpx;background:#fff3e0;border-radius:20rpx;display:flex;align-items:center;justify-content:center}
+.org-badge text{font-size:28rpx;color:#f57c00;font-weight:600}
