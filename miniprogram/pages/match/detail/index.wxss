@@ -74,10 +74,52 @@
 .org-btn{flex:1;height:96rpx;border-radius:20rpx;display:flex;align-items:center;justify-content:center}
 .org-btn text{font-size:26rpx;font-weight:600}
 .org-start{background:#e8f7ee}.org-start text{color:#0a7a38}
+.org-finish{background:#fff8e1}.org-finish text{color:#f57f17}
 .org-pause{background:#fff3e0}.org-pause text{color:#f57c00}
 .org-resume{background:#e8f7ee}.org-resume text{color:#1DB954}
 .org-cancel{background:#fce4ec}.org-cancel text{color:#e53935}
 .org-delete{background:#fce4ec}.org-delete text{color:#e53935}
+
+/* 场次 */
+.game-row{padding:16rpx 0;border-bottom:1rpx solid #f5f5f5;display:flex;align-items:center;gap:12rpx}
+.game-row:last-child{border-bottom:none}
+.game-teams{flex:1;display:flex;align-items:center;gap:8rpx}
+.game-team{flex:1}
+.game-team-r{text-align:right}
+.gt-name{font-size:24rpx;color:#333;line-height:1.5}
+.game-score-wrap{display:flex;align-items:center;gap:4rpx;flex-shrink:0}
+.game-score{font-size:32rpx;font-weight:bold;color:#aaa;min-width:40rpx;text-align:center}
+.game-score.gs-win{color:#0a7a38}
+.game-score.gs-empty{color:#ddd}
+.game-vs{font-size:22rpx;color:#ccc}
+.game-edit-btn{padding:10rpx 20rpx;background:#f0f2f5;border-radius:50rpx;flex-shrink:0}
+.game-edit-btn text{font-size:24rpx;color:#555}
+
+/* 排行榜 */
+.lb-header{display:flex;align-items:center;padding:12rpx 0;border-bottom:2rpx solid #f0f2f5;margin-bottom:4rpx}
+.lb-row{display:flex;align-items:center;padding:16rpx 0;border-bottom:1rpx solid #f9f9f9}
+.lb-row.lb-top{background:linear-gradient(90deg,#fffbf0,transparent)}
+.lb-rank{width:80rpx;font-size:26rpx;color:#888;text-align:center;flex-shrink:0}
+.lb-name{flex:1;font-size:28rpx;color:#1a1a1a}
+.lb-pts{width:80rpx;font-size:26rpx;color:#888;text-align:center;flex-shrink:0}
+.lb-pts-val{font-size:32rpx;font-weight:bold;color:#0a7a38}
+.lb-wdl{width:120rpx;font-size:22rpx;color:#aaa;text-align:center;flex-shrink:0}
+
+/* 完赛横幅 */
+.finished-banner{margin:16rpx 0 8rpx;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:24rpx;padding:32rpx;display:flex;align-items:center;justify-content:center;gap:16rpx}
+.fb-emoji{font-size:40rpx}
+.fb-txt{font-size:28rpx;color:#fff;font-weight:bold}
+
+/* 记分弹窗 */
+.score-sheet{padding-bottom:48rpx}
+.score-teams{display:flex;align-items:center;justify-content:center;gap:16rpx;padding:16rpx 32rpx 24rpx}
+.st-name{flex:1;font-size:26rpx;color:#333;text-align:center;line-height:1.5}
+.st-vs{font-size:24rpx;color:#bbb;flex-shrink:0}
+.score-inputs{display:flex;align-items:center;justify-content:center;gap:20rpx;padding:0 48rpx 32rpx}
+.score-input{width:140rpx;height:100rpx;background:#f8f8f8;border-radius:20rpx;font-size:52rpx;font-weight:bold;color:#1a1a1a;text-align:center}
+.score-colon{font-size:52rpx;color:#ccc;font-weight:bold}
+.score-confirm-btn{margin:0 32rpx;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:24rpx;height:88rpx;display:flex;align-items:center;justify-content:center}
+.score-confirm-btn text{font-size:30rpx;font-weight:bold;color:#fff}
 
 /* 赛制选择弹窗 */
 .sheet-mask{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:flex-end}

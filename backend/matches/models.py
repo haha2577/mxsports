@@ -71,9 +71,11 @@ class Game(models.Model):
     # 队伍2：player2 + partner2
     player2   = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='games_as_p2')
     partner2  = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='games_as_partner2')
-    score1    = models.IntegerField(null=True, blank=True)
-    score2    = models.IntegerField(null=True, blank=True)
-    winner    = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='won_games')
+    score1       = models.IntegerField(null=True, blank=True)
+    score2       = models.IntegerField(null=True, blank=True)
+    winner_team  = models.CharField(max_length=10, null=True, blank=True,
+                       choices=[('team1','队伍1'),('team2','队伍2'),('draw','平局')])
+    winner       = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='won_games')
     status    = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)

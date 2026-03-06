@@ -18,6 +18,12 @@ Page({
       { type: 'team',             name: '团体赛',       desc: '敬请期待', enabled: false },
     ],
     levelMap:  { open: 'status-open', ongoing: 'status-ongoing', finished: 'status-done', draft: 'status-draft' },
+    games: [],
+    leaderboard: [],
+    showScoreModal: false,
+    editingGame: null,
+    editScore1: '',
+    editScore2: '',
   },
 
   onLoad(opts) {
@@ -27,6 +33,15 @@ Page({
 
   onShow() {
     if (this.data.id && !this.data.loading) this._load()
+  },
+
+  async _loadGames() {
+    const { id, match } = this.data
+    if (!match || match.status !== 'ongoing' && match.status !== 'finished') return
+    try {
+      const [gr, lr] = await Promise.all([api.matchGames(id), api.leaderboard(id)])
+      this.setData({ games: gr.data.data || [], leaderboard: lr.data.data || [] })
+    } catch(e) {}
   },
 
   async _load() {
@@ -43,6 +58,7 @@ Page({
       // 检查是否已报名
       const isRegistered = token && match.players && match.players.some(p => p.id === myId)
       this.setData({ match, loading: false, myUserId: myId, isOrganizer, isRegistered })
+      this._loadGames()
     } catch(e) {
       this.setData({ loading: false })
       wx.showToast({ title: '加载失败', icon: 'none' })
@@ -72,6 +88,44 @@ Page({
       wx.showToast({ title: msg, icon: 'none' })
     } finally {
       this.setData({ registering: false })
+    }
+  },
+
+  // ─── 记分相关 ───────────────────────────────────────────
+  openScoreModal(e) {
+    const game = e.currentTarget.dataset.game
+    this.setData({ showScoreModal: true, editingGame: game,
+      editScore1: game.score1 != null ? String(game.score1) : '',
+      editScore2: game.score2 != null ? String(game.score2) : '' })
+  },
+  closeScoreModal() { this.setData({ showScoreModal: false, editingGame: null }) },
+  onScore1(e) { this.setData({ editScore1: e.detail.value }) },
+  onScore2(e) { this.setData({ editScore2: e.detail.value }) },
+  async submitScore() {
+    const { id, editingGame, editScore1, editScore2 } = this.data
+    if (editScore1 === '' || editScore2 === '') {
+      wx.showToast({ title: '请填写双方比分', icon: 'none' }); return
+    }
+    try {
+      await api.updateScore(id, editingGame.id, parseInt(editScore1), parseInt(editScore2))
+      this.setData({ showScoreModal: false })
+      wx.showToast({ title: '比分已保存', icon: 'success' })
+      this._loadGames()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '保存失败', icon: 'none' })
+    }
+  },
+
+  // ─── 结束比赛 ───────────────────────────────────────────
+  async finishMatch() {
+    const res = await wx.showModal({ title: '结束比赛', content: '确认结束本场比赛？结束后将无法修改比分。' })
+    if (!res.confirm) return
+    try {
+      await api.finishMatch(this.data.id)
+      wx.showToast({ title: '比赛已结束', icon: 'success' })
+      this._load()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
     }
   },
 

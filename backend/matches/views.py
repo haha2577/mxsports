@@ -255,13 +255,27 @@ class GenerateDrawView(APIView):
         return ok({'gamesCount': len(games), 'type': draw_type}, '对阵生成成功')
 
 
+class MatchGamesView(APIView):
+    """获取活动所有场次"""
+    permission_classes = [IsJWTAuthenticated]
+
+    def get(self, request, pk):
+        from .serializers import GameSerializer
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return err('活动不存在', 404)
+        games = match.games.select_related('player1','partner1','player2','partner2').all()
+        return ok(GameSerializer(games, many=True).data)
+
+
 class UpdateScoreView(APIView):
     permission_classes = [IsJWTAuthenticated]
 
     def put(self, request, pk, game_id):
         try:
             match = Match.objects.get(pk=pk)
-            game = Game.objects.get(pk=game_id, match=match)
+            game  = Game.objects.get(pk=game_id, match=match)
         except (Match.DoesNotExist, Game.DoesNotExist):
             return err('记录不存在', 404)
 
@@ -269,19 +283,96 @@ class UpdateScoreView(APIView):
         if match.organizer_id != user.id and not user.is_organizer:
             return err('仅组织者可录入比分', 403)
 
-        s = ScoreUpdateSerializer(data=request.data)
-        s.is_valid(raise_exception=True)
-        d = s.validated_data
+        score1 = request.data.get('score1')
+        score2 = request.data.get('score2')
+        if score1 is None or score2 is None:
+            return err('请填写双方比分')
 
-        game.score1    = d['score1']
-        game.score2    = d['score2']
-        game.winner_id = d['winnerId']
-        game.status    = 'finished'
+        game.score1 = int(score1)
+        game.score2 = int(score2)
+        if game.score1 > game.score2:
+            game.winner_team = 'team1'
+        elif game.score2 > game.score1:
+            game.winner_team = 'team2'
+        else:
+            game.winner_team = 'draw'
+        game.status = 'finished'
         game.save()
 
-        # 所有场次结束则赛事完结
-        if not match.games.exclude(status='finished').exists():
-            match.status = 'finished'
-            match.save(update_fields=['status'])
+        return ok({'winnerTeam': game.winner_team}, '比分已更新')
 
-        return ok(message='比分已更新')
+
+class LeaderboardView(APIView):
+    """积分排行榜"""
+    permission_classes = [IsJWTAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return err('活动不存在', 404)
+
+        games = match.games.filter(status='finished').select_related(
+            'player1','partner1','player2','partner2')
+
+        # 积分统计：胜2分，平1分，负0分
+        stats = {}
+
+        def add(user, win, draw):
+            if user is None:
+                return
+            uid = user.id
+            if uid not in stats:
+                stats[uid] = {'id': uid, 'name': user.nickname,
+                              'played': 0, 'wins': 0, 'draws': 0, 'losses': 0, 'points': 0,
+                              'scored': 0, 'conceded': 0}
+            s = stats[uid]
+            s['played'] += 1
+            if win:
+                s['wins'] += 1; s['points'] += 2
+            elif draw:
+                s['draws'] += 1; s['points'] += 1
+            else:
+                s['losses'] += 1
+
+        for g in games:
+            wt = g.winner_team
+            for u in [g.player1, g.partner1]:
+                add(u, wt=='team1', wt=='draw')
+            for u in [g.player2, g.partner2]:
+                add(u, wt=='team2', wt=='draw')
+            # 得失分
+            for u in [g.player1, g.partner1]:
+                if u and u.id in stats:
+                    stats[u.id]['scored']    += g.score1 or 0
+                    stats[u.id]['conceded']  += g.score2 or 0
+            for u in [g.player2, g.partner2]:
+                if u and u.id in stats:
+                    stats[u.id]['scored']    += g.score2 or 0
+                    stats[u.id]['conceded']  += g.score1 or 0
+
+        board = sorted(stats.values(),
+                       key=lambda x: (-x['points'], -(x['scored']-x['conceded']), -x['scored']))
+        for i, row in enumerate(board):
+            row['rank'] = i + 1
+
+        return ok(board)
+
+
+class FinishMatchView(APIView):
+    """结束比赛"""
+    permission_classes = [IsJWTAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return err('活动不存在', 404)
+        user = request.user_obj
+        if match.organizer_id != user.id and not user.is_organizer:
+            return err('无权操作', 403)
+        if match.status != 'ongoing':
+            return err('只有进行中的活动才能结束')
+        match.status = 'finished'
+        match.save(update_fields=['status'])
+        return ok({'status': 'finished'}, '比赛已结束')
