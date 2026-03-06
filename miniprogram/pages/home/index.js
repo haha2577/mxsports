@@ -1,8 +1,8 @@
-const { MATCHES, NEWS } = require('../../store/mockData')
+const { MATCHES } = require('../../store/mockData')
 const GRAD_B = 'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)'
 const GRAD_T = 'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
-  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],news:[],sbh:20,showLogin:false,showSportPref:false},
+  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],sbh:20,showLogin:false,showSportPref:false},
   onLoad(){
     try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
   },
@@ -18,7 +18,7 @@ Page({
     }
   },
   _loadData(sport){
-    this.setData({matches:(MATCHES[sport]||[]).slice(0,3),news:(NEWS[sport]||[]).slice(0,4)})
+    this.setData({matches:(MATCHES[sport]||[]).slice(0,3)})
   },
   onSwitchSport(e){
     const sport=e.detail
@@ -48,8 +48,6 @@ Page({
   goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},
   goVenue(){wx.navigateTo({url:'/pages/venue/list/index?sport='+this.data.activeSport})},
   goNews(){wx.navigateTo({url:'/pages/news/list/index?sport='+this.data.activeSport})},
-  goNewsDetail(e){wx.navigateTo({url:'/pages/news/detail/index?id='+e.currentTarget.dataset.id})},
   goMatchList(){wx.navigateTo({url:'/pages/match/list/index?sport='+this.data.activeSport})},
   goMatchDetail(e){wx.navigateTo({url:'/pages/match/detail/index?id='+e.currentTarget.dataset.id})},
-  goProfile(){wx.switchTab({url:'/pages/profile/index'})},
 })

@@ -36,17 +36,13 @@
 
   <!-- 已登录 -->
   <block wx:if="{{token}}">
-    <view class="hero" style="padding-top:{{sbh+12}}px;background:{{heroGrad}}">
+    <view class="hero" style="padding-top:{{sbh+8}}px;background:{{heroGrad}}">
       <text class="hero-deco">{{activeSport==='badminton'?'🏸':'🎾'}}</text>
       <view class="hero-topbar">
         <sport-switcher sport-pref="{{sportPref}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
-        <view class="avatar-btn" bindtap="goProfile">
-          <text class="av-emoji">🙋</text>
-        </view>
       </view>
       <view class="hero-inner">
         <text class="hero-greeting">Hi，{{nickname}} 👋</text>
-        <text class="hero-title">{{activeSport==='badminton'?'羽毛球赛事':'网球赛事'}}</text>
         <text class="hero-sub">{{activeSport==='badminton'?'报名、组织、记录你的每一场比赛':'专业赛事管理，积分排名实时更新'}}</text>
       </view>
     </view>
@@ -65,26 +61,6 @@
         <view class="ac-icon" style="background:#fff0e0"><text>📰</text></view>
         <text class="ac-title">最新资讯</text>
       </view>
-    </view>
-
-    <!-- 资讯卡片 -->
-    <view class="section">
-      <view class="sec-hd">
-        <view class="sec-hd-l"><view class="dot" style="background:#ff6b35"/><text class="sec-title">最新资讯</text></view>
-        <text class="sec-more" style="color:#ff6b35" bindtap="goNews">更多 ›</text>
-      </view>
-      <scroll-view scroll-x class="news-scroll">
-        <view class="news-row">
-          <view wx:for="{{news}}" wx:key="id" class="news-card" bindtap="goNewsDetail" data-id="{{item.id}}">
-            <view class="news-cover" style="background:{{item.catColor}}18">
-              <text class="nc-icon">{{item.cat==='赛事动态'?'🏆':item.cat==='技术提升'?'💡':'🎽'}}</text>
-            </view>
-            <text class="nc-cat" style="color:{{item.catColor}};background:{{item.catColor}}18">{{item.cat}}</text>
-            <text class="nc-title">{{item.title}}</text>
-            <text class="nc-date">{{item.date}}</text>
-          </view>
-        </view>
-      </scroll-view>
     </view>
 
     <!-- 附近约球 -->
