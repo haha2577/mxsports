@@ -121,8 +121,11 @@
         <view class="reg-btn reg-half" bindtap="doRegister">
           <text>{{registering?'处理中...':(isRegistered?'✅ 已报名':'🎤 我也报名')}}</text>
         </view>
+        <view class="org-btn org-start" bindtap="openFormatSheet">
+          <text>▶ 开始比赛</text>
+        </view>
         <view class="org-btn org-pause" bindtap="pauseMatch">
-          <text>⏸ 暂停报名</text>
+          <text>⏸ 暂停</text>
         </view>
       </view>
       <view wx:elif="{{match.status==='paused'}}" class="org-action-row">
@@ -154,6 +157,22 @@
         <text>{{match.status==='paused'?'报名已暂停':match.status==='ongoing'?'进行中':match.status==='cancelled'?'已取消':'已结束'}}</text>
       </view>
     </block>
+  </view>
+
+  <!-- 赛制选择弹窗 -->
+  <view wx:if="{{showFormatSheet}}" class="sheet-mask" bindtap="closeFormatSheet">
+    <view class="sheet" catchtap="">
+      <view class="sheet-handle"/>
+      <text class="sheet-title">选择赛制</text>
+      <view wx:for="{{formats}}" wx:key="type" class="fmt-item {{item.enabled?'':'fmt-disabled'}}" bindtap="selectFormat" data-fmt="{{item}}">
+        <view class="fmt-body">
+          <text class="fmt-name">{{item.name}}</text>
+          <text class="fmt-desc">{{item.desc}}</text>
+        </view>
+        <text wx:if="{{item.enabled}}" class="fmt-arrow">›</text>
+        <view wx:else class="fmt-soon">即将上线</view>
+      </view>
+    </view>
   </view>
 
 </view>

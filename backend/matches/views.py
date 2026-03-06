@@ -52,6 +52,36 @@ def gen_group(players, group_size=4):
     return [g for group in groups for g in gen_round_robin(group)]
 
 
+def gen_rotation_doubles(players):
+    """
+    多人轮转双打：随机配对成若干组，每组2人作为一支队伍，
+    所有队伍之间进行循环赛（每支队伍都和其他队伍对阵一次）。
+    若人数为奇数，最后一人暂时轮空（不影响生成）。
+    """
+    shuffled = players[:]
+    random.shuffle(shuffled)
+    # 两两配对成队伍
+    pairs = []
+    for i in range(0, len(shuffled) - 1, 2):
+        pairs.append((shuffled[i], shuffled[i + 1]))
+    # 奇数人时最后一人单独成队（partner 为 None）
+    if len(shuffled) % 2 == 1:
+        pairs.append((shuffled[-1], None))
+
+    # 所有队伍之间循环对阵
+    games = []
+    for i in range(len(pairs) - 1):
+        for j in range(i + 1, len(pairs)):
+            p1, pt1 = pairs[i]
+            p2, pt2 = pairs[j]
+            games.append(Game(
+                player1=p1, partner1=pt1,
+                player2=p2, partner2=pt2,
+                round_num=1,
+            ))
+    return games
+
+
 # ─── 分页 ─────────────────────────────────────────────────
 class MatchPagination(PageNumberPagination):
     page_size = 10
@@ -204,7 +234,11 @@ class GenerateDrawView(APIView):
         match.games.all().delete()
 
         draw_type = request.data.get('type', match.match_type)
-        if draw_type == 'round_robin':
+        if draw_type == 'rotation_doubles':
+            if len(player_objs) < 4:
+                return err('多人轮转双打至少需要4名选手')
+            games = gen_rotation_doubles(player_objs)
+        elif draw_type == 'round_robin':
             games = gen_round_robin(player_objs)
         elif draw_type == 'knockout':
             games = gen_knockout(player_objs)
@@ -215,9 +249,10 @@ class GenerateDrawView(APIView):
             g.match = match
         Game.objects.bulk_create(games)
 
+        match.match_type = draw_type
         match.status = 'ongoing'
-        match.save(update_fields=['status'])
-        return ok({'gamesCount': len(games)}, '对阵生成成功')
+        match.save(update_fields=['status', 'match_type'])
+        return ok({'gamesCount': len(games), 'type': draw_type}, '对阵生成成功')
 
 
 class UpdateScoreView(APIView):

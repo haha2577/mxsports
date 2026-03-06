@@ -33,6 +33,7 @@ const api = {
   createMatch:    (data) => request('POST', '/matches', data),
   register:       (id)   => request('POST',   '/matches/' + id + '/register', {}),
   cancelRegister: (id)   => request('DELETE', '/matches/' + id + '/register', {}),
+  startMatch:     (id, type)   => request('POST',   '/matches/' + id + '/generate-draw', { type }),
   matchAction:    (id, action) => request('POST',   '/matches/' + id + '/status', { action }),
   deleteMatch:    (id)         => request('DELETE', '/matches/' + id + '/status', {}),
   adminCancelReg: (matchId, regId) => request('DELETE', `/matches/${matchId}/registrations/${regId}`, {}),

@@ -73,7 +73,22 @@
 .reg-half{flex:1}
 .org-btn{flex:1;height:96rpx;border-radius:20rpx;display:flex;align-items:center;justify-content:center}
 .org-btn text{font-size:26rpx;font-weight:600}
+.org-start{background:#e8f7ee}.org-start text{color:#0a7a38}
 .org-pause{background:#fff3e0}.org-pause text{color:#f57c00}
 .org-resume{background:#e8f7ee}.org-resume text{color:#1DB954}
 .org-cancel{background:#fce4ec}.org-cancel text{color:#e53935}
 .org-delete{background:#fce4ec}.org-delete text{color:#e53935}
+
+/* 赛制选择弹窗 */
+.sheet-mask{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:flex-end}
+.sheet{background:#fff;border-radius:32rpx 32rpx 0 0;width:100%;padding:0 0 60rpx}
+.sheet-handle{width:80rpx;height:8rpx;background:#e0e0e0;border-radius:4rpx;margin:20rpx auto 0}
+.sheet-title{display:block;font-size:32rpx;font-weight:bold;color:#1a1a1a;padding:24rpx 32rpx 16rpx}
+.fmt-item{display:flex;align-items:center;padding:28rpx 32rpx;border-bottom:1rpx solid #f5f5f5}
+.fmt-item:last-child{border-bottom:none}
+.fmt-disabled{opacity:.4}
+.fmt-body{flex:1}
+.fmt-name{display:block;font-size:30rpx;font-weight:600;color:#1a1a1a;margin-bottom:6rpx}
+.fmt-desc{font-size:24rpx;color:#aaa}
+.fmt-arrow{font-size:36rpx;color:#ccc}
+.fmt-soon{font-size:22rpx;color:#bbb;background:#f5f5f5;padding:6rpx 16rpx;border-radius:50rpx}

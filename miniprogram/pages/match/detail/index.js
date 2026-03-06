@@ -10,6 +10,13 @@ Page({
     isOrganizer: false,
     myUserId: null,
     statusMap: { open: '报名中', paused: '已暂停', ongoing: '进行中', finished: '已结束', draft: '草稿', cancelled: '已取消' },
+    showFormatSheet: false,
+    formats: [
+      { type: 'rotation_doubles', name: '多人轮转双打', desc: '随机配对，所有组合循环对阵', enabled: true },
+      { type: 'round_robin',      name: '单打循环赛',   desc: '敬请期待', enabled: false },
+      { type: 'knockout',         name: '单打淘汰赛',   desc: '敬请期待', enabled: false },
+      { type: 'team',             name: '团体赛',       desc: '敬请期待', enabled: false },
+    ],
     levelMap:  { open: 'status-open', ongoing: 'status-ongoing', finished: 'status-done', draft: 'status-draft' },
   },
 
@@ -65,6 +72,32 @@ Page({
       wx.showToast({ title: msg, icon: 'none' })
     } finally {
       this.setData({ registering: false })
+    }
+  },
+
+  openFormatSheet() { this.setData({ showFormatSheet: true }) },
+  closeFormatSheet() { this.setData({ showFormatSheet: false }) },
+
+  async selectFormat(e) {
+    const fmt = e.currentTarget.dataset.fmt
+    if (!fmt.enabled) return
+    this.setData({ showFormatSheet: false })
+    const { id, match } = this.data
+    const count = match.registeredCount || 0
+    if (count < 4) {
+      wx.showToast({ title: `至少需要4名报名选手（当前${count}人）`, icon: 'none' }); return
+    }
+    const res = await wx.showModal({
+      title: '开始比赛',
+      content: `赛制：${fmt.name}\n共 ${count} 名选手，确认开始？`,
+    })
+    if (!res.confirm) return
+    try {
+      const r = await api.startMatch(id, fmt.type)
+      wx.showToast({ title: `已生成${r.data.data.gamesCount}场对阵`, icon: 'success' })
+      this._load()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '开始失败', icon: 'none' })
     }
   },
 

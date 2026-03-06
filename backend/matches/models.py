@@ -12,9 +12,14 @@ class Match(models.Model):
         ('cancelled','已取消'),
     ]
     TYPE_CHOICES = [
-        ('round_robin', '循环赛'),
-        ('knockout',    '淘汰赛'),
-        ('group',       '分组赛'),
+        ('rotation_doubles', '多人轮转双打'),
+        ('round_robin',      '单打循环赛'),
+        ('knockout',         '单打淘汰赛'),
+        ('group',            '单打分组赛'),
+        # 以下赛制预留，暂不支持
+        # ('doubles_knockout', '双打淘汰赛'),
+        # ('team',             '团体赛'),
+        # ('mixed',            '混合双打赛'),
     ]
 
     sport          = models.CharField(max_length=20, default='badminton')
@@ -58,10 +63,14 @@ class Game(models.Model):
         ('finished', '已完成'),
     ]
 
-    match     = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='games')
+    match    = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='games')
     round_num = models.IntegerField(default=1)
+    # 队伍1：player1 + partner1（双打时有搭档）
     player1   = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='games_as_p1')
+    partner1  = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='games_as_partner1')
+    # 队伍2：player2 + partner2
     player2   = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='games_as_p2')
+    partner2  = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='games_as_partner2')
     score1    = models.IntegerField(null=True, blank=True)
     score2    = models.IntegerField(null=True, blank=True)
     winner    = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='won_games')
