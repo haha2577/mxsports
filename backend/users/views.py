@@ -252,6 +252,56 @@ class WxPhoneLoginView(APIView):
         return token
 
 
+# ─── 我的球友 ──────────────────────────────────────────────
+class FriendsView(APIView):
+    permission_classes = [IsJWTAuthenticated]
+
+    def get(self, request):
+        from registrations.models import Registration
+        from collections import defaultdict
+
+        user = request.user_obj
+        # 找我参加过的所有活动
+        my_match_ids = Registration.objects.filter(
+            user=user, status='approved'
+        ).values_list('match_id', flat=True)
+
+        # 找这些活动中的其他人（含match信息）
+        other_regs = (
+            Registration.objects
+            .filter(match_id__in=my_match_ids, status='approved')
+            .exclude(user=user)
+            .select_related('user', 'match')
+        )
+
+        # 按用户分组，找最近共同活动
+        latest = defaultdict(lambda: None)
+        for reg in other_regs:
+            cur = latest[reg.user_id]
+            match_time = reg.match.start_time or reg.match.created_at
+            if cur is None or match_time > (cur.match.start_time or cur.match.created_at):
+                latest[reg.user_id] = reg
+
+        result = []
+        for reg in latest.values():
+            m = reg.match
+            result.append({
+                'id': reg.user.id,
+                'nickname': reg.user.nickname,
+                'avatar': reg.user.avatar or '',
+                'lastMatch': {
+                    'id': m.id,
+                    'name': m.name,
+                    'location': m.location,
+                    'startTime': m.start_time.isoformat() if m.start_time else None,
+                }
+            })
+
+        # 按最近活动时间倒序
+        result.sort(key=lambda x: x['lastMatch']['startTime'] or '', reverse=True)
+        return ok(result)
+
+
 # ─── 用户信息 ──────────────────────────────────────────────
 class ProfileView(APIView):
     permission_classes = [IsJWTAuthenticated]

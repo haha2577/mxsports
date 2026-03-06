@@ -7,6 +7,7 @@
     "pages/match/create/index",
     "pages/match/detail/index",
     "pages/my/activities/index",
+    "pages/my/friends/index",
     "pages/news/list/index",
     "pages/news/detail/index",
     "pages/venue/list/index",

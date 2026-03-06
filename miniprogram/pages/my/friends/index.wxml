@@ -1,0 +1,39 @@
+<view class="page">
+
+  <view class="header">
+    <text class="hd-emoji">🤝</text>
+    <view class="hd-text">
+      <text class="hd-title">我的球友</text>
+      <text class="hd-sub">一起参加过活动的伙伴</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
+
+  <view wx:elif="{{!list.length}}" class="empty">
+    <text class="ei">🤝</text>
+    <text class="et">还没有球友</text>
+    <text class="es">报名参加活动，认识更多球友吧！</text>
+  </view>
+
+  <view wx:else class="list">
+    <view wx:for="{{list}}" wx:key="id" class="friend-card" bindtap="goMatch" data-id="{{item.lastMatch.id}}">
+      <view class="avatar">
+        <text class="av-emoji">🙋</text>
+      </view>
+      <view class="info">
+        <text class="nickname">{{item.nickname}}</text>
+        <view class="last-match">
+          <text class="lm-label">上次同场</text>
+          <text class="lm-name">{{item.lastMatch.name}}</text>
+        </view>
+        <view class="lm-meta">
+          <text wx:if="{{item.lastMatch.startTime}}" class="lm-time">🕐 {{item.lastMatch.startTime}}</text>
+          <text wx:if="{{item.lastMatch.location}}" class="lm-loc">📍 {{item.lastMatch.location}}</text>
+        </view>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+</view>
