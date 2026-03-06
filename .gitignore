@@ -19,3 +19,4 @@ deploy/private.*.key
 deploy/preview-qrcode.jpg
 deploy/node_modules/
 deploy/*.jpg
+id_ed25519
