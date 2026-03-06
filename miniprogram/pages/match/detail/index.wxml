@@ -12,7 +12,7 @@
       <text class="hero-deco">{{match.sport==='tennis'?'🎾':'🏸'}}</text>
       <view class="hero-inner">
         <view class="hero-top">
-          <view class="status-badge status-{{match.status}}">{{statusMap[match.status]}}</view>
+          <view class="status-badge status-{{match.status}}">{{statusMap[match.status]||match.status}}</view>
           <text wx:if="{{match.fee>0}}" class="fee-badge">¥{{match.fee}}</text>
           <text wx:else class="fee-badge fee-free">免费</text>
         </view>
@@ -111,15 +111,46 @@
       <text>📤</text>
       <text class="share-txt">分享</text>
     </view>
-    <!-- 报名/取消 -->
-    <view wx:if="{{match.status==='open'}}"
-      class="reg-btn {{isRegistered?'reg-cancel':''}} {{registering?'reg-loading':''}}"
-      bindtap="doRegister">
-      <text>{{registering?'处理中...':(isRegistered?'✅ 已报名（点击取消）':(isOrganizer?'🎤 发起人报名':'🙋 立即报名'))}}</text>
-    </view>
-    <view wx:elif="{{match.status!=='open'}}" class="reg-btn reg-disabled">
-      <text>{{match.status==='ongoing'?'进行中':'已结束'}}</text>
-    </view>
+
+    <!-- 组织者操作 -->
+    <block wx:if="{{isOrganizer}}">
+      <view wx:if="{{match.status==='open'}}" class="org-action-row">
+        <view class="reg-btn reg-half" bindtap="doRegister">
+          <text>{{registering?'处理中...':(isRegistered?'✅ 已报名':'🎤 我也报名')}}</text>
+        </view>
+        <view class="org-btn org-pause" bindtap="pauseMatch">
+          <text>⏸ 暂停报名</text>
+        </view>
+      </view>
+      <view wx:elif="{{match.status==='paused'}}" class="org-action-row">
+        <view class="org-btn org-resume" bindtap="resumeMatch">
+          <text>▶ 恢复报名</text>
+        </view>
+        <view class="org-btn org-cancel" bindtap="cancelMatch">
+          <text>🗑 取消活动</text>
+        </view>
+      </view>
+      <view wx:else class="org-action-row">
+        <view class="reg-btn reg-disabled" style="flex:1">
+          <text>{{match.status==='cancelled'?'已取消':match.status==='ongoing'?'进行中':'已结束'}}</text>
+        </view>
+        <view wx:if="{{match.status==='cancelled'}}" class="org-btn org-delete" bindtap="deleteMatch">
+          <text>🗑 彻底删除</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 普通用户 -->
+    <block wx:else>
+      <view wx:if="{{match.status==='open'}}"
+        class="reg-btn {{isRegistered?'reg-cancel':''}} {{registering?'reg-loading':''}}"
+        bindtap="doRegister">
+        <text>{{registering?'处理中...':(isRegistered?'✅ 已报名（点击取消）':'🙋 立即报名')}}</text>
+      </view>
+      <view wx:else class="reg-btn reg-disabled">
+        <text>{{match.status==='paused'?'报名已暂停':match.status==='ongoing'?'进行中':match.status==='cancelled'?'已取消':'已结束'}}</text>
+      </view>
+    </block>
   </view>
 
 </view>

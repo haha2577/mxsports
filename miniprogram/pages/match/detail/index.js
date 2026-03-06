@@ -9,7 +9,7 @@ Page({
     isRegistered: false,
     isOrganizer: false,
     myUserId: null,
-    statusMap: { open: '报名中', ongoing: '进行中', finished: '已结束', draft: '草稿' },
+    statusMap: { open: '报名中', paused: '已暂停', ongoing: '进行中', finished: '已结束', draft: '草稿', cancelled: '已取消' },
     levelMap:  { open: 'status-open', ongoing: 'status-ongoing', finished: 'status-done', draft: 'status-draft' },
   },
 
@@ -65,6 +65,54 @@ Page({
       wx.showToast({ title: msg, icon: 'none' })
     } finally {
       this.setData({ registering: false })
+    }
+  },
+
+  async pauseMatch() {
+    const { id } = this.data
+    try {
+      await api.matchAction(id, 'pause')
+      wx.showToast({ title: '已暂停报名', icon: 'success' })
+      this._load()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+    }
+  },
+
+  async resumeMatch() {
+    const { id } = this.data
+    try {
+      await api.matchAction(id, 'resume')
+      wx.showToast({ title: '已恢复报名', icon: 'success' })
+      this._load()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+    }
+  },
+
+  async cancelMatch() {
+    const { id } = this.data
+    const res = await wx.showModal({ title: '取消活动', content: '确定取消？取消后可以彻底删除。' })
+    if (!res.confirm) return
+    try {
+      await api.matchAction(id, 'cancel')
+      wx.showToast({ title: '活动已取消', icon: 'success' })
+      this._load()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+    }
+  },
+
+  async deleteMatch() {
+    const { id } = this.data
+    const res = await wx.showModal({ title: '彻底删除', content: '删除后无法恢复，确定吗？', confirmColor: '#e53935' })
+    if (!res.confirm) return
+    try {
+      await api.deleteMatch(id)
+      wx.showToast({ title: '已删除', icon: 'success' })
+      setTimeout(() => wx.navigateBack(), 1500)
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '删除失败', icon: 'none' })
     }
   },
 

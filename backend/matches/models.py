@@ -6,8 +6,10 @@ class Match(models.Model):
     STATUS_CHOICES = [
         ('draft',    '草稿'),
         ('open',     '报名中'),
+        ('paused',   '已暂停'),
         ('ongoing',  '进行中'),
         ('finished', '已结束'),
+        ('cancelled','已取消'),
     ]
     TYPE_CHOICES = [
         ('round_robin', '循环赛'),

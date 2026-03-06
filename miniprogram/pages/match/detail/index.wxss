@@ -14,6 +14,8 @@
 .status-ongoing{background:#fff3e0;color:#f57c00}
 .status-done,.status-finished{background:#f5f5f5;color:#999}
 .status-draft{background:#e8eaf6;color:#5c6bc0}
+.status-paused{background:#fff3e0;color:#f57c00}
+.status-cancelled{background:#fce4ec;color:#e53935}
 .fee-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;background:rgba(255,255,255,.15);color:#fff;font-weight:600}
 .fee-free{background:rgba(29,185,84,.2);color:#1DB954}
 .hero-name{display:block;font-size:40rpx;font-weight:bold;color:#fff;line-height:1.4;margin-bottom:20rpx}
@@ -63,5 +65,11 @@
 .reg-loading{opacity:.6}
 .reg-disabled{background:#f5f5f5}
 .reg-disabled text{color:#aaa}
-.org-badge{flex:1;height:96rpx;background:#fff3e0;border-radius:20rpx;display:flex;align-items:center;justify-content:center}
-.org-badge text{font-size:28rpx;color:#f57c00;font-weight:600}
+.org-action-row{flex:1;display:flex;gap:12rpx}
+.reg-half{flex:1}
+.org-btn{flex:1;height:96rpx;border-radius:20rpx;display:flex;align-items:center;justify-content:center}
+.org-btn text{font-size:26rpx;font-weight:600}
+.org-pause{background:#fff3e0}.org-pause text{color:#f57c00}
+.org-resume{background:#e8f7ee}.org-resume text{color:#1DB954}
+.org-cancel{background:#fce4ec}.org-cancel text{color:#e53935}
+.org-delete{background:#fce4ec}.org-delete text{color:#e53935}

@@ -132,6 +132,49 @@ class MatchDetailView(APIView):
         return ok(message='更新成功')
 
 
+class MatchStatusView(APIView):
+    """组织者暂停/恢复/取消报名"""
+    permission_classes = [IsJWTAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return err('赛事不存在', 404)
+        user = request.user_obj
+        if match.organizer_id != user.id and not user.is_organizer:
+            return err('无权操作', 403)
+        action = request.data.get('action')
+        if action == 'pause':
+            if match.status != 'open':
+                return err('只有报名中的活动才能暂停')
+            match.status = 'paused'
+        elif action == 'resume':
+            if match.status != 'paused':
+                return err('只有已暂停的活动才能恢复')
+            match.status = 'open'
+        elif action == 'cancel':
+            if match.status in ('finished', 'cancelled'):
+                return err('活动已结束或已取消')
+            match.status = 'cancelled'
+        else:
+            return err('无效操作')
+        match.save(update_fields=['status'])
+        return ok({'status': match.status}, '操作成功')
+
+    def delete(self, request, pk):
+        """彻底删除活动"""
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return err('赛事不存在', 404)
+        user = request.user_obj
+        if match.organizer_id != user.id and not user.is_organizer:
+            return err('无权操作', 403)
+        match.delete()
+        return ok(message='活动已删除')
+
+
 class GenerateDrawView(APIView):
     permission_classes = [IsJWTAuthenticated]
 

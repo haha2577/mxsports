@@ -31,8 +31,10 @@ const api = {
   myRegs:         ()     => request('GET',  '/registrations/mine'),
   matchDetail:    (id)   => request('GET',  '/matches/' + id),
   createMatch:    (data) => request('POST', '/matches', data),
-  register:       (id)   => request('POST', '/matches/' + id + '/register', {}),
+  register:       (id)   => request('POST',   '/matches/' + id + '/register', {}),
   cancelRegister: (id)   => request('DELETE', '/matches/' + id + '/register', {}),
+  matchAction:    (id, action) => request('POST', '/matches/' + id + '/status', { action }),
+  deleteMatch:    (id)   => request('DELETE', '/matches/' + id + '/status', {}),
 }
 
 module.exports = { api, request }
