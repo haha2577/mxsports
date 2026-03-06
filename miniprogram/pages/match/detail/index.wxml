@@ -112,13 +112,10 @@
       <text class="share-txt">分享</text>
     </view>
     <!-- 报名/取消 -->
-    <view wx:if="{{!isOrganizer&&match.status==='open'}}"
+    <view wx:if="{{match.status==='open'}}"
       class="reg-btn {{isRegistered?'reg-cancel':''}} {{registering?'reg-loading':''}}"
       bindtap="doRegister">
-      <text>{{registering?'处理中...':(isRegistered?'✅ 已报名（点击取消）':'🙋 立即报名')}}</text>
-    </view>
-    <view wx:elif="{{isOrganizer}}" class="org-badge">
-      <text>🎤 我是组织者</text>
+      <text>{{registering?'处理中...':(isRegistered?'✅ 已报名（点击取消）':(isOrganizer?'🎤 发起人报名':'🙋 立即报名'))}}</text>
     </view>
     <view wx:elif="{{match.status!=='open'}}" class="reg-btn reg-disabled">
       <text>{{match.status==='ongoing'?'进行中':'已结束'}}</text>
