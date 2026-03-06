@@ -91,13 +91,16 @@
       <view wx:if="{{!match.players||!match.players.length}}" class="empty-players">
         <text>还没有人报名，快来第一个！</text>
       </view>
-      <view wx:else class="players-grid">
-        <view wx:for="{{match.players}}" wx:key="id" class="player-item">
-          <view class="player-avatar">
-            <text class="pa-emoji">🙋</text>
+      <view wx:else class="players-list">
+        <view wx:for="{{match.players}}" wx:key="id" class="player-row">
+          <view class="player-avatar"><text class="pa-emoji">🙋</text></view>
+          <view class="player-info">
+            <text class="player-name">{{item.name}}</text>
+            <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>
           </view>
-          <text class="player-name">{{item.name}}</text>
-          <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>
+          <view wx:if="{{isOrganizer}}" class="remove-btn" catchtap="adminRemove" data-reg-id="{{item.regId}}" data-name="{{item.name}}">
+            <text>移除</text>
+          </view>
         </view>
       </view>
     </view>

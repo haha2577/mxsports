@@ -33,8 +33,9 @@ const api = {
   createMatch:    (data) => request('POST', '/matches', data),
   register:       (id)   => request('POST',   '/matches/' + id + '/register', {}),
   cancelRegister: (id)   => request('DELETE', '/matches/' + id + '/register', {}),
-  matchAction:    (id, action) => request('POST', '/matches/' + id + '/status', { action }),
-  deleteMatch:    (id)   => request('DELETE', '/matches/' + id + '/status', {}),
+  matchAction:    (id, action) => request('POST',   '/matches/' + id + '/status', { action }),
+  deleteMatch:    (id)         => request('DELETE', '/matches/' + id + '/status', {}),
+  adminCancelReg: (matchId, regId) => request('DELETE', `/matches/${matchId}/registrations/${regId}`, {}),
 }
 
 module.exports = { api, request }

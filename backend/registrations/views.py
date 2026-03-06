@@ -56,6 +56,28 @@ class RegistrationListView(APIView):
         return ok(RegistrationSerializer(regs, many=True).data)
 
 
+class AdminCancelRegistrationView(APIView):
+    """组织者取消指定用户的报名"""
+    permission_classes = [IsJWTAuthenticated]
+
+    def delete(self, request, pk, reg_id):
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return err('赛事不存在', 404)
+
+        user = request.user_obj
+        if match.organizer_id != user.id and not user.is_organizer:
+            return err('无权操作', 403)
+
+        reg = Registration.objects.filter(id=reg_id, match=match).first()
+        if not reg:
+            return err('报名记录不存在', 404)
+
+        reg.delete()
+        return ok(message='已取消该用户报名')
+
+
 class MyRegistrationView(APIView):
     permission_classes = [IsJWTAuthenticated]
 

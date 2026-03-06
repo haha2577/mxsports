@@ -58,7 +58,7 @@ class MatchDetailSerializer(serializers.ModelSerializer):
 
     def get_players(self, obj):
         regs = obj.registrations.filter(status='approved').select_related('user')
-        return [{'id': r.user.id, 'name': r.user.nickname,
+        return [{'id': r.user.id, 'regId': r.id, 'name': r.user.nickname,
                  'avatar': r.user.avatar, 'level': r.level} for r in regs]
 
 

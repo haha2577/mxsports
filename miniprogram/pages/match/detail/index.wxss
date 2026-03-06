@@ -47,12 +47,16 @@
 
 /* 报名列表 */
 .empty-players{padding:32rpx 0;text-align:center;color:#bbb;font-size:26rpx}
-.players-grid{display:flex;flex-wrap:wrap;gap:20rpx;padding-top:8rpx}
-.player-item{display:flex;flex-direction:column;align-items:center;gap:8rpx;width:120rpx}
-.player-avatar{width:80rpx;height:80rpx;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.pa-emoji{font-size:40rpx}
-.player-name{font-size:22rpx;color:#333;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
-.player-level{font-size:18rpx;color:#aaa;text-align:center}
+.players-list{display:flex;flex-direction:column;gap:0}
+.player-row{display:flex;align-items:center;gap:16rpx;padding:16rpx 0;border-bottom:1rpx solid #f5f5f5}
+.player-row:last-child{border-bottom:none}
+.player-avatar{width:72rpx;height:72rpx;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pa-emoji{font-size:36rpx}
+.player-info{flex:1}
+.player-name{display:block;font-size:28rpx;color:#1a1a1a}
+.player-level{font-size:22rpx;color:#aaa}
+.remove-btn{padding:10rpx 24rpx;background:#fce4ec;border-radius:50rpx}
+.remove-btn text{font-size:24rpx;color:#e53935}
 
 /* 底部操作栏 */
 .action-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:16rpx 24rpx 40rpx;display:flex;gap:16rpx;box-shadow:0 -4rpx 20rpx rgba(0,0,0,.08)}

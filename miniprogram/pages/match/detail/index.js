@@ -68,6 +68,20 @@ Page({
     }
   },
 
+  async adminRemove(e) {
+    const { regId, name } = e.currentTarget.dataset
+    const { id } = this.data
+    const res = await wx.showModal({ title: '移除报名', content: `确定移除 ${name} 的报名吗？` })
+    if (!res.confirm) return
+    try {
+      await api.adminCancelReg(id, regId)
+      wx.showToast({ title: '已移除', icon: 'success' })
+      this._load()
+    } catch(e) {
+      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+    }
+  },
+
   async pauseMatch() {
     const { id } = this.data
     try {
