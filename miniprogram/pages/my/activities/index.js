@@ -23,7 +23,7 @@ Page({
       const created = ((mineRes&&mineRes.data&&mineRes.data.data)||[]).map(m=>({...m,role:'organizer'}))
       // 我报名的活动（去掉已在 created 里的）
       const createdIds = new Set(created.map(m=>m.id))
-      const regs = ((regsRes&&regsRes.data&&regsRes.data)||[]).filter(r=>!createdIds.has(r.id)).map(r=>({...r,role:'participant'}))
+      const regs = ((regsRes&&regsRes.data&&regsRes.data.data)||[]).filter(r=>!createdIds.has(r.id)).map(r=>({...r,role:'participant'}))
       const list=[...created,...regs]
       this.setData({list})
       this._filter()
