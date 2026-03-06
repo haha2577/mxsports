@@ -199,8 +199,8 @@
         </view>
       </view>
       <view wx:elif="{{match.status==='ongoing'}}" class="org-action-row">
-        <view class="reg-btn reg-disabled" style="flex:1">
-          <text>🏸 进行中</text>
+        <view class="org-btn org-restart" bindtap="openFormatSheet">
+          <text>🔄 重新开始</text>
         </view>
         <view class="org-btn org-finish" bindtap="finishMatch">
           <text>🏁 结束比赛</text>

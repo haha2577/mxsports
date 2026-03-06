@@ -74,6 +74,7 @@
 .org-btn{flex:1;height:96rpx;border-radius:20rpx;display:flex;align-items:center;justify-content:center}
 .org-btn text{font-size:26rpx;font-weight:600}
 .org-start{background:#e8f7ee}.org-start text{color:#0a7a38}
+.org-restart{background:#e3f2fd}.org-restart text{color:#1565c0}
 .org-finish{background:#fff8e1}.org-finish text{color:#f57f17}
 .org-pause{background:#fff3e0}.org-pause text{color:#f57c00}
 .org-resume{background:#e8f7ee}.org-resume text{color:#1DB954}
