@@ -19,16 +19,6 @@
     <view wx:else class="login-hint" bindtap="showLoginSheet"><text class="lh-txt">登录后查看你的赛事数据 ›</text></view>
   </view>
 
-  <view class="racket-banner" bindtap="goRacket">
-    <view class="rb-body">
-      <text class="rb-emoji">{{activeSport==='badminton'?'🏸':'🎾'}}</text>
-      <view class="rb-text">
-        <text class="rb-title">智能球拍推荐</text>
-        <text class="rb-sub">根据你的数据精准匹配球拍</text>
-      </view>
-    </view>
-    <text class="rb-arrow">›</text>
-  </view>
 
   <view wx:if="{{token}}" class="section-card">
     <text class="sec-title">{{activeSport==='badminton'?'🏸 羽毛球':'🎾 网球'}}</text>
