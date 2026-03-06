@@ -1,11 +1,17 @@
 const GRAD_B = 'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)'
 const GRAD_T = 'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
-  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,sbh:20,version:'0.0.1'},
+  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,sbh:20,version:''},
   onLoad(){
     try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
-    const v=wx.getAccountInfoSync&&wx.getAccountInfoSync()
-    if(v&&v.miniProgram&&v.miniProgram.version)this.setData({version:v.miniProgram.version})
+    // 优先从 version.json 读取，预览版也能正确显示
+    try{
+      const vj=require('../../version.json')
+      if(vj&&vj.versionName)this.setData({version:vj.versionName})
+    }catch(e){
+      const v=wx.getAccountInfoSync&&wx.getAccountInfoSync()
+      if(v&&v.miniProgram&&v.miniProgram.version)this.setData({version:v.miniProgram.version})
+    }
   },
   onShow(){
     const token=getApp().globalData.token||''
