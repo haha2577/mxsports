@@ -149,7 +149,10 @@
           <text class="lb-wdl">胜/平/负</text>
         </view>
         <view wx:for="{{leaderboard}}" wx:key="id" class="lb-row {{index<3?'lb-top':''}}">
-          <text class="lb-rank">{{item.rank<=3?'🥇🥈🥉'.substring((item.rank-1)*2,(item.rank-1)*2+2):item.rank}}</text>
+          <text wx:if="{{item.rank===1}}" class="lb-rank">🥇</text>
+          <text wx:elif="{{item.rank===2}}" class="lb-rank">🥈</text>
+          <text wx:elif="{{item.rank===3}}" class="lb-rank">🥉</text>
+          <text wx:else class="lb-rank">{{item.rank}}</text>
           <text class="lb-name">{{item.name}}</text>
           <text class="lb-pts lb-pts-val">{{item.points}}</text>
           <text class="lb-wdl">{{item.wins}}/{{item.draws}}/{{item.losses}}</text>
