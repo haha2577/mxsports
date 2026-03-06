@@ -45,5 +45,10 @@
     "login-sheet": "/components/login-sheet/index",
     "sport-pref-sheet": "/components/sport-pref-sheet/index"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于搜索附近场馆，选择活动地点"
+    }
+  },
   "sitemapLocation": "sitemap.json"
 }

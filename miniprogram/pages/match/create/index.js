@@ -9,7 +9,11 @@ Page({
     dateDisplay: '',
     time: '09:00',
     timeDisplay: '09:00',
-    location: '',
+    location: '',      // 传给后端（场馆名）
+    locationName: '',  // 展示名
+    locationAddr: '',  // 详细地址（副标题）
+    locationLat: null,
+    locationLng: null,
     // 可选
     maxPlayers: 8,
     fee: '',
@@ -53,14 +57,48 @@ Page({
     const timeDisplay = `${String(hi).padStart(2,'0')}:${mins[mi]}`
     this.setData({ timeIndex: [hi, mi], timeDisplay, time: timeDisplay })
   },
-  onLocation(e) { this.setData({ location: e.detail.value }) },
+  pickLocation() {
+    wx.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userLocation'] === false) {
+          wx.showModal({
+            title: '需要定位权限',
+            content: '请在设置中开启位置权限，以便搜索附近场馆',
+            confirmText: '去设置',
+            success: (r) => { if (r.confirm) wx.openSetting() },
+          })
+          return
+        }
+        this._doPickLocation()
+      },
+    })
+  },
+  _doPickLocation() {
+    wx.chooseLocation({
+      success: (res) => {
+        const name = res.name || res.address
+        const addr = res.name ? res.address : ''
+        this.setData({
+          locationName: name,
+          locationAddr: addr,
+          location: name + (addr ? ` ${addr}` : ''),
+          locationLat: res.latitude,
+          locationLng: res.longitude,
+        })
+      },
+      fail: () => {},
+    })
+  },
+  clearLocation() {
+    this.setData({ location: '', locationName: '', locationAddr: '', locationLat: null, locationLng: null })
+  },
   onFee(e) { this.setData({ fee: e.detail.value }) },
   setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v }) },
   setLevel(e) { this.setData({ level: e.currentTarget.dataset.v }) },
   setSport(e) { this.setData({ sport: e.currentTarget.dataset.v }) },
 
   async submit() {
-    const { sport, name, date, time, location, maxPlayers, fee, level, loading } = this.data
+    const { sport, name, date, time, location, locationLat, locationLng, maxPlayers, fee, level, loading } = this.data
     if (!name.trim()) { wx.showToast({ title: '请填写活动名称', icon: 'none' }); return }
     if (!date)        { wx.showToast({ title: '请选择活动日期', icon: 'none' }); return }
     if (!location.trim()) { wx.showToast({ title: '请填写活动地点', icon: 'none' }); return }
@@ -72,6 +110,8 @@ Page({
         sport,
         name: name.trim(),
         location: location.trim(),
+        lat: locationLat,
+        lng: locationLng,
         startTime,
         maxPlayers,
         fee: fee ? parseFloat(fee) : 0,

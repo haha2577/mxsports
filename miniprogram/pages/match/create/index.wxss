@@ -23,6 +23,11 @@
 .picker-val{font-size:28rpx;color:#1a1a1a}
 .picker-ph{font-size:28rpx;color:#bbb}
 .picker-arrow{font-size:32rpx;color:#ccc}
+.loc-picker{cursor:pointer}
+.loc-left{display:flex;align-items:center;gap:8rpx;flex:1;min-width:0}
+.loc-icon{font-size:28rpx}
+.loc-clear{font-size:24rpx;color:#bbb;padding:0 8rpx}
+.loc-addr{display:block;font-size:22rpx;color:#aaa;margin-top:8rpx;padding-left:4rpx;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .field-fee-wrap{display:flex;align-items:center;background:#f8f8f8;border-radius:16rpx;padding:0 24rpx;min-height:88rpx}
 .fee-prefix{font-size:32rpx;color:#888;margin-right:8rpx}
 .field-fee{flex:1;font-size:28rpx;color:#1a1a1a;padding:24rpx 0}

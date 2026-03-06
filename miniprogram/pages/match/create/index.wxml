@@ -49,8 +49,17 @@
     <!-- 地点 -->
     <view class="field">
       <text class="field-label">活动地点 <text class="req">*</text></text>
-      <input class="field-input" value="{{location}}" bindinput="onLocation"
-        placeholder="填写场馆名称或地址" maxlength="50"/>
+      <view class="field-picker loc-picker" bindtap="pickLocation">
+        <view class="loc-left">
+          <text class="loc-icon">📍</text>
+          <text class="{{location?'picker-val':'picker-ph'}}">{{locationName||location||'搜索地点'}}</text>
+        </view>
+        <view style="display:flex;align-items:center;gap:8rpx">
+          <text wx:if="{{location}}" class="loc-clear" catchtap="clearLocation">✕</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </view>
+      <text wx:if="{{locationAddr}}" class="loc-addr">{{locationAddr}}</text>
     </view>
 
     <!-- 人数 -->
