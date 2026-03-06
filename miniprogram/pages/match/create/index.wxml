@@ -103,11 +103,12 @@
   </view>
 
   <!-- 成功弹窗 -->
-  <view wx:if="{{showSuccess}}" class="success-mask">
-    <view class="success-card">
+  <view wx:if="{{showSuccess}}" class="success-mask" bindtap="closeSuccess">
+    <view class="success-card" catchtap="">
+      <view class="sc-close" bindtap="closeSuccess">✕</view>
       <text class="sc-emoji">🎉</text>
       <text class="sc-title">活动创建成功！</text>
-      <text class="sc-sub">分享给好友，邀请他们报名参加</text>
+      <text class="sc-sub">分享给好友，邀请他们一起来参加</text>
       <button class="sc-share-btn" open-type="share">📤 分享给好友</button>
       <view class="sc-detail-btn" bindtap="goDetail">查看活动详情 ›</view>
     </view>
