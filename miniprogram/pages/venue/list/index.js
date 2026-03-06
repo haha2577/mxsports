@@ -17,6 +17,6 @@ Page({
   toggleOpen(){this.setData({filterOpen:!this.data.filterOpen});this._load(this.data.sport)},
   resetAll(){this.setData({filterOpen:false});this._load(this.data.sport)},
   pickCity(){wx.showActionSheet({itemList:['北京','上海','广州','深圳','成都','杭州'],success:r=>this.setData({city:['北京','上海','广州','深圳','成都','杭州'][r.tapIndex]})})},
-  goDetail(e){wx.navigateTo({url:'/pages/venue/detail?id='+e.currentTarget.dataset.id})},
+  goDetail(e){wx.navigateTo({url:'/pages/venue/detail/index?id='+e.currentTarget.dataset.id})},
   goBook(){wx.showToast({title:'预约功能开发中',icon:'none'})},
 })

@@ -12,5 +12,5 @@ Page({
     const filtered=cat==='全部'?this.data.allNews:this.data.allNews.filter(n=>n.cat===cat)
     this.setData({activeCat:cat,filteredNews:filtered})
   },
-  goDetail(e){wx.navigateTo({url:'/pages/news/detail?id='+e.currentTarget.dataset.id})},
+  goDetail(e){wx.navigateTo({url:'/pages/news/detail/index?id='+e.currentTarget.dataset.id})},
 })

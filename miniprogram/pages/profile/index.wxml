@@ -60,7 +60,7 @@
     </view>
   </view>
 
-  <button wx:if="{{token}}" class="logout-btn" bindtap="logout">退出登录</button>
+  <view wx:if="{{token}}" class="logout-btn" bindtap="logout">退出登录</view>
   <text class="version-txt">v{{version}}</text>
 
   <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>

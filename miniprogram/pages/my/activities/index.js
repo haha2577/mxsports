@@ -25,6 +25,6 @@ Page({
   },
   onSwitchSport(e){const s=e.detail;wx.setStorageSync('activeSport',s);this.setData({sport:s,heroGrad:s==='badminton'?GRAD_B:GRAD_T});this._load(s)},
   setTab(e){this.setData({activeTab:e.currentTarget.dataset.v});this._filter()},
-  goDetail(e){wx.navigateTo({url:'/pages/match/detail?id='+e.currentTarget.dataset.id})},
+  goDetail(e){wx.navigateTo({url:'/pages/match/detail/index?id='+e.currentTarget.dataset.id})},
   goReview(){wx.showToast({title:'评价功能开发中',icon:'none'})},
 })

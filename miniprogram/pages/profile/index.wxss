@@ -28,5 +28,5 @@
 .mi-label{font-size:30rpx;color:#1a1a1a}
 .mi-arrow{font-size:36rpx;color:#ccc}
 .mi-val{font-size:26rpx;color:#999}
-.logout-btn{margin:24rpx 24rpx 0;background:#fff;color:#e53935;border:none;border-radius:24rpx;height:88rpx;font-size:30rpx;width:calc(100% - 48rpx);box-shadow:0 4rpx 16rpx rgba(0,0,0,.05);line-height:88rpx}
+.logout-btn{margin:24rpx 24rpx 0;background:#fff;color:#e53935;border-radius:24rpx;height:88rpx;font-size:30rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05);line-height:88rpx;text-align:center}
 .version-txt{display:block;text-align:center;font-size:22rpx;color:#ccc;margin-top:20rpx}

@@ -43,9 +43,9 @@ Page({
     this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',showLogin:false})
     if(!pref)this.setData({showSportPref:true})
   },
-  goRacket(){wx.navigateTo({url:'/pages/racket/recommend'})},
-  goActivities(){wx.navigateTo({url:'/pages/my/activities'})},
-  goVideo(){wx.navigateTo({url:'/pages/video/index'})},
+  goRacket(){wx.navigateTo({url:'/pages/racket/recommend/index'})},
+  goActivities(){wx.navigateTo({url:'/pages/my/activities/index'})},
+  goVideo(){wx.navigateTo({url:'/pages/video/index/index'})},
   goSettings(){wx.showToast({title:'开发中',icon:'none'})},
   logout(){
     wx.showModal({title:'退出登录',content:'确定要退出吗？',success:res=>{

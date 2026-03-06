@@ -43,13 +43,13 @@ Page({
     if(!pref)this.setData({showSportPref:true})
     else this._loadData(this.data.activeSport)
   },
-  guestBadminton(){wx.navigateTo({url:'/pages/match/list?sport=badminton'})},
-  guestTennis(){wx.navigateTo({url:'/pages/match/list?sport=tennis'})},
-  goCreate(){wx.navigateTo({url:'/pages/match/create'})},
-  goVenue(){wx.navigateTo({url:'/pages/venue/list?sport='+this.data.activeSport})},
-  goNews(){wx.navigateTo({url:'/pages/news/list?sport='+this.data.activeSport})},
-  goNewsDetail(e){wx.navigateTo({url:'/pages/news/detail?id='+e.currentTarget.dataset.id})},
-  goMatchList(){wx.navigateTo({url:'/pages/match/list?sport='+this.data.activeSport})},
-  goMatchDetail(e){wx.navigateTo({url:'/pages/match/detail?id='+e.currentTarget.dataset.id})},
+  guestBadminton(){wx.navigateTo({url:'/pages/match/list/index?sport=badminton'})},
+  guestTennis(){wx.navigateTo({url:'/pages/match/list/index?sport=tennis'})},
+  goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},
+  goVenue(){wx.navigateTo({url:'/pages/venue/list/index?sport='+this.data.activeSport})},
+  goNews(){wx.navigateTo({url:'/pages/news/list/index?sport='+this.data.activeSport})},
+  goNewsDetail(e){wx.navigateTo({url:'/pages/news/detail/index?id='+e.currentTarget.dataset.id})},
+  goMatchList(){wx.navigateTo({url:'/pages/match/list/index?sport='+this.data.activeSport})},
+  goMatchDetail(e){wx.navigateTo({url:'/pages/match/detail/index?id='+e.currentTarget.dataset.id})},
   goProfile(){wx.switchTab({url:'/pages/profile/index'})},
 })
