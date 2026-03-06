@@ -64,4 +64,4 @@ class MyRegistrationView(APIView):
                 .filter(user=request.user_obj)
                 .select_related('match')
                 .order_by('-created_at'))
-        return ok(MyRegistrationSerializer(regs, many=True).data)
+        return ok(MyRegistrationSerializer(regs, many=True, context={'request_user': request.user_obj}).data)

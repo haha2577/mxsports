@@ -1,4 +1,4 @@
-const { MATCHES } = require('../../store/mockData')
+const { api } = require('../../utils/api')
 const GRAD_B = 'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)'
 const GRAD_T = 'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
@@ -17,8 +17,12 @@ Page({
       this._loadData(sport)
     }
   },
-  _loadData(sport){
-    this.setData({matches:(MATCHES[sport]||[]).slice(0,3)})
+  async _loadData(sport){
+    try{
+      const r=await api.matches(`?status=open&sport=${sport}&size=3`)
+      const list=(r.data.data&&r.data.data.list)||r.data.data||[]
+      this.setData({matches:list.slice(0,3)})
+    }catch(e){ this.setData({matches:[]}) }
   },
   onSwitchSport(e){
     const sport=e.detail

@@ -76,7 +76,7 @@
         </view>
         <view class="mi-body">
           <text class="mi-name">{{item.name}}</text>
-          <text class="mi-info">📍{{item.location}} · {{item.distance}} · {{item.level}}</text>
+          <text class="mi-info">📍{{item.location}}{{item.startTime?' · '+item.startTime:''}}</text>
         </view>
         <text class="mi-badge s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
       </view>

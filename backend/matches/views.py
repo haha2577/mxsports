@@ -91,6 +91,15 @@ class MatchListCreateView(APIView):
         return ok({'id': match.id}, '创建成功')
 
 
+class MyMatchesView(APIView):
+    """我创建的活动"""
+    permission_classes = [IsJWTAuthenticated]
+
+    def get(self, request):
+        qs = Match.objects.filter(organizer=request.user_obj).order_by('-created_at')
+        return ok(MatchListSerializer(qs, many=True).data)
+
+
 class MatchDetailView(APIView):
 
     def get_permissions(self):
