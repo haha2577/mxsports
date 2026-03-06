@@ -30,7 +30,7 @@
         <text class="field-label">日期 <text class="req">*</text></text>
         <picker mode="date" value="{{date}}" start="{{today}}" bindchange="onDate">
           <view class="field-picker">
-            <text class="{{date?'picker-val':'picker-ph'}}">{{date||'选择日期'}}</text>
+            <text class="{{date?'picker-val':'picker-ph'}}">{{dateDisplay||'选择日期'}}</text>
             <text class="picker-arrow">›</text>
           </view>
         </picker>

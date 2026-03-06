@@ -6,6 +6,7 @@ Page({
     // 必填
     name: '',
     date: '',
+    dateDisplay: '',
     time: '',
     location: '',
     // 可选
@@ -32,10 +33,18 @@ Page({
     // 默认明天
     const tom = new Date(now.getTime() + 86400000)
     const defaultDate = `${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`
-    this.setData({ sport, today, date: defaultDate, time: '09:00' })
+    this.setData({ sport, today, date: defaultDate, dateDisplay: this._fmtDate(defaultDate), time: '09:00' })
   },
   onName(e) { this.setData({ name: e.detail.value }) },
-  onDate(e) { this.setData({ date: e.detail.value }) },
+  onDate(e) { const d = e.detail.value; this.setData({ date: d, dateDisplay: this._fmtDate(d) }) },
+  _fmtDate(dateStr) {
+    if (!dateStr) return ''
+    const d = new Date(dateStr + 'T00:00:00')
+    const weeks = ['周日','周一','周二','周三','周四','周五','周六']
+    const m = d.getMonth() + 1
+    const day = d.getDate()
+    return `${m}月${day}日（${weeks[d.getDay()]}）`
+  },
   onTime(e) { this.setData({ time: e.detail.value }) },
   onLocation(e) { this.setData({ location: e.detail.value }) },
   onFee(e) { this.setData({ fee: e.detail.value }) },
