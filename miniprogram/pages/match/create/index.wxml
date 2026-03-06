@@ -37,9 +37,9 @@
       </view>
       <view class="field field-half">
         <text class="field-label">时间</text>
-        <picker mode="time" value="{{time}}" bindchange="onTime">
+        <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeColumns}}" bindchange="onTimeChange">
           <view class="field-picker">
-            <text class="{{time?'picker-val':'picker-ph'}}">{{time||'09:00'}}</text>
+            <text class="picker-val">{{timeDisplay}}</text>
             <text class="picker-arrow">›</text>
           </view>
         </picker>

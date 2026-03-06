@@ -7,7 +7,8 @@ Page({
     name: '',
     date: '',
     dateDisplay: '',
-    time: '',
+    time: '09:00',
+    timeDisplay: '09:00',
     location: '',
     // 可选
     maxPlayers: 8,
@@ -16,11 +17,16 @@ Page({
     // 选项
     maxOptions: [4, 6, 8, 10, 12, 16],
     levelOptions: ['不限', '入门', '业余', '中级', '高级'],
+    // 时间多列
+    timeColumns: [
+      Array.from({length:24}, (_,i) => `${String(i).padStart(2,'0')}时`),
+      ['00分','15分','30分','45分'],
+    ],
+    timeIndex: [9, 0],
     // 状态
     loading: false,
     showSuccess: false,
     createdId: null,
-    // 今天日期（date picker 最小值）
     today: '',
   },
   onLoad() {
@@ -28,12 +34,10 @@ Page({
     const sport = pref === 'both' ? (wx.getStorageSync('activeSport') || 'badminton') : (pref || wx.getStorageSync('activeSport') || 'badminton')
     this.setData({ sportPref: pref })
     const now = new Date()
-
     const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`
-    // 默认明天
     const tom = new Date(now.getTime() + 86400000)
     const defaultDate = `${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`
-    this.setData({ sport, today, date: defaultDate, dateDisplay: this._fmtDate(defaultDate), time: '09:00' })
+    this.setData({ sport, today, date: defaultDate, dateDisplay: this._fmtDate(defaultDate) })
   },
   onName(e) { this.setData({ name: e.detail.value }) },
   onDate(e) { const d = e.detail.value; this.setData({ date: d, dateDisplay: this._fmtDate(d) }) },
@@ -41,11 +45,14 @@ Page({
     if (!dateStr) return ''
     const d = new Date(dateStr + 'T00:00:00')
     const weeks = ['周日','周一','周二','周三','周四','周五','周六']
-    const m = d.getMonth() + 1
-    const day = d.getDate()
-    return `${m}月${day}日（${weeks[d.getDay()]}）`
+    return `${d.getMonth()+1}月${d.getDate()}日（${weeks[d.getDay()]}）`
   },
-  onTime(e) { this.setData({ time: e.detail.value }) },
+  onTimeChange(e) {
+    const [hi, mi] = e.detail.value
+    const mins = ['00','15','30','45']
+    const timeDisplay = `${String(hi).padStart(2,'0')}:${mins[mi]}`
+    this.setData({ timeIndex: [hi, mi], timeDisplay, time: timeDisplay })
+  },
   onLocation(e) { this.setData({ location: e.detail.value }) },
   onFee(e) { this.setData({ fee: e.detail.value }) },
   setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v }) },
@@ -82,7 +89,6 @@ Page({
   },
 
   shareNow() {
-    // 触发页面级 onShareAppMessage
     wx.showShareMenu({ withShareTicket: true, menus: ['shareAppMessage'] })
     wx.showToast({ title: '点击右上角分享', icon: 'none' })
   },
@@ -93,7 +99,6 @@ Page({
     this.setData({ showSuccess: false })
     this.goDetail()
   },
-
   onShareAppMessage() {
     return {
       title: this.data.name || '快来参加我的活动！',
