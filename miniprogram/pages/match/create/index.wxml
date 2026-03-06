@@ -1,1 +1,107 @@
-<view class="page" style="padding:40rpx"><text style="color:#aaa;font-size:28rpx">🏆 创建活动 - 开发中</text></view>
+<view class="page">
+
+  <!-- Header -->
+  <view class="header">
+    <text class="hd-emoji">{{sport==='badminton'?'🏸':'🎾'}}</text>
+    <view class="hd-text">
+      <text class="hd-title">创建活动</text>
+      <text class="hd-sub">填写基本信息，一键分享报名</text>
+    </view>
+    <!-- 运动切换 -->
+    <view class="sport-tabs">
+      <view class="stab {{sport==='badminton'?'stab-a':''}}" bindtap="setSport" data-v="badminton">🏸 羽毛球</view>
+      <view class="stab {{sport==='tennis'?'stab-a':''}}" bindtap="setSport" data-v="tennis">🎾 网球</view>
+    </view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form">
+
+    <!-- 活动名称 -->
+    <view class="field">
+      <text class="field-label">活动名称 <text class="req">*</text></text>
+      <input class="field-input" value="{{name}}" bindinput="onName"
+        placeholder="例如：周末双打约战" maxlength="30"/>
+    </view>
+
+    <!-- 时间 -->
+    <view class="field-row">
+      <view class="field field-half">
+        <text class="field-label">日期 <text class="req">*</text></text>
+        <picker mode="date" value="{{date}}" start="{{today}}" bindchange="onDate">
+          <view class="field-picker">
+            <text class="{{date?'picker-val':'picker-ph'}}">{{date||'选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+      <view class="field field-half">
+        <text class="field-label">时间</text>
+        <picker mode="time" value="{{time}}" bindchange="onTime">
+          <view class="field-picker">
+            <text class="{{time?'picker-val':'picker-ph'}}">{{time||'09:00'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 地点 -->
+    <view class="field">
+      <text class="field-label">活动地点 <text class="req">*</text></text>
+      <input class="field-input" value="{{location}}" bindinput="onLocation"
+        placeholder="填写场馆名称或地址" maxlength="50"/>
+    </view>
+
+    <!-- 人数 -->
+    <view class="field">
+      <text class="field-label">人数上限</text>
+      <view class="tag-row">
+        <view wx:for="{{maxOptions}}" wx:key="*this"
+          class="tag {{maxPlayers===item?'tag-a':''}}" bindtap="setMax" data-v="{{item}}">
+          {{item}}人
+        </view>
+      </view>
+    </view>
+
+    <!-- 水平 -->
+    <view class="field">
+      <text class="field-label">水平要求</text>
+      <view class="tag-row">
+        <view wx:for="{{levelOptions}}" wx:key="*this"
+          class="tag {{level===item||(!level&&item==='不限')?'tag-a':''}}"
+          bindtap="setLevel" data-v="{{item}}">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 费用 -->
+    <view class="field">
+      <text class="field-label">报名费用</text>
+      <view class="field-fee-wrap">
+        <text class="fee-prefix">¥</text>
+        <input class="field-input field-fee" value="{{fee}}" bindinput="onFee"
+          type="digit" placeholder="0（免费）" maxlength="6"/>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-btn {{loading?'submit-loading':''}}" bindtap="submit">
+    <text>{{loading?'创建中...':'✅ 创建并分享'}}</text>
+  </view>
+
+  <!-- 成功弹窗 -->
+  <view wx:if="{{showSuccess}}" class="success-mask">
+    <view class="success-card">
+      <text class="sc-emoji">🎉</text>
+      <text class="sc-title">活动创建成功！</text>
+      <text class="sc-sub">分享给好友，邀请他们报名参加</text>
+      <button class="sc-share-btn" open-type="share">📤 分享给好友</button>
+      <view class="sc-detail-btn" bindtap="goDetail">查看活动详情 ›</view>
+    </view>
+  </view>
+
+</view>

@@ -29,7 +29,7 @@ class MatchListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Match
-        fields = ['id', 'name', 'location', 'matchType', 'status',
+        fields = ['id', 'sport', 'name', 'location', 'matchType', 'status',
                   'maxPlayers', 'registeredCount', 'startTime', 'fee', 'organizerId']
 
 
@@ -75,7 +75,7 @@ class MatchCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Match
-        fields = ['name', 'location', 'description', 'matchType', 'status',
+        fields = ['sport', 'name', 'location', 'description', 'matchType', 'status',
                   'maxPlayers', 'groupSize', 'levels', 'fee',
                   'needApprove', 'allowTeam', 'contactName', 'contactPhone',
                   'startTime', 'registerStart']

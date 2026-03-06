@@ -15,6 +15,7 @@ class Match(models.Model):
         ('group',       '分组赛'),
     ]
 
+    sport          = models.CharField(max_length=20, default='badminton')
     name           = models.CharField(max_length=100)
     location       = models.CharField(max_length=200, blank=True, default='')
     description    = models.TextField(blank=True, default='')
