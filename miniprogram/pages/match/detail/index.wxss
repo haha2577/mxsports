@@ -81,20 +81,24 @@
 .org-cancel{background:#fce4ec}.org-cancel text{color:#e53935}
 .org-delete{background:#fce4ec}.org-delete text{color:#e53935}
 
-/* 场次 */
-.game-row{padding:16rpx 0;border-bottom:1rpx solid #f5f5f5;display:flex;align-items:center;gap:12rpx}
-.game-row:last-child{border-bottom:none}
-.game-teams{flex:1;display:flex;align-items:center;gap:8rpx}
-.game-team{flex:1}
-.game-team-r{text-align:right}
-.gt-name{font-size:24rpx;color:#333;line-height:1.5}
-.game-score-wrap{display:flex;align-items:center;gap:4rpx;flex-shrink:0}
-.game-score{font-size:32rpx;font-weight:bold;color:#aaa;min-width:40rpx;text-align:center}
-.game-score.gs-win{color:#0a7a38}
-.game-score.gs-empty{color:#ddd}
-.game-vs{font-size:22rpx;color:#ccc}
-.game-edit-btn{padding:10rpx 20rpx;background:#f0f2f5;border-radius:50rpx;flex-shrink:0}
-.game-edit-btn text{font-size:24rpx;color:#555}
+/* 场次卡片 */
+.game-card-item{border-bottom:1rpx solid #f5f5f5;padding:20rpx 0}
+.game-card-item:last-child{border-bottom:none}
+.game-card-no{font-size:20rpx;color:#bbb;margin-bottom:12rpx}
+.game-card-body{display:flex;align-items:stretch;gap:0;background:#f8f9fb;border-radius:16rpx;overflow:hidden}
+.game-side{flex:1;display:flex;align-items:center;justify-content:space-between;padding:20rpx 20rpx;gap:12rpx}
+.game-side-r{flex-direction:row-reverse}
+.side-win{background:#e8f7ee}
+.side-lose{background:#fafafa}
+.gs-players{display:flex;flex-direction:column;gap:4rpx;flex:1}
+.gs-players-r{align-items:flex-end}
+.gs-player{font-size:26rpx;color:#1a1a1a;font-weight:500}
+.gs-score{font-size:44rpx;font-weight:bold;color:#ccc;min-width:48rpx;text-align:center;flex-shrink:0}
+.score-win{color:#0a7a38}
+.game-divider{width:64rpx;display:flex;align-items:center;justify-content:center;background:#f0f2f5;flex-shrink:0}
+.game-vs-txt{font-size:20rpx;color:#bbb;font-weight:bold}
+.game-record-btn{margin-top:12rpx;display:flex;justify-content:flex-end}
+.game-record-btn text{font-size:24rpx;color:#555;background:#f0f2f5;padding:10rpx 24rpx;border-radius:50rpx}
 
 /* 排行榜 */
 .lb-header{display:flex;align-items:center;padding:12rpx 0;border-bottom:2rpx solid #f0f2f5;margin-bottom:4rpx}

@@ -118,24 +118,34 @@
           <text class="card-count">{{games.length}}场</text>
         </view>
         <view wx:if="{{!games.length}}" class="empty-players"><text>暂无场次</text></view>
-        <view wx:for="{{games}}" wx:key="id" class="game-row">
-          <view class="game-teams">
-            <view class="game-team">
-              <text class="gt-name">{{item.player1.name}}{{item.partner1?' & '+item.partner1.name:''}}</text>
+        <view wx:for="{{games}}" wx:key="id" class="game-card-item">
+          <view class="game-card-no">第 {{index+1}} 场</view>
+          <view class="game-card-body">
+            <!-- 队伍1 -->
+            <view class="game-side {{item.winnerTeam==='team1'?'side-win':item.status==='finished'?'side-lose':''}}">
+              <view class="gs-players">
+                <text class="gs-player">{{item.player1.nickname}}</text>
+                <text wx:if="{{item.partner1}}" class="gs-player">{{item.partner1.nickname}}</text>
+              </view>
+              <text class="gs-score {{item.winnerTeam==='team1'?'score-win':''}}">
+                {{item.status==='finished'?item.score1:'-'}}
+              </text>
             </view>
-            <view class="game-score-wrap">
-              <text wx:if="{{item.status==='finished'}}" class="game-score {{item.winnerTeam==='team1'?'gs-win':''}}">{{item.score1}}</text>
-              <text wx:else class="game-score gs-empty">-</text>
-              <text class="game-vs">:</text>
-              <text wx:if="{{item.status==='finished'}}" class="game-score {{item.winnerTeam==='team2'?'gs-win':''}}">{{item.score2}}</text>
-              <text wx:else class="game-score gs-empty">-</text>
-            </view>
-            <view class="game-team game-team-r">
-              <text class="gt-name">{{item.player2.name}}{{item.partner2?' & '+item.partner2.name:''}}</text>
+            <!-- 分割线 -->
+            <view class="game-divider"><text class="game-vs-txt">VS</text></view>
+            <!-- 队伍2 -->
+            <view class="game-side game-side-r {{item.winnerTeam==='team2'?'side-win':item.status==='finished'?'side-lose':''}}">
+              <text class="gs-score {{item.winnerTeam==='team2'?'score-win':''}}">
+                {{item.status==='finished'?item.score2:'-'}}
+              </text>
+              <view class="gs-players gs-players-r">
+                <text class="gs-player">{{item.player2.nickname}}</text>
+                <text wx:if="{{item.partner2}}" class="gs-player">{{item.partner2.nickname}}</text>
+              </view>
             </view>
           </view>
-          <view wx:if="{{isOrganizer&&match.status==='ongoing'}}" class="game-edit-btn" bindtap="openScoreModal" data-game="{{item}}">
-            <text>{{item.status==='finished'?'改分':'记分'}}</text>
+          <view wx:if="{{isOrganizer&&match.status==='ongoing'}}" class="game-record-btn" bindtap="openScoreModal" data-game="{{item}}">
+            <text>{{item.status==='finished'?'✏️ 改分':'📝 记分'}}</text>
           </view>
         </view>
       </view>
@@ -238,9 +248,9 @@
       <view class="sheet-handle"/>
       <text class="sheet-title">录入比分</text>
       <view wx:if="{{editingGame}}" class="score-teams">
-        <text class="st-name">{{editingGame.player1.name}}{{editingGame.partner1?' & '+editingGame.partner1.name:''}}</text>
+        <text class="st-name">{{editingGame.player1.nickname}}{{editingGame.partner1?' & '+editingGame.partner1.nickname:''}}</text>
         <text class="st-vs">VS</text>
-        <text class="st-name">{{editingGame.player2.name}}{{editingGame.partner2?' & '+editingGame.partner2.name:''}}</text>
+        <text class="st-name">{{editingGame.player2.nickname}}{{editingGame.partner2?' & '+editingGame.partner2.nickname:''}}</text>
       </view>
       <view class="score-inputs">
         <input class="score-input" type="number" value="{{editScore1}}" bindinput="onScore1" placeholder="0" maxlength="3"/>

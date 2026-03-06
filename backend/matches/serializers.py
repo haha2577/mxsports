@@ -10,16 +10,18 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    player1   = PlayerSerializer(read_only=True)
-    partner1  = PlayerSerializer(read_only=True)
-    player2   = PlayerSerializer(read_only=True)
-    partner2  = PlayerSerializer(read_only=True)
-    winnerId  = serializers.IntegerField(source='winner_id', read_only=True)
-    roundNum  = serializers.IntegerField(source='round_num', read_only=True)
+    player1    = PlayerSerializer(read_only=True)
+    partner1   = PlayerSerializer(read_only=True)
+    player2    = PlayerSerializer(read_only=True)
+    partner2   = PlayerSerializer(read_only=True)
+    winnerId   = serializers.IntegerField(source='winner_id', read_only=True)
+    roundNum   = serializers.IntegerField(source='round_num', read_only=True)
+    winnerTeam = serializers.CharField(source='winner_team', read_only=True)
 
     class Meta:
         model = Game
-        fields = ['id', 'roundNum', 'player1', 'partner1', 'player2', 'partner2', 'score1', 'score2', 'winnerId', 'status']
+        fields = ['id', 'roundNum', 'player1', 'partner1', 'player2', 'partner2',
+                  'score1', 'score2', 'winnerId', 'winnerTeam', 'status']
 
 
 class MatchListSerializer(serializers.ModelSerializer):
