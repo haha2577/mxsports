@@ -4,10 +4,16 @@ const CAT_MAP={'全部':'','国际赛事':'international','国内赛事':'nation
 Page({
   data:{sport:'badminton',heroGrad:GRAD_B,cats:['全部','国际赛事','国内赛事','当地赛事'],activeCat:'全部',list:[],loading:true},
   onLoad(opts){
-    
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
     this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
+  },
+  onShow(){
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    if(sport!==this.data.sport){
+      this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+      this._load()
+    }
   },
   _load(){
     this.setData({loading:true})

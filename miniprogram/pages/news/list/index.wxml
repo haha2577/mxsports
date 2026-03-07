@@ -1,6 +1,10 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="最新资讯" background="{{heroGrad}}"/>
+    <view class="hd-body">
+      <text class="hd-title">最新资讯</text>
+      <text class="hd-sub">球圈动态、赛事新闻、技术分享</text>
+    </view>
     <scroll-view scroll-x class="cat-scroll">
       <view class="cat-row">
         <view wx:for="{{cats}}" wx:key="*this" class="cat-tag {{activeCat===item?'cat-a':''}}" bindtap="setCat" data-cat="{{item}}">{{item}}</view>

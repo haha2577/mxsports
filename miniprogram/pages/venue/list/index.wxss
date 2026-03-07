@@ -1,10 +1,10 @@
 .page{background:#f0f2f5;padding-bottom:40rpx}
-.page-header{padding:0 32rpx}
+.page-header{padding:0}
 .loc-bar{background:rgba(255,255,255,.12);border-radius:20rpx;display:flex;align-items:center;padding:0 20rpx;height:72rpx;margin:16rpx 0;border:1rpx solid rgba(255,255,255,.15)}
 .loc-icon{font-size:28rpx;margin-right:8rpx}.loc-city{font-size:28rpx;color:#fff;font-weight:500}
 .loc-div{width:1rpx;height:30rpx;background:rgba(255,255,255,.2);margin:0 16rpx}
 .loc-search{flex:1;font-size:26rpx;color:rgba(255,255,255,.4)}
-.filter-scroll{margin:0 -32rpx;padding:0 32rpx 20rpx}
+.filter-scroll{padding:0 32rpx 20rpx}
 .filter-row{display:flex;gap:12rpx}
 .chip{display:inline-flex;align-items:center;gap:6rpx;padding:12rpx 22rpx;background:rgba(255,255,255,.12);border:1rpx solid rgba(255,255,255,.2);border-radius:50rpx;font-size:24rpx;color:rgba(255,255,255,.8)}
 .chip-a{background:rgba(255,255,255,.9);color:#1a1a2e;font-weight:bold}

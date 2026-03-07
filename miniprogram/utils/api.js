@@ -1,4 +1,14 @@
-const BASE_URL = 'https://mxsports.vip/api'
+const BASE_URL = (function() {
+  try {
+    const env = require('./env.js')
+    if (env.API_BASE) {
+      console.log('[API] 使用本地:', env.API_BASE)
+      return env.API_BASE
+    }
+  } catch (e) {}
+  console.log('[API] 使用生产:', 'https://mxsports.vip/api')
+  return 'https://mxsports.vip/api'
+})()
 
 function request(method, url, data) {
   return new Promise((resolve, reject) => {

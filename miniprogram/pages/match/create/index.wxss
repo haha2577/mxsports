@@ -1,11 +1,7 @@
 .page{background:#f0f2f5;padding-bottom:120rpx;min-height:100vh}
 
 /* header */
-.page-header{padding:0 32rpx 32rpx;display:flex;flex-wrap:wrap;align-items:center;gap:20rpx}
-.hd-emoji{font-size:56rpx}
-.hd-text{flex:1}
-.hd-title{display:block;font-size:36rpx;font-weight:bold;color:#fff}
-.hd-sub{display:block;font-size:22rpx;color:rgba(255,255,255,.5);margin-top:4rpx}
+.page-header{padding:0}
 .sport-tabs{width:100%;display:flex;gap:12rpx;margin-top:8rpx}
 .stab{flex:1;text-align:center;padding:14rpx 0;border-radius:50rpx;font-size:26rpx;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08)}
 .stab-a{background:rgba(255,255,255,.18);color:#fff;font-weight:bold}

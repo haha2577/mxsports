@@ -2,8 +2,7 @@
 
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="我的球友" background="{{heroGrad}}"/>
-    <text class="hd-emoji">🤝</text>
-    <view class="hd-text">
+    <view class="hd-body">
       <text class="hd-title">我的球友</text>
       <text class="hd-sub">一起参加过活动的伙伴</text>
     </view>

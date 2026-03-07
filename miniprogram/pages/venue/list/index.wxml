@@ -1,6 +1,10 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="附近球馆" background="{{heroGrad}}"/>
+    <view class="hd-body">
+      <text class="hd-title">附近场馆</text>
+      <text class="hd-sub">找到你附近的羽球馆和网球场</text>
+    </view>
     <scroll-view scroll-x class="filter-scroll">
       <view class="filter-row">
         <view class="chip {{filterOpen?'chip-a':''}}" bindtap="toggleOpen">🟢 {{filterOpen?'营业中 ✓':'营业中'}}</view>

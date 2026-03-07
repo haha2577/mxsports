@@ -1,6 +1,10 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="场馆详情" background="{{heroGrad}}"/>
+    <view class="hd-body">
+      <text class="hd-title">{{venue.name||'场馆详情'}}</text>
+      <text class="hd-sub">{{venue.city||''}}{{venue.district?(' · '+venue.district):''}}</text>
+    </view>
   </view>
   <view class="page-body">
 

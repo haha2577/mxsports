@@ -4,9 +4,14 @@ Page({
   data:{sport:'badminton',heroGrad:GRAD_B,rackets:[]},
   navigateBack(){wx.navigateBack()},
   onLoad(){
-    
     const sport=wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B,rackets:RACKETS[sport]||[]})
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B,rackets:RACKETS[sport]||[]})
+  },
+  onShow(){
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    if(sport!==this.data.sport){
+      this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B,rackets:RACKETS[sport]||[]})
+    }
   },
   onSwitchSport(e){const s=e.detail;wx.setStorageSync('activeSport',s);this.setData({sport:s,heroGrad:s==='tennis'?GRAD_T:GRAD_B,rackets:RACKETS[s]||[]})},
   startQuiz(){wx.showToast({title:'测评功能开发中',icon:'none'})},

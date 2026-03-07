@@ -39,7 +39,7 @@
 
   <!-- 已登录 -->
   <block wx:if="{{token}}">
-    <view class="page-header" style="background:{{heroGrad}}">
+    <view class="page-header hero-logged" style="background:{{heroGrad}}">
       <nav-bar back="{{false}}" background="{{heroGrad}}"/>
       <text class="hero-deco">{{activeSport==='badminton'?'🏸':'🎾'}}</text>
       <view class="hero-topbar">

@@ -1,5 +1,5 @@
 <!-- 占位区：statusBar + nav 高度 -->
-<view class="nav-bar" style="height:{{totalHeight}}px;{{background?'background:'+background+';':''}}">
+<view class="nav-bar" style="height:{{totalHeight}}px;">
   <!-- 状态栏占位 -->
   <view style="height:{{statusBarHeight}}px"/>
   <!-- 导航栏内容区：与胶囊按钮同行等高 -->

@@ -1,6 +1,6 @@
 .page{background:#f0f2f5;padding-bottom:40rpx}
-.page-header{padding:0 32rpx}
-.cat-scroll{margin:0 -32rpx;padding:0 32rpx 20rpx}
+.page-header{padding:0}
+.cat-scroll{padding:0 32rpx 20rpx}
 .cat-row{display:flex;gap:12rpx;white-space:nowrap}
 .cat-tag{padding:12rpx 28rpx;background:rgba(255,255,255,.12);border:1rpx solid rgba(255,255,255,.2);border-radius:50rpx;font-size:26rpx;color:rgba(255,255,255,.7);flex-shrink:0}
 .cat-a{background:rgba(255,255,255,.9);color:#1a1a2e;font-weight:bold}

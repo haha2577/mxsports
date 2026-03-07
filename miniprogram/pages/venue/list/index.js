@@ -3,10 +3,16 @@ const{api}=require('../../../utils/api')
 Page({
   data:{sport:'badminton',heroGrad:GRAD_B,city:'',filterOpen:false,list:[],hasFilter:false,lat:0,lng:0,loading:true},
   onLoad(opts){
-    
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._getLocation()
+  },
+  onShow(){
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    if(sport!==this.data.sport){
+      this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+      this._load(sport)
+    }
   },
   _getLocation(){
     wx.getLocation({

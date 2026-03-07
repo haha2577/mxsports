@@ -1,6 +1,5 @@
 {
-  "navigationBarTitleText": "活动详情",
-  "navigationBarBackgroundColor": "#1a1a2e",
-  "navigationBarTextStyle": "white",
-  "enableShareAppMessage": true
+  "navigationStyle": "custom",
+  "enableShareAppMessage": true,
+  "usingComponents": {}
 }
