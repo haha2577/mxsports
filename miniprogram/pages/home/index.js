@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../utils/api')
 Page({
   data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
@@ -10,7 +10,7 @@ Page({
     const user=getApp().globalData.userInfo||null
     const pref=wx.getStorageSync('sportPref')||''
     const sport=pref==='both'?(wx.getStorageSync('activeSport')||'badminton'):(pref||'badminton')
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',sportPref:pref,activeSport:sport,heroGrad:gradOf(sport)})
+    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',sportPref:pref,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     if(token){
       if(!pref){this.setData({showSportPref:true});return}
       this._loadData(sport)
@@ -45,14 +45,14 @@ Page({
   onSwitchSport(e){
     const sport=e.detail
     wx.setStorageSync('activeSport',sport)
-    this.setData({activeSport:sport,heroGrad:gradOf(sport)})
+    this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._loadData(sport)
   },
   onSportPrefConfirm(e){
     const pref=e.detail
     const sport=pref==='both'?'badminton':pref
     wx.setStorageSync('activeSport',sport)
-    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:gradOf(sport)})
+    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._loadData(sport)
   },
   showLoginSheet(){this.setData({showLogin:true})},

@@ -1,9 +1,9 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
+const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const{api}=require('../../../utils/api')
 Page({
   data:{heroGrad:GRAD_B,venue:null,loading:true,tags:[]},
   onLoad(opts){
-    this.setData(readSport())
+    const _s=wx.getStorageSync('activeSport')||'badminton';this.setData({heroGrad:_s==='tennis'?GRAD_T:GRAD_B})
     if(opts.id)this._load(opts.id)
   },
   navigateBack(){wx.navigateBack()},

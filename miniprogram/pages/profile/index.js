@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
   data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',avatar:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,version:''},
   onLoad(){
@@ -23,19 +23,19 @@ Page({
     const pref=wx.getStorageSync('sportPref')||''
     const sport=pref==='both'?(wx.getStorageSync('activeSport')||'badminton'):(pref||'badminton')
     const prefLabel={badminton:'🏸 羽毛球',tennis:'🎾 网球',both:'🏸🎾 双栖'}[pref]||'未设置'
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',avatar:user?user.avatar||'':'',sportPref:pref,activeSport:sport,heroGrad:gradOf(sport),prefLabel})
+    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',avatar:user?user.avatar||'':'',sportPref:pref,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B,prefLabel})
   },
   onSwitchSport(e){
     const sport=e.detail
     wx.setStorageSync('activeSport',sport)
-    this.setData({activeSport:sport,heroGrad:gradOf(sport)})
+    this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
   },
   onSportPrefConfirm(e){
     const pref=e.detail
     const sport=pref==='both'?'badminton':pref
     wx.setStorageSync('activeSport',sport)
     const prefLabel={badminton:'🏸 羽毛球',tennis:'🎾 网球',both:'🏸🎾 双栖'}[pref]||'未设置'
-    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:gradOf(sport),prefLabel})
+    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B,prefLabel})
   },
   showLoginSheet(){this.setData({showLogin:true})},
   hideLogin(){this.setData({showLogin:false})},

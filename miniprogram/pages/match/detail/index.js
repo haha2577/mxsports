@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
+const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../../utils/api')
 Page({
   data: {
@@ -63,7 +63,7 @@ Page({
       const isOrganizer = myId && match.organizerId === myId
       // 检查是否已报名
       const isRegistered = token && match.players && match.players.some(p => p.id === myId)
-      this.setData({ match, loading: false, myUserId: myId, isOrganizer, isRegistered, heroGrad:match.gradOf(sport) })
+      this.setData({ match, loading: false, myUserId: myId, isOrganizer, isRegistered, heroGrad:match.sport==='tennis'?GRAD_T:GRAD_B })
       this._loadGames()
     } catch(e) {
       this.setData({ loading: false })
@@ -133,7 +133,7 @@ Page({
         delete this._pendingScores[gameId]
         this._loadGames()
       } catch(e) {
-        wx.showToast({ title: e?.data?.message || '保存失败', icon: 'none' })
+        wx.showToast({ title: (e && e.data && e.data.message) || '保存失败', icon: 'none' })
       }
     }
   },
@@ -159,7 +159,7 @@ Page({
       wx.showToast({ title: '比分已保存', icon: 'success' })
       this._loadGames()
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '保存失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '保存失败', icon: 'none' })
     }
   },
 
@@ -172,7 +172,7 @@ Page({
       wx.showToast({ title: '比赛已结束', icon: 'success' })
       this._load()
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '操作失败', icon: 'none' })
     }
   },
 
@@ -198,7 +198,7 @@ Page({
       wx.navigateTo({ url: '/pages/match/draw-draft/index' })
     } catch(e) {
       wx.hideLoading()
-      wx.showToast({ title: e?.data?.message || '生成失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '生成失败', icon: 'none' })
     }
   },
 
@@ -212,7 +212,7 @@ Page({
       wx.showToast({ title: '已移除', icon: 'success' })
       this._load()
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '操作失败', icon: 'none' })
     }
   },
 
@@ -223,7 +223,7 @@ Page({
       wx.showToast({ title: '已暂停报名', icon: 'success' })
       this._load()
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '操作失败', icon: 'none' })
     }
   },
 
@@ -234,7 +234,7 @@ Page({
       wx.showToast({ title: '已恢复报名', icon: 'success' })
       this._load()
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '操作失败', icon: 'none' })
     }
   },
 
@@ -247,7 +247,7 @@ Page({
       wx.showToast({ title: '活动已取消', icon: 'success' })
       this._load()
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '操作失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '操作失败', icon: 'none' })
     }
   },
 
@@ -260,7 +260,7 @@ Page({
       wx.showToast({ title: '已删除', icon: 'success' })
       setTimeout(() => wx.navigateBack(), 1500)
     } catch(e) {
-      wx.showToast({ title: e?.data?.message || '删除失败', icon: 'none' })
+      wx.showToast({ title: (e && e.data && e.data.message) || '删除失败', icon: 'none' })
     }
   },
 

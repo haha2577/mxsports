@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
+const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const{api}=require('../../../utils/api')
 Page({
   data:{sport:'badminton',sportPref:'',heroGrad:GRAD_B,city:'',filterOpen:false,list:[],hasFilter:false,lat:0,lng:0,loading:true},
@@ -6,7 +6,7 @@ Page({
     
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
     const pref=wx.getStorageSync('sportPref')||''
-    this.setData({sport,sportPref:pref,heroGrad:gradOf(sport)})
+    this.setData({sport,sportPref:pref,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._getLocation()
   },
   _getLocation(){
@@ -35,7 +35,7 @@ Page({
       this.setData({list:[],loading:false})
     })
   },
-  onSwitchSport(e){const s=e.detail;wx.setStorageSync('activeSport',s);this.setData({sport:s,heroGrad:gradOf(s)});this._load(s)},
+  onSwitchSport(e){const s=e.detail;wx.setStorageSync('activeSport',s);this.setData({sport:s,heroGrad:s==='tennis'?GRAD_T:GRAD_B});this._load(s)},
   toggleOpen(){this.setData({filterOpen:!this.data.filterOpen});this._load(this.data.sport)},
   resetAll(){this.setData({filterOpen:false});this._load(this.data.sport)},
   navigateBack(){wx.navigateBack()},

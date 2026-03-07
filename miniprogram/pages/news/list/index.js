@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
+const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const{api}=require('../../../utils/api')
 const CAT_MAP={'全部':'','国际赛事':'international','国内赛事':'national','当地赛事':'local'}
 Page({
@@ -6,7 +6,7 @@ Page({
   onLoad(opts){
     
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sport,heroGrad:gradOf(sport)})
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
   _load(){
