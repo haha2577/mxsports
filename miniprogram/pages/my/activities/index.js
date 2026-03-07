@@ -9,16 +9,23 @@ Page({
     this.setData({sport,sportPref:pref,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
-  onShow(){ this._load() },
+  onShow(){
+    // 每次显示时重新读 activeSport（首页切换后回来要更新）
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this._load()
+  },
   async _load(){
     const token=wx.getStorageSync('token')
     if(!token){this.setData({list:[],filteredList:[],counts:{all:0,ongoing:0,done:0}});return}
     this.setData({loading:true})
     try{
-      // 同时拉：我创建的 + 我报名的
+      const sport=this.data.sport
+      const qs=sport?`?sport=${sport}`:''
+      // 同时拉：我创建的 + 我报名的（按当前运动过滤）
       const [mineRes, regsRes] = await Promise.all([
-        api.myMatches().catch(()=>null),
-        api.myRegs().catch(()=>null),
+        api.myMatches(qs).catch(()=>null),
+        api.myRegs(qs).catch(()=>null),
       ])
       // 我创建的活动
       const created = ((mineRes&&mineRes.data&&mineRes.data.data)||[]).map(m=>({...m,role:'organizer'}))

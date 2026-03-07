@@ -9,7 +9,11 @@ Page({
     this.setData({sport,sportPref:pref,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
-  onShow(){ this._load() },
+  onShow(){
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this._load()
+  },
   async _load(){
     this.setData({loading:true})
     try{

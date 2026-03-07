@@ -106,8 +106,11 @@ class MatchListCreateView(APIView):
     def get(self, request):
         qs = Match.objects.all()
         status = request.query_params.get('status')
+        sport  = request.query_params.get('sport')
         if status:
             qs = qs.filter(status=status)
+        if sport:
+            qs = qs.filter(sport=sport)
 
         paginator = MatchPagination()
         page = paginator.paginate_queryset(qs, request)
@@ -127,6 +130,9 @@ class MyMatchesView(APIView):
 
     def get(self, request):
         qs = Match.objects.filter(organizer=request.user_obj).order_by('-created_at')
+        sport = request.query_params.get('sport')
+        if sport:
+            qs = qs.filter(sport=sport)
         return ok(MatchListSerializer(qs, many=True).data)
 
 

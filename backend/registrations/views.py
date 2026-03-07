@@ -82,8 +82,11 @@ class MyRegistrationView(APIView):
     permission_classes = [IsJWTAuthenticated]
 
     def get(self, request):
-        regs = (Registration.objects
-                .filter(user=request.user_obj)
-                .select_related('match')
-                .order_by('-created_at'))
-        return ok(MyRegistrationSerializer(regs, many=True, context={'request_user': request.user_obj}).data)
+        sport = request.query_params.get('sport')
+        regs_qs = (Registration.objects
+                   .filter(user=request.user_obj)
+                   .select_related('match')
+                   .order_by('-created_at'))
+        if sport:
+            regs_qs = regs_qs.filter(match__sport=sport)
+        return ok(MyRegistrationSerializer(regs_qs, many=True, context={'request_user': request.user_obj}).data)

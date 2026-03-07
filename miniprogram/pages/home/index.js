@@ -18,10 +18,11 @@ Page({
   },
   async _loadData(sport){
     try{
+      const sq=`?sport=${sport}`
       const [r1, r2, r3] = await Promise.allSettled([
         api.matches(`?status=open&sport=${sport}&size=3`),
-        api.myMatches(),
-        api.myRegs(),
+        api.myMatches(sq),
+        api.myRegs(sq),
       ])
       // 附近约球
       const list = r1.status==='fulfilled' ? ((r1.value.data.data&&r1.value.data.data.list)||r1.value.data.data||[]) : []
