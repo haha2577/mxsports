@@ -7,8 +7,7 @@ Page({
     nickname: '',
     avatar: '',
     saving: false,
-    nicknameChanged: false,
-  },
+    nicknameChanged: false},
 
   onLoad() {
     const _s=wx.getStorageSync('activeSport')||'badminton';this.setData({heroGrad:_s==='tennis'?GRAD_T:GRAD_B})
@@ -65,8 +64,7 @@ Page({
         }
       },
       fail: () => wx.showToast({ title: '上传失败', icon: 'none' }),
-      complete: () => wx.hideLoading(),
-    })
+      complete: () => wx.hideLoading()})
   },
 
   // 保存昵称
@@ -97,22 +95,20 @@ Page({
       title: '注销账号',
       content: '注销后所有数据将无法恢复，确认继续？',
       confirmText: '继续',
-      confirmColor: '#e53935',
-    })
+      confirmColor: '#e53935'})
     if (!res1.confirm) return
     const res2 = await wx.showModal({
       title: '⚠️ 最终确认',
       content: '账号注销后无法找回，确认注销？',
       confirmText: '确认注销',
-      confirmColor: '#e53935',
-    })
+      confirmColor: '#e53935'})
     if (!res2.confirm) return
     try {
       await api.deleteAccount()
       // 清除本地登录状态
       wx.removeStorageSync('token')
       wx.removeStorageSync('userInfo')
-      wx.removeStorageSync('sportPref')
+      wx.removeStorageSync('canSwitch')
       if (getApp().globalData) {
         getApp().globalData.token = ''
         getApp().globalData.userInfo = null
@@ -122,5 +118,4 @@ Page({
     } catch(e) {
       wx.showToast({ title: '操作失败', icon: 'none' })
     }
-  },
-})
+  }})

@@ -10,9 +10,7 @@ Page({
     draft: [],      // [{idx, team1:[{id,name}|null, ...], team2:[...]}]
     players: [],    // [{id, name, games}]
     swapping: null, // {gameIdx, team:'team1'|'team2', slot:0|1}
-    confirming: false,
-    
-  },
+    confirming: false},
 
   onLoad() {
     
@@ -26,8 +24,7 @@ Page({
       type: d.type,
       typeName: d.typeName,
       draft: d.draft,
-      players: d.players,
-    })
+      players: d.players})
   },
 
   // 点击选手名字 → 选择替换
@@ -51,8 +48,7 @@ Page({
         const picked = available[res.tapIndex]
         if (curPlayer && picked.id === curPlayer.id) return
         this._swap(gameIdx, team, slot, picked, curPlayer)
-      },
-    })
+      }})
   },
 
   // 交换两个选手在排布中的位置
@@ -120,5 +116,4 @@ Page({
     } finally {
       this.setData({ confirming: false })
     }
-  },
-})
+  }})

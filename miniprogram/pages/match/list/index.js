@@ -1,12 +1,10 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../../utils/api')
 Page({
-  data:{sport:'badminton',sportPref:'',keyword:'',filterLevel:'',filterFee:'',heroGrad:GRAD_B,list:[],loading:false,hasFilter:false,feeLabel:''},
+  data:{sport:'badminton',keyword:'',filterLevel:'',filterFee:'',heroGrad:GRAD_B,list:[],loading:false,hasFilter:false,feeLabel:''},
   onLoad(opts){
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
-    const pref=wx.getStorageSync('sportPref')||''
-    
-    this.setData({sport,sportPref:pref,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
   onShow(){
@@ -46,5 +44,4 @@ Page({
     if(!dt)return''
     const d=new Date(dt)
     return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
-  },
-})
+  }})

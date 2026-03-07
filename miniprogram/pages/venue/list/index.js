@@ -1,12 +1,11 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const{api}=require('../../../utils/api')
 Page({
-  data:{sport:'badminton',sportPref:'',heroGrad:GRAD_B,city:'',filterOpen:false,list:[],hasFilter:false,lat:0,lng:0,loading:true},
+  data:{sport:'badminton',heroGrad:GRAD_B,city:'',filterOpen:false,list:[],hasFilter:false,lat:0,lng:0,loading:true},
   onLoad(opts){
     
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
-    const pref=wx.getStorageSync('sportPref')||''
-    this.setData({sport,sportPref:pref,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._getLocation()
   },
   _getLocation(){
@@ -40,5 +39,4 @@ Page({
   resetAll(){this.setData({filterOpen:false});this._load(this.data.sport)},
   navigateBack(){wx.navigateBack()},
   goDetail(e){wx.navigateTo({url:'/pages/venue/detail/index?id='+e.currentTarget.dataset.id})},
-  goBook(){wx.showToast({title:'预约功能开发中',icon:'none'})},
-})
+  goBook(){wx.showToast({title:'预约功能开发中',icon:'none'})}})

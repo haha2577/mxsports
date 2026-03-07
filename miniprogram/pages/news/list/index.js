@@ -24,5 +24,4 @@ Page({
     this._load()
   },
   navigateBack(){wx.navigateBack()},
-  goDetail(e){wx.navigateTo({url:'/pages/news/detail/index?id='+e.currentTarget.dataset.id})},
-})
+  goDetail(e){wx.navigateTo({url:'/pages/news/detail/index?id='+e.currentTarget.dataset.id})}})

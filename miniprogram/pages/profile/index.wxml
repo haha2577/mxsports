@@ -12,7 +12,7 @@
         <text wx:if="{{token&&phone}}" class="phone-txt">{{phone}}</text>
         <text wx:elif="{{!token}}" class="phone-sub" bindtap="showLoginSheet">点击登录 ›</text>
       </view>
-      <sport-switcher wx:if="{{token}}" sport-pref="{{sportPref}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
+      <sport-switcher wx:if="{{token}}" can-switch="{{canSwitch}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
     </view>
     <view wx:if="{{token}}" class="stat-row">
       <view class="stat-col"><text class="stat-n">{{stats.matches}}</text><text class="stat-l">参赛场次</text></view>

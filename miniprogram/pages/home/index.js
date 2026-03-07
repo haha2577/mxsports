@@ -1,18 +1,24 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../utils/api')
 Page({
-  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
+  data:{token:'',canSwitch:false,activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
   onLoad(){
-    
+    this._refresh()
   },
   onShow(){
-    const token=getApp().globalData.token||''
-    const user=getApp().globalData.userInfo||null
-    const pref=wx.getStorageSync('sportPref')||''
-    const sport=pref==='both'?(wx.getStorageSync('activeSport')||'badminton'):(pref||'badminton')
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',sportPref:pref,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    // 每次显示重读（从首页切换运动后返回要刷新）
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this._refresh()
+  },
+  _refresh(){
+    const token=wx.getStorageSync('token')
+    const user=wx.getStorageSync('userInfo')||{}
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    const canSwitch=wx.getStorageSync('canSwitch')||false
+    this.setData({token,nickname:user.nickname||'运动员',canSwitch,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     if(token){
-      if(!pref){this.setData({showSportPref:true});return}
+      if(!user.sportPref){this.setData({showSportPref:true});return}
       this._loadData(sport)
     }
   },
@@ -24,10 +30,8 @@ Page({
         api.myMatches(sq),
         api.myRegs(sq),
       ])
-      // 附近约球
       const list = r1.status==='fulfilled' ? ((r1.value.data.data&&r1.value.data.data.list)||r1.value.data.data||[]) : []
       this.setData({matches: list.slice(0,3)})
-      // 进行中活动（我创建的 + 我报名的，状态 ongoing）
       const mine  = r2.status==='fulfilled' ? (r2.value.data.data||[]) : []
       const regs  = r3.status==='fulfilled' ? (r3.value.data.data||[]) : []
       const ongoingIds = new Set()
@@ -48,32 +52,29 @@ Page({
     wx.setStorageSync('activeSport',sport)
     this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._loadData(sport)
-    // 异步写入数据库
     api.updateActiveSport(sport).catch(()=>{})
   },
   onSportPrefConfirm(e){
-    const pref=e.detail
-    const sport=pref==='both'?'badminton':pref
-    wx.setStorageSync('activeSport',sport)
-    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
-    this._loadData(sport)
+    const {pref, activeSport, canSwitch}=e.detail
+    this.setData({showSportPref:false,canSwitch,activeSport,heroGrad:activeSport==='tennis'?GRAD_T:GRAD_B})
+    this._loadData(activeSport)
   },
   showLoginSheet(){this.setData({showLogin:true})},
   hideLogin(){this.setData({showLogin:false})},
   onLoginSuccess(e){
-    const user=e.detail
-    const token=getApp().globalData.token||''
-    const pref=wx.getStorageSync('sportPref')||''
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',sportPref:pref,showLogin:false})
-    if(!pref)this.setData({showSportPref:true})
-    else this._loadData(this.data.activeSport)
+    const user=e.detail||{}
+    const sport=wx.getStorageSync('activeSport')||'badminton'
+    const canSwitch=wx.getStorageSync('canSwitch')||false
+    this.setData({token:wx.getStorageSync('token'),nickname:user.nickname||'运动员',canSwitch,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B,showLogin:false})
+    if(!user.sportPref) this.setData({showSportPref:true})  // 新用户未设置偏好
+    else this._loadData(sport)
   },
-  goActivities(){wx.navigateTo({url:'/pages/my/activities/index'})},
-  guestBadminton(){wx.navigateTo({url:'/pages/match/list/index?sport=badminton'})},
-  guestTennis(){wx.navigateTo({url:'/pages/match/list/index?sport=tennis'})},
+  guestBadminton(){wx.setStorageSync('activeSport','badminton');this.setData({showLogin:true})},
+  guestTennis(){wx.setStorageSync('activeSport','tennis');this.setData({showLogin:true})},
   goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},
-  goVenue(){wx.navigateTo({url:'/pages/venue/list/index?sport='+this.data.activeSport})},
-  goNews(){wx.navigateTo({url:'/pages/news/list/index?sport='+this.data.activeSport})},
-  goMatchList(){wx.navigateTo({url:'/pages/match/list/index?sport='+this.data.activeSport})},
-  goMatchDetail(e){wx.navigateTo({url:'/pages/match/detail/index?id='+e.currentTarget.dataset.id})},
+  goMatchList(){wx.navigateTo({url:'/pages/match/list/index'})},
+  goMatchDetail(e){wx.navigateTo({url:`/pages/match/detail/index?id=${e.currentTarget.dataset.id}`})},
+  goVenue(){wx.navigateTo({url:'/pages/venue/list/index'})},
+  goNews(){wx.navigateTo({url:'/pages/news/list/index'})},
+  goActivities(){wx.navigateTo({url:'/pages/my/activities/index'})},
 })

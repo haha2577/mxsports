@@ -1,4 +1,4 @@
-<view wx:if="{{sportPref === 'both'}}" class="sport-switcher">
+<view wx:if="{{canSwitch}}" class="sport-switcher">
   <view class="ss-tab {{active==='badminton'?'ss-active':''}}" bindtap="onBadminton">
     <text class="ss-emoji">🏸</text><text class="ss-label">羽毛球</text>
   </view>

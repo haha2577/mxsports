@@ -43,7 +43,7 @@
       <nav-bar back="{{false}}" background="{{heroGrad}}"/>
       <text class="hero-deco">{{activeSport==='badminton'?'🏸':'🎾'}}</text>
       <view class="hero-topbar">
-        <sport-switcher sport-pref="{{sportPref}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
+        <sport-switcher can-switch="{{canSwitch}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
       </view>
       <view class="hero-inner">
         <text class="hero-greeting">Hi，{{nickname}} 👋</text>

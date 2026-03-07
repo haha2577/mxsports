@@ -26,8 +26,7 @@ Page({
     editingGame: null,
     editScore1: '',
     editScore2: '',
-    showPlayerSheet: false,
-  },
+    showPlayerSheet: false},
 
   onLoad(opts) {
     this.setData({ id: opts.id })
@@ -273,13 +272,11 @@ Page({
     const { match, id } = this.data
     return {
       title: match ? match.name : '快来参加我的活动！',
-      path: `/pages/match/detail/index?id=${id}`,
-    }
+      path: `/pages/match/detail/index?id=${id}`}
   },
 
   _fmt(dt) {
     if (!dt) return ''
     const d = new Date(dt)
     return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
-  },
-})
+  }})

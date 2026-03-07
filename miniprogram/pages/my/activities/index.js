@@ -1,12 +1,10 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../../utils/api')
 Page({
-  data:{sport:'badminton',sportPref:'',heroGrad:GRAD_B,activeTab:'all',tabs:[{label:'全部',value:'all'},{label:'进行中',value:'ongoing'},{label:'已完成',value:'done'}],list:[],filteredList:[],counts:{},loading:false},
+  data:{sport:'badminton',heroGrad:GRAD_B,activeTab:'all',tabs:[{label:'全部',value:'all'},{label:'进行中',value:'ongoing'},{label:'已完成',value:'done'}],list:[],filteredList:[],counts:{},loading:false},
   onLoad(){
     const sport=wx.getStorageSync('activeSport')||'badminton'
-    const pref=wx.getStorageSync('sportPref')||''
-    
-    this.setData({sport,sportPref:pref,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
   onShow(){
@@ -51,8 +49,7 @@ Page({
     const counts={
       all:list.length,
       ongoing:list.filter(m=>['open','ongoing'].includes(m.status)).length,
-      done:list.filter(m=>m.status==='done'||m.status==='finished').length,
-    }
+      done:list.filter(m=>m.status==='done'||m.status==='finished').length}
     this.setData({filteredList:f,counts})
   },
   onSwitchSport(e){const s=e.detail;wx.setStorageSync('activeSport',s);this.setData({sport:s,heroGrad:s==='tennis'?GRAD_T:GRAD_B})},
@@ -64,5 +61,4 @@ Page({
     if(!dt)return''
     const d=new Date(dt)
     return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
-  },
-})
+  }})

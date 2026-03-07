@@ -27,5 +27,4 @@ Page({
     const d = new Date(dt)
     const weeks = ['周日','周一','周二','周三','周四','周五','周六']
     return `${d.getMonth()+1}月${d.getDate()}日（${weeks[d.getDay()]}）`
-  },
-})
+  }})

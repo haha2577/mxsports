@@ -5,7 +5,6 @@ Page({
     heroGrad:GRAD_B,
     
     sport: 'badminton',
-    sportPref: '',
     // 必填
     name: '',
     date: '',
@@ -34,8 +33,7 @@ Page({
     loading: false,
     showSuccess: false,
     createdId: null,
-    today: '',
-  },
+    today: ''},
   onLoad() {
     
     const sport = wx.getStorageSync('activeSport') || 'badminton'
@@ -50,7 +48,7 @@ Page({
   onDate(e) { const d = e.detail.value; this.setData({ date: d, dateDisplay: this._fmtDate(d) }) },
   _fmtDate(dateStr) {
     if (!dateStr) return ''
-    const d = new Date(dateStr + 'T00:00:00')
+    const d = new Date(dateStr + ',T00:00:00')
     const weeks = ['周日','周一','周二','周三','周四','周五','周六']
     return `${d.getMonth()+1}月${d.getDate()}日（${weeks[d.getDay()]}）`
   },
@@ -68,13 +66,11 @@ Page({
             title: '需要定位权限',
             content: '请在设置中开启位置权限，以便搜索附近场馆',
             confirmText: '去设置',
-            success: (r) => { if (r.confirm) wx.openSetting() },
-          })
+            success: (r) => { if (r.confirm) wx.openSetting() }})
           return
         }
         this._doPickLocation()
-      },
-    })
+      }})
   },
   _doPickLocation() {
     wx.chooseLocation({
@@ -86,11 +82,9 @@ Page({
           locationAddr: addr,
           location: name + (addr ? ` ${addr}` : ''),
           locationLat: res.latitude,
-          locationLng: res.longitude,
-        })
+          locationLng: res.longitude})
       },
-      fail: () => {},
-    })
+      fail: () => {}})
   },
   clearLocation() {
     this.setData({ location: '', locationName: '', locationAddr: '', locationLat: null, locationLng: null })
@@ -98,7 +92,6 @@ Page({
   onFee(e) { this.setData({ fee: e.detail.value }) },
   setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v }) },
   setLevel(e) { this.setData({ level: e.currentTarget.dataset.v }) },
-
 
   async submit() {
     const { sport, name, date, time, location, locationLat, locationLng, maxPlayers, fee, level, loading } = this.data
@@ -120,8 +113,7 @@ Page({
         fee: fee ? parseFloat(fee) : 0,
         levels: level && level !== '不限' ? [level] : [],
         status: 'open',
-        matchType: 'round_robin',
-      })
+        matchType: 'round_robin'})
       this.setData({ createdId: r.data.data.id, showSuccess: true })
     } catch(e) {
       const msg = e && e.data && e.data.message ? e.data.message : '创建失败，请重试'
@@ -146,7 +138,5 @@ Page({
   onShareAppMessage() {
     return {
       title: this.data.name || '快来参加我的活动！',
-      path: `/pages/match/detail/index?id=${this.data.createdId}`,
-    }
-  },
-})
+      path: `/pages/match/detail/index?id=${this.data.createdId}`}
+  }})

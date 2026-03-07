@@ -8,22 +8,16 @@ Component({
     confirm(){
       if(!this.data.selected)return
       const pref=this.data.selected
-      wx.setStorageSync('sportPref',pref)
-      // sportPref 改为单项时，强制同步 activeSport
-      if(pref!=='both'){
-        wx.setStorageSync('activeSport',pref)
-      } else {
-        // both: 保持现有 activeSport，没有则默认 badminton
-        if(!wx.getStorageSync('activeSport')){
-          wx.setStorageSync('activeSport','badminton')
-        }
-      }
-      this.triggerEvent('confirm',pref)
-      // 同步到后端（sportPref + activeSport 一起更新）
+      const canSwitch=pref==='both'
+      // activeSport: 单项锁定，双栖保持已有值或默认 badminton
+      let activeSport=pref!=='both'?pref:(wx.getStorageSync('activeSport')||'badminton')
+      wx.setStorageSync('activeSport', activeSport)
+      wx.setStorageSync('canSwitch', canSwitch)
+      this.triggerEvent('confirm', {pref, activeSport, canSwitch})
+      // 同步到后端
       const token=wx.getStorageSync('token')
       if(token){
         const {api}=require('../../utils/api')
-        const activeSport=wx.getStorageSync('activeSport')
         api.updateProfile({sportPref:pref, activeSport}).catch(()=>{})
       }
     }

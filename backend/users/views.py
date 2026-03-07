@@ -44,6 +44,7 @@ def user_data(user):
             'avatar': user.avatar or '',
             'sportPref': user.sport_pref or '',
             'activeSport': user.active_sport or 'badminton',
+            'canSwitch': user.sport_pref == 'both',
         }
     }
 
@@ -363,6 +364,7 @@ class ProfileView(APIView):
             'isOrganizer': u.is_organizer,
             'sportPref': u.sport_pref or '',
             'activeSport': u.active_sport or 'badminton',
+            'canSwitch': u.sport_pref == 'both',
         })
 
     def put(self, request):
