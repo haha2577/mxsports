@@ -1,7 +1,8 @@
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
 const { api } = require('../../../utils/api')
-
 Page({
   data: {
+    heroGrad:GRAD_B,
     matchId: null,
     matchName: '',
     type: '',
@@ -10,14 +11,16 @@ Page({
     players: [],    // [{id, name, games}]
     swapping: null, // {gameIdx, team:'team1'|'team2', slot:0|1}
     confirming: false,
-    sbh: 20,
+    
   },
 
   onLoad() {
-    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
+    
     const d = getApp().globalData.drawDraft
     if (!d) { wx.navigateBack(); return }
+    const sport=wx.getStorageSync('activeSport')||'badminton'
     this.setData({
+      heroGrad:gradOf(sport),
       matchId: d.matchId,
       matchName: d.matchName,
       type: d.type,

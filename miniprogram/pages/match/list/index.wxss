@@ -1,5 +1,5 @@
 .page{background:#f0f2f5;padding-bottom:120rpx}
-.header{padding:100rpx 32rpx 0}
+.page-header{padding:0 32rpx 20rpx}
 .search-bar{background:rgba(255,255,255,.12);border-radius:20rpx;display:flex;align-items:center;padding:0 20rpx;margin:16rpx 0;border:1rpx solid rgba(255,255,255,.15)}
 .si{font-size:30rpx;margin-right:12rpx}
 .si-input{flex:1;height:72rpx;font-size:28rpx;color:#fff}
@@ -10,8 +10,6 @@
 .chip-reset{background:rgba(220,53,69,.2);color:#ff8080}
 .result-bar{padding:16rpx 32rpx}
 .rt{font-size:24rpx;color:#999}
-.empty{display:flex;flex-direction:column;align-items:center;padding:80rpx}
-.ei{font-size:80rpx;margin-bottom:16rpx}.et{font-size:30rpx;color:#999}
 .list{padding:0 24rpx;display:flex;flex-direction:column;gap:16rpx}
 .match-card{background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
 .mc-top{display:flex;justify-content:space-between;margin-bottom:14rpx}

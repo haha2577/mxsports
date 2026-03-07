@@ -1,1 +1,84 @@
-<view class="page" style="padding:40rpx"><text style="color:#aaa;font-size:28rpx">🏟️ 场馆详情 - 开发中</text></view>
+<view class="page">
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="场馆详情" background="{{heroGrad}}"/>
+  </view>
+  <view class="page-body">
+
+  <view wx:if="{{loading}}" class="loading-wrap"><text>加载中...</text></view>
+
+  <block wx:elif="{{venue}}">
+    <!-- 场馆名称区 -->
+    <view class="name-card">
+      <view class="name-top">
+        <text class="venue-icon">{{venue.sport==='badminton'?'🏸':venue.sport==='tennis'?'🎾':'🏟️'}}</text>
+        <view class="name-body">
+          <text class="venue-name">{{venue.name}}</text>
+          <view class="rating-row">
+            <text class="star">★</text>
+            <text class="rating-num">{{venue.rating}}</text>
+            <text class="review-count">({{venue.reviewCount}}条评价)</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="info-card">
+      <view class="info-row" bindtap="openMap">
+        <text class="info-icon">📍</text>
+        <view class="info-body">
+          <text class="info-label">地址</text>
+          <text class="info-val link">{{venue.district}} {{venue.address}} ›</text>
+        </view>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">🕐</text>
+        <view class="info-body">
+          <text class="info-label">营业时间</text>
+          <text class="info-val">{{venue.businessHours||'暂无信息'}}</text>
+        </view>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">💰</text>
+        <view class="info-body">
+          <text class="info-label">参考价格</text>
+          <text class="info-val">¥{{venue.priceFrom}}/小时起</text>
+        </view>
+      </view>
+      <view wx:if="{{venue.phone}}" class="info-row" bindtap="callPhone">
+        <text class="info-icon">📞</text>
+        <view class="info-body">
+          <text class="info-label">电话</text>
+          <text class="info-val link">{{venue.phone}} ›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 设施标签 -->
+    <view class="tag-card">
+      <text class="card-title">场馆设施</text>
+      <view class="tag-grid">
+        <view wx:for="{{tags}}" wx:key="*this" class="tag-item">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 场馆介绍 -->
+    <view wx:if="{{venue.description}}" class="desc-card">
+      <text class="card-title">场馆介绍</text>
+      <text class="desc-text">{{venue.description}}</text>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar">
+      <view class="call-btn" bindtap="callPhone">
+        <text class="call-icon">📞</text>
+        <text class="call-txt">拨打电话</text>
+      </view>
+      <view class="map-btn" bindtap="openMap">
+        <text class="map-icon">🗺️</text>
+        <text class="map-txt">导航前往</text>
+      </view>
+    </view>
+  </block>
+  </view>
+</view>

@@ -1,1 +1,30 @@
-<view class="page" style="padding:40rpx"><text style="color:#aaa;font-size:28rpx">📰 资讯详情 - 开发中</text></view>
+<view class="page">
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="资讯详情" background="{{heroGrad}}"/>
+  </view>
+  <view class="page-body">
+
+  <view wx:if="{{loading}}" class="loading-wrap"><text>加载中...</text></view>
+
+  <block wx:elif="{{news}}">
+    <view class="article">
+      <view class="cat-badge" style="color:{{news.category==='international'?'#1DB954':news.category==='national'?'#1565c0':'#f57c00'}};background:{{news.category==='international'?'#1DB95415':news.category==='national'?'#1565c015':'#f57c0015'}}">
+        {{news.categoryLabel}}
+      </view>
+      <text class="article-title">{{news.title}}</text>
+      <view class="article-meta">
+        <text class="meta-sport">{{news.sport==='badminton'?'🏸 羽毛球':'🎾 网球'}}</text>
+        <text wx:if="{{news.city}}" class="meta-city">📍 {{news.city}}</text>
+        <text class="meta-date">{{news.publishedAt}}</text>
+      </view>
+      <view class="article-body">
+        <text class="article-content">{{news.content}}</text>
+      </view>
+      <view wx:if="{{news.sourceUrl}}" class="source-bar" bindtap="openSource">
+        <text class="source-label">📎 来源链接</text>
+        <text class="source-url">{{news.sourceUrl}}</text>
+      </view>
+    </view>
+  </block>
+  </view>
+</view>

@@ -1,0 +1,37 @@
+.page{background:#f0f2f5;min-height:100vh;padding-bottom:140rpx}
+.page-header{padding:0 32rpx 24rpx}
+
+.name-card{margin:24rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:32rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
+.name-top{display:flex;align-items:flex-start;gap:20rpx}
+.venue-icon{font-size:56rpx}
+.name-body{flex:1}
+.venue-name{display:block;font-size:34rpx;font-weight:bold;color:#1a1a1a;line-height:1.4;margin-bottom:8rpx}
+.rating-row{display:flex;align-items:center;gap:8rpx}
+.star{font-size:28rpx;color:#f5a623}
+.rating-num{font-size:28rpx;font-weight:bold;color:#f5a623}
+.review-count{font-size:22rpx;color:#999}
+
+.info-card{margin:16rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:8rpx 28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
+.info-row{display:flex;align-items:flex-start;gap:16rpx;padding:20rpx 0;border-bottom:1rpx solid #f5f5f5}
+.info-row:last-child{border-bottom:none}
+.info-icon{font-size:32rpx;flex-shrink:0;margin-top:4rpx}
+.info-body{flex:1}
+.info-label{display:block;font-size:22rpx;color:#999;margin-bottom:4rpx}
+.info-val{display:block;font-size:28rpx;color:#1a1a1a}
+.info-val.link{color:#1565c0}
+
+.tag-card{margin:16rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
+.card-title{display:block;font-size:28rpx;font-weight:bold;color:#1a1a1a;margin-bottom:20rpx}
+.tag-grid{display:flex;flex-wrap:wrap;gap:12rpx}
+.tag-item{padding:12rpx 24rpx;background:#f0f2f5;border-radius:50rpx;font-size:24rpx;color:#555}
+
+.desc-card{margin:16rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
+.desc-text{font-size:28rpx;color:#555;line-height:1.8}
+
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:16rpx 24rpx 40rpx;display:flex;gap:16rpx;box-shadow:0 -4rpx 20rpx rgba(0,0,0,.08)}
+.call-btn{flex:1;height:96rpx;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:20rpx;display:flex;align-items:center;justify-content:center;gap:12rpx}
+.call-icon{font-size:32rpx}
+.call-txt{font-size:28rpx;color:#fff;font-weight:600}
+.map-btn{flex:1;height:96rpx;background:#f0f2f5;border-radius:20rpx;display:flex;align-items:center;justify-content:center;gap:12rpx}
+.map-icon{font-size:32rpx}
+.map-txt{font-size:28rpx;color:#1a1a1a;font-weight:600}

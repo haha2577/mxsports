@@ -74,11 +74,13 @@ class WxLoginView(APIView):
         else:
             openid = f'dev_{code}'
 
-        user, _ = User.objects.get_or_create(
+        user, created = User.objects.get_or_create(
             openid=openid,
             defaults={'nickname': '运动员'}
         )
-        return ok(user_data(user), '登录成功')
+        data = user_data(user)
+        data['user']['isNew'] = created
+        return ok(data, '登录成功')
 
 
 # ─── 发送短信验证码 ────────────────────────────────────────

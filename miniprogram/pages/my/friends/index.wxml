@@ -1,15 +1,14 @@
 <view class="page">
 
-  <view class="header" style="padding-top:{{sbh+8}}px">
-    <view class="nav-row">
-      <view class="back-btn" bindtap="navigateBack"><text class="back-arrow">‹</text></view>
-    </view>
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="我的球友" background="{{heroGrad}}"/>
     <text class="hd-emoji">🤝</text>
     <view class="hd-text">
       <text class="hd-title">我的球友</text>
       <text class="hd-sub">一起参加过活动的伙伴</text>
     </view>
   </view>
+  <view class="page-body">
 
   <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
 
@@ -39,4 +38,5 @@
     </view>
   </view>
 
+  </view>
 </view>

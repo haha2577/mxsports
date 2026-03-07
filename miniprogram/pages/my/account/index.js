@@ -1,9 +1,9 @@
-const { api } = require('../../../utils/api')
-const BASE_URL = 'https://mxsports.vip/api'
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const { api, BASE_URL } = require('../../../utils/api')
 
 Page({
   data: {
-    sbh: 20,
+    heroGrad:GRAD_B,
     nickname: '',
     avatar: '',
     saving: false,
@@ -11,7 +11,7 @@ Page({
   },
 
   onLoad() {
-    try { this.setData({ sbh: wx.getSystemInfoSync().statusBarHeight || 20 }) } catch(e) {}
+    this.setData(readSport())
     const user = wx.getStorageSync('userInfo') || {}
     this.setData({ nickname: user.nickname || '', avatar: user.avatar || '' })
   },
@@ -22,19 +22,19 @@ Page({
     this.setData({ nickname: e.detail.value, nicknameChanged: true })
   },
 
-  // 选择头像
-  chooseAvatar() {
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const path = res.tempFiles[0].tempFilePath
-        this.setData({ avatar: path })
-        this._uploadAvatar(path)
-      },
-    })
+  onNicknameBlur(e) {
+    const val = (e.detail.value || '').trim()
+    if (val && val !== this.data._origNickname) {
+      this.setData({ nickname: val, nicknameChanged: true })
+    }
+  },
+
+  // 微信原生头像选择（弹出微信头像/相册/拍照）
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail
+    if (!avatarUrl) return
+    this.setData({ avatar: avatarUrl })
+    this._uploadAvatar(avatarUrl)
   },
 
   _uploadAvatar(filePath) {
@@ -49,12 +49,13 @@ Page({
         try {
           const data = JSON.parse(res.data)
           if (data.code === 0) {
-            const url = 'https://mxsports.vip' + data.data.url
+            const url = BASE_URL.replace('/api', '') + data.data.url
             this.setData({ avatar: url })
-            // 更新本地缓存
+            // 更新本地缓存 + globalData
             const user = wx.getStorageSync('userInfo') || {}
             user.avatar = url
             wx.setStorageSync('userInfo', user)
+            if (getApp().globalData.userInfo) getApp().globalData.userInfo.avatar = url
             wx.showToast({ title: '头像已更新', icon: 'success' })
           } else {
             wx.showToast({ title: data.message || '上传失败', icon: 'none' })

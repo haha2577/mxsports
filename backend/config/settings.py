@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'matches',
     'registrations',
     'rackets',
+    'venues',
+    'news',
 ]
 
 MIDDLEWARE = [

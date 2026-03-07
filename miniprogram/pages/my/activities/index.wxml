@@ -1,6 +1,9 @@
 <view class="page">
-  <view class="header" style="background:{{heroGrad}};padding-top:{{sbh}}px">
-    <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="我的活动" background="{{heroGrad}}"/>
+    <view style="padding:0 32rpx">
+      <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
+    </view>
     <view class="status-tabs">
       <view wx:for="{{tabs}}" wx:key="value" class="stab {{activeTab===item.value?'stab-a':''}}" bindtap="setTab" data-v="{{item.value}}">
         {{item.label}}
@@ -8,39 +11,31 @@
       </view>
     </view>
   </view>
-
-  <!-- 加载中 -->
-  <view wx:if="{{loading}}" class="empty">
-    <text class="et">加载中...</text>
-  </view>
-
-  <!-- 空状态 -->
-  <view wx:elif="{{!filteredList.length}}" class="empty">
-    <text class="ei">📋</text>
-    <text class="et">还没有活动</text>
-    <view class="empty-btn" bindtap="goCreate">创建第一个活动 →</view>
-  </view>
-
-  <view wx:else class="list">
-    <view wx:for="{{filteredList}}" wx:key="id" class="activity-card" bindtap="goDetail" data-id="{{item.id}}">
-      <view class="card-bar {{item.sport==='badminton'||!item.sport?'bar-b':'bar-t'}}"/>
-      <view class="card-body">
-        <view class="card-top">
-          <text class="card-title">{{item.name}}</text>
-          <view class="sp-badge sp-{{item.status}}">
-            {{item.status==='open'?'报名中':item.status==='ongoing'?'进行中':item.status==='finished'?'已结束':'草稿'}}
+  <view class="page-body">
+    <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
+    <view wx:elif="{{!filteredList.length}}" class="empty">
+      <text class="ei">📋</text><text class="et">还没有活动</text>
+      <view class="empty-btn" bindtap="goCreate">创建第一个活动 →</view>
+    </view>
+    <view wx:else class="list">
+      <view wx:for="{{filteredList}}" wx:key="id" class="activity-card" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="card-bar {{item.sport==='badminton'||!item.sport?'bar-b':'bar-t'}}"/>
+        <view class="card-body">
+          <view class="card-top">
+            <text class="card-title">{{item.name}}</text>
+            <view class="sp-badge sp-{{item.status}}">
+              {{item.status==='open'?'报名中':item.status==='ongoing'?'进行中':item.status==='finished'?'已结束':'草稿'}}
+            </view>
           </view>
-        </view>
-        <text wx:if="{{item.location}}" class="ci">📍 {{item.location}}</text>
-        <text wx:if="{{item.startTime}}" class="ci">🗓️ {{item.startTime}}</text>
-        <view class="card-tags">
-          <view class="sport-tag {{item.sport==='tennis'?'tag-t':'tag-b'}}">
-            {{item.sport==='tennis'?'🎾 网球':'🏸 羽毛球'}}
+          <text wx:if="{{item.location}}" class="ci">📍 {{item.location}}</text>
+          <text wx:if="{{item.startTime}}" class="ci">🗓️ {{item.startTime}}</text>
+          <view class="card-tags">
+            <view class="sport-tag {{item.sport==='tennis'?'tag-t':'tag-b'}}">{{item.sport==='tennis'?'🎾 网球':'🏸 羽毛球'}}</view>
+            <view class="role-tag">{{item.role==='organizer'?'🎤 发起人':'🙋 参与者'}}</view>
           </view>
-          <view class="role-tag">{{item.role==='organizer'?'🎤 发起人':'🙋 参与者'}}</view>
-        </view>
-        <view wx:if="{{item.maxPlayers}}" class="card-footer">
-          <text class="cf-p">👥 {{item.registeredCount||0}}/{{item.maxPlayers}} 人</text>
+          <view wx:if="{{item.maxPlayers}}" class="card-footer">
+            <text class="cf-p">👥 {{item.registeredCount||0}}/{{item.maxPlayers}} 人</text>
+          </view>
         </view>
       </view>
     </view>

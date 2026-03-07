@@ -32,5 +32,25 @@
         <text class="ls-btn-txt">{{loading?'登录中...':'登录'}}</text>
       </view>
     </block>
+    <block wx:if="{{step==='profile'}}">
+      <text class="ls-title">完善你的资料</text>
+      <text class="ls-sub">设置头像和昵称，让球友认识你</text>
+      <view class="ls-profile-avatar">
+        <button class="ls-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onProfileAvatar">
+          <image wx:if="{{profileAvatar}}" class="ls-avatar-img" src="{{profileAvatar}}" mode="aspectFill"/>
+          <view wx:else class="ls-avatar-empty">
+            <text class="ls-avatar-plus">📷</text>
+            <text class="ls-avatar-hint">点击选头像</text>
+          </view>
+        </button>
+      </view>
+      <view class="ls-input-wrap">
+        <input class="ls-input" type="nickname" value="{{profileNickname}}" bindinput="onProfileNickname" placeholder="点击使用微信昵称"/>
+      </view>
+      <view class="ls-btn ls-confirm" bindtap="saveProfile">
+        <text class="ls-btn-txt">{{loading?'保存中...':'完成'}}</text>
+      </view>
+      <text class="ls-skip" bindtap="skipProfile">跳过，稍后设置 ›</text>
+    </block>
   </view>
 </view>

@@ -1,8 +1,10 @@
 <view class="page">
-  <view class="header" style="background:{{heroGrad}}">
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="球拍推荐" background="{{heroGrad}}"/>
     <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
     <text class="hd-sub">根据你的水平和打法，精准匹配最适合的球拍</text>
   </view>
+  <view class="page-body">
   <view class="quiz-card" bindtap="startQuiz">
     <view class="qc-l"><text class="qc-title">开始测评</text><text class="qc-sub">3分钟找到你的专属球拍</text></view>
     <text class="qc-arrow">›</text>
@@ -17,5 +19,6 @@
         <view class="rc-footer"><text class="rc-price">¥{{item.price}}</text><text class="rc-level">{{item.level}}</text></view>
       </view>
     </view>
+  </view>
   </view>
 </view>

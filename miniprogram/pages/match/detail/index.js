@@ -1,7 +1,9 @@
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
 const { api } = require('../../../utils/api')
-
 Page({
   data: {
+    
+    heroGrad:GRAD_B,
     id: null,
     match: null,
     loading: true,
@@ -24,6 +26,7 @@ Page({
     editingGame: null,
     editScore1: '',
     editScore2: '',
+    showPlayerSheet: false,
   },
 
   onLoad(opts) {
@@ -36,6 +39,7 @@ Page({
   },
 
   navigateBack() { wx.navigateBack() },
+  togglePlayerSheet() { this.setData({ showPlayerSheet: !this.data.showPlayerSheet }) },
 
   async _loadGames() {
     const { id, match } = this.data
@@ -59,7 +63,7 @@ Page({
       const isOrganizer = myId && match.organizerId === myId
       // 检查是否已报名
       const isRegistered = token && match.players && match.players.some(p => p.id === myId)
-      this.setData({ match, loading: false, myUserId: myId, isOrganizer, isRegistered })
+      this.setData({ match, loading: false, myUserId: myId, isOrganizer, isRegistered, heroGrad:match.gradOf(sport) })
       this._loadGames()
     } catch(e) {
       this.setData({ loading: false })
@@ -93,7 +97,48 @@ Page({
     }
   },
 
-  // ─── 记分相关 ───────────────────────────────────────────
+  // ─── 记分相关（内联编辑）───────────────────────────────
+  _pendingScores: {},
+
+  onScoreTap(e) {
+    // 空操作，让 input 获焦
+  },
+
+  onScoreInput(e) {
+    const { gameId, team } = e.currentTarget.dataset
+    if (!this._pendingScores) this._pendingScores = {}
+    if (!this._pendingScores[gameId]) this._pendingScores[gameId] = {}
+    this._pendingScores[gameId]['score' + team] = e.detail.value
+  },
+
+  async onScoreBlur(e) {
+    const { gameId, team } = e.currentTarget.dataset
+    const val = e.detail.value
+    if (!this._pendingScores) this._pendingScores = {}
+    if (!this._pendingScores[gameId]) this._pendingScores[gameId] = {}
+    this._pendingScores[gameId]['score' + team] = val
+
+    // 找到这场比赛当前的分数
+    const game = this.data.games.find(g => g.id == gameId)
+    if (!game) return
+
+    const s1 = this._pendingScores[gameId].score1 != null ? this._pendingScores[gameId].score1 : (game.score1 != null ? String(game.score1) : '')
+    const s2 = this._pendingScores[gameId].score2 != null ? this._pendingScores[gameId].score2 : (game.score2 != null ? String(game.score2) : '')
+
+    // 两边都有值时自动保存
+    if (s1 !== '' && s2 !== '') {
+      try {
+        await api.updateScore(this.data.id, gameId, parseInt(s1), parseInt(s2))
+        wx.showToast({ title: '已保存', icon: 'success', duration: 1000 })
+        delete this._pendingScores[gameId]
+        this._loadGames()
+      } catch(e) {
+        wx.showToast({ title: e?.data?.message || '保存失败', icon: 'none' })
+      }
+    }
+  },
+
+  // 保留弹窗方式作为备用
   openScoreModal(e) {
     const game = e.currentTarget.dataset.game
     this.setData({ showScoreModal: true, editingGame: game,

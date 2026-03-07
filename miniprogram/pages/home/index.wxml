@@ -1,42 +1,46 @@
 <view class="page">
   <!-- 未登录 -->
   <block wx:if="{{!token}}">
-    <view class="hero-guest" style="padding-top:{{sbh+12}}px">
+    <view class="page-header hero-guest">
+      <nav-bar back="{{false}}"/>
       <text class="hg-deco">🏸</text>
       <view class="hg-inner">
         <text class="hg-appname">铭心乐Go</text>
         <text class="hg-title">打球，更有趣</text>
         <text class="hg-sub">报名参赛 · 组织比赛 · 记录成长</text>
       </view>
-    </view>
-    <view class="sport-cards">
-      <view class="sport-card badminton-card" bindtap="guestBadminton">
-        <text class="sc-emoji">🏸</text>
-        <text class="sc-name">羽毛球</text>
-        <text class="sc-desc">轻盈快速 · 室内竞技</text>
-        <view class="sc-btn"><text class="sc-btn-txt">进入 →</text></view>
+    </view><!-- /page-header -->
+    <view class="page-body">
+      <view class="sport-cards">
+        <view class="sport-card badminton-card" bindtap="guestBadminton">
+          <text class="sc-emoji">🏸</text>
+          <text class="sc-name">羽毛球</text>
+          <text class="sc-desc">轻盈快速 · 室内竞技</text>
+          <view class="sc-btn"><text class="sc-btn-txt">进入 →</text></view>
+        </view>
+        <view class="sport-card tennis-card" bindtap="guestTennis">
+          <text class="sc-emoji">🎾</text>
+          <text class="sc-name">网球</text>
+          <text class="sc-desc">力量技巧 · 精英对决</text>
+          <view class="sc-btn sc-btn-t"><text class="sc-btn-txt sc-btn-txt-t">进入 →</text></view>
+        </view>
       </view>
-      <view class="sport-card tennis-card" bindtap="guestTennis">
-        <text class="sc-emoji">🎾</text>
-        <text class="sc-name">网球</text>
-        <text class="sc-desc">力量技巧 · 精英对决</text>
-        <view class="sc-btn sc-btn-t"><text class="sc-btn-txt sc-btn-txt-t">进入 →</text></view>
+      <view class="guest-login-row" bindtap="showLoginSheet">
+        <text class="gli-txt">已有账号？登录后记录赛事数据 ›</text>
       </view>
-    </view>
-    <view class="guest-login-row" bindtap="showLoginSheet">
-      <text class="gli-txt">已有账号？登录后记录赛事数据 ›</text>
-    </view>
-    <view class="guest-features">
-      <view class="gf-item"><text class="gf-icon">🏆</text><text class="gf-label">赛事报名</text></view>
-      <view class="gf-item"><text class="gf-icon">📊</text><text class="gf-label">战绩记录</text></view>
-      <view class="gf-item"><text class="gf-icon">🎬</text><text class="gf-label">AI视频</text></view>
-      <view class="gf-item"><text class="gf-icon">🏟️</text><text class="gf-label">附近场馆</text></view>
-    </view>
+      <view class="guest-features">
+        <view class="gf-item"><text class="gf-icon">🏆</text><text class="gf-label">赛事报名</text></view>
+        <view class="gf-item"><text class="gf-icon">📊</text><text class="gf-label">战绩记录</text></view>
+        <view class="gf-item"><text class="gf-icon">🎬</text><text class="gf-label">AI视频</text></view>
+        <view class="gf-item"><text class="gf-icon">🏟️</text><text class="gf-label">附近场馆</text></view>
+      </view>
+    </view><!-- /page-body -->
   </block>
 
   <!-- 已登录 -->
   <block wx:if="{{token}}">
-    <view class="hero" style="padding-top:{{sbh+8}}px;background:{{heroGrad}}">
+    <view class="page-header" style="background:{{heroGrad}}">
+      <nav-bar back="{{false}}" background="{{heroGrad}}"/>
       <text class="hero-deco">{{activeSport==='badminton'?'🏸':'🎾'}}</text>
       <view class="hero-topbar">
         <sport-switcher sport-pref="{{sportPref}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
@@ -46,62 +50,63 @@
         <text class="hero-sub">{{activeSport==='badminton'?'报名、组织、记录你的每一场比赛':'专业赛事管理，积分排名实时更新'}}</text>
       </view>
     </view>
+    <view class="page-body">
+      <!-- 功能入口 -->
+      <view class="action-row">
+        <view class="action-card" bindtap="goCreate">
+          <view class="ac-icon" style="background:{{activeSport==='badminton'?'#d0f0dc':'#fde3d0'}}"><text>🏆</text></view>
+          <text class="ac-title">创建活动</text>
+        </view>
+        <view class="action-card" bindtap="goVenue">
+          <view class="ac-icon" style="background:#e8f0fd"><text>🏟️</text></view>
+          <text class="ac-title">附近场馆</text>
+        </view>
+        <view class="action-card" bindtap="goNews">
+          <view class="ac-icon" style="background:#fff0e0"><text>📰</text></view>
+          <text class="ac-title">最新资讯</text>
+        </view>
+      </view>
 
-    <!-- 功能入口 -->
-    <view class="action-row">
-      <view class="action-card" bindtap="goCreate">
-        <view class="ac-icon" style="background:{{activeSport==='badminton'?'#d0f0dc':'#fde3d0'}}"><text>🏆</text></view>
-        <text class="ac-title">创建活动</text>
-      </view>
-      <view class="action-card" bindtap="goVenue">
-        <view class="ac-icon" style="background:#e8f0fd"><text>🏟️</text></view>
-        <text class="ac-title">附近场馆</text>
-      </view>
-      <view class="action-card" bindtap="goNews">
-        <view class="ac-icon" style="background:#fff0e0"><text>📰</text></view>
-        <text class="ac-title">最新资讯</text>
-      </view>
-    </view>
-
-    <!-- 进行中的比赛 -->
-    <view wx:if="{{ongoingMatches.length}}" class="section">
-      <view class="sec-hd">
-        <view class="sec-hd-l"><view class="dot dot-live"/><text class="sec-title">进行中的比赛</text></view>
-        <text class="sec-more" bindtap="goActivities">我的活动 ›</text>
-      </view>
-      <view wx:for="{{ongoingMatches}}" wx:key="id" class="ongoing-card" bindtap="goMatchDetail" data-id="{{item.id}}">
-        <view class="oc-left">
-          <view class="oc-live-dot"/>
-          <view class="oc-info">
-            <text class="oc-name">{{item.name}}</text>
-            <text class="oc-meta">📍{{item.location}}</text>
+      <!-- 进行中的比赛 -->
+      <view wx:if="{{ongoingMatches.length}}" class="section">
+        <view class="sec-hd">
+          <view class="sec-hd-l"><view class="dot dot-live"/><text class="sec-title">进行中的比赛</text></view>
+          <text class="sec-more" bindtap="goActivities">我的活动 ›</text>
+        </view>
+        <view wx:for="{{ongoingMatches}}" wx:key="id" class="ongoing-card" bindtap="goMatchDetail" data-id="{{item.id}}">
+          <view class="oc-left">
+            <view class="oc-live-dot"/>
+            <view class="oc-info">
+              <text class="oc-name">{{item.name}}</text>
+              <text class="oc-meta">📍{{item.location}}</text>
+            </view>
+          </view>
+          <view class="oc-right">
+            <view class="oc-role {{item.role==='organizer'?'role-org':'role-player'}}">
+              <text>{{item.role==='organizer'?'我创建':'我报名'}}</text>
+            </view>
+            <text class="oc-arrow">›</text>
           </view>
         </view>
-        <view class="oc-right">
-          <view class="oc-role {{item.role==='organizer'?'role-org':'role-player'}}">
-            <text>{{item.role==='organizer'?'我创建':'我报名'}}</text>
-          </view>
-          <text class="oc-arrow">›</text>
-        </view>
       </view>
-    </view>
 
-    <!-- 附近约球 -->
-    <view class="section">
-      <view class="sec-hd">
-        <view class="sec-hd-l"><view class="dot" style="background:{{activeSport==='badminton'?'#1DB954':'#d4541f'}}"/><text class="sec-title">附近的约球</text></view>
-        <text class="sec-more" style="color:{{activeSport==='badminton'?'#1DB954':'#d4541f'}}" bindtap="goMatchList">全部 ›</text>
-      </view>
-      <view wx:if="{{matches.length===0}}" class="empty">暂无约球活动</view>
-      <view wx:for="{{matches}}" wx:key="id" class="match-item" bindtap="goMatchDetail" data-id="{{item.id}}">
-        <view class="mi-icon" style="background:{{activeSport==='badminton'?'#e8f7ee':'#fdf0e8'}}">
-          <text>{{activeSport==='badminton'?'🏸':'🎾'}}</text>
+      <!-- 附近约球 -->
+      <view class="section">
+        <view class="sec-hd">
+          <view class="sec-hd-l"><view class="dot" style="background:{{activeSport==='badminton'?'#1DB954':'#d4541f'}}"/><text class="sec-title">附近的约球</text></view>
+          <text class="sec-more" style="color:{{activeSport==='badminton'?'#1DB954':'#d4541f'}}" bindtap="goMatchList">全部 ›</text>
         </view>
-        <view class="mi-body">
-          <text class="mi-name">{{item.name}}</text>
-          <text class="mi-info">📍{{item.location}}{{item.startTime?' · '+item.startTime:''}}</text>
+        <view wx:if="{{matches.length===0}}" class="empty">暂无约球活动</view>
+        <view wx:for="{{matches}}" wx:key="id" class="match-item" bindtap="goMatchDetail" data-id="{{item.id}}">
+          <view class="mi-icon" style="background:{{activeSport==='badminton'?'#e8f7ee':'#fdf0e8'}}">
+            <text>{{activeSport==='badminton'?'🏸':'🎾'}}</text>
+          </view>
+          <view class="mi-body">
+            <text class="mi-name">{{item.name}}</text>
+            <text class="mi-info">📍{{item.location}}{{item.startTime?' · '+item.startTime:''}}</text>
+          </view>
+          <text class="mi-badge s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
         </view>
-        <text class="mi-badge s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
       </view>
     </view>
   </block>

@@ -2,7 +2,7 @@ const { api } = require('../../utils/api')
 Component({
   properties:{visible:{type:Boolean,value:false}},
   observers:{'visible'(v){if(v)this.setData({step:'options',phone:'',code:'',errorMsg:'',loading:false})}},
-  data:{step:'options',phone:'',code:'',countdown:0,loading:false,errorMsg:''},
+  data:{step:'options',phone:'',code:'',countdown:0,loading:false,errorMsg:'',profileAvatar:'',profileNickname:''},
   methods:{
     onClose(){this.triggerEvent('close')},
     goOptions(){this.setData({step:'options',errorMsg:''})},
@@ -64,7 +64,73 @@ Component({
         const sport=userInfo.sportPref==='both'?'badminton':userInfo.sportPref
         wx.setStorageSync('activeSport',sport)
       }
+      // 新用户 → 弹出完善资料步骤
+      if(userInfo.isNew){
+        this.setData({step:'profile',profileAvatar:'',profileNickname:''})
+        return
+      }
       this.triggerEvent('success',userInfo)
+      this.triggerEvent('close')
+    },
+    // ─── 完善资料步骤 ───
+    onProfileAvatar(e){
+      const url=e.detail.avatarUrl
+      if(url)this.setData({profileAvatar:url})
+    },
+    onProfileNickname(e){
+      this.setData({profileNickname:e.detail.value||''})
+    },
+    async saveProfile(){
+      if(this.data.loading)return
+      this.setData({loading:true})
+      const token=wx.getStorageSync('token')
+      const BASE='https://mxsports.vip/api'
+      const tasks=[]
+      // 上传头像
+      if(this.data.profileAvatar){
+        tasks.push(new Promise((resolve,reject)=>{
+          wx.uploadFile({
+            url:BASE+'/auth/upload-avatar',
+            filePath:this.data.profileAvatar,
+            name:'avatar',
+            header:{Authorization:'Bearer '+token},
+            success(res){
+              try{
+                const d=JSON.parse(res.data)
+                if(d.code===0)resolve('https://mxsports.vip'+d.data.url)
+                else resolve('')
+              }catch(e){resolve('')}
+            },
+            fail(){resolve('')}
+          })
+        }))
+      }
+      // 保存昵称
+      const nick=(this.data.profileNickname||'').trim()
+      if(nick){
+        tasks.push(api.updateProfile({nickname:nick}).then(()=>nick).catch(()=>''))
+      }
+      try{
+        const results=await Promise.all(tasks)
+        const user=wx.getStorageSync('userInfo')||{}
+        let idx=0
+        if(this.data.profileAvatar){
+          const avatarUrl=results[idx++]
+          if(avatarUrl){user.avatar=avatarUrl}
+        }
+        if(nick){
+          const savedNick=results[idx++]
+          if(savedNick){user.nickname=savedNick}
+        }
+        wx.setStorageSync('userInfo',user)
+        getApp().globalData.userInfo=user
+      }catch(e){}
+      this.setData({loading:false})
+      this.triggerEvent('success',wx.getStorageSync('userInfo')||{})
+      this.triggerEvent('close')
+    },
+    skipProfile(){
+      this.triggerEvent('success',wx.getStorageSync('userInfo')||{})
       this.triggerEvent('close')
     }
   }

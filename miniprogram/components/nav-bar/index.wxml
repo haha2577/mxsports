@@ -1,0 +1,19 @@
+<!-- 占位区：statusBar + nav 高度 -->
+<view class="nav-bar" style="height:{{totalHeight}}px;{{background?'background:'+background+';':''}}">
+  <!-- 状态栏占位 -->
+  <view style="height:{{statusBarHeight}}px"/>
+  <!-- 导航栏内容区：与胶囊按钮同行等高 -->
+  <view class="nav-content" style="height:{{navHeight}}px">
+    <!-- 返回按钮 -->
+    <view wx:if="{{back}}" class="back-btn" bindtap="onBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <view wx:else class="back-placeholder"/>
+    <!-- 标题 -->
+    <text wx:if="{{title}}" class="nav-title" style="max-width:{{capsuleLeft - 100}}px">{{title}}</text>
+    <!-- 自定义内容插槽 -->
+    <slot name="right"/>
+  </view>
+</view>
+<!-- 下方内容插槽 -->
+<slot/>

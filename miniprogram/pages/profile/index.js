@@ -1,9 +1,8 @@
-const GRAD_B = 'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)'
-const GRAD_T = 'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../utils/theme')
 Page({
-  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,sbh:20,version:''},
+  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',avatar:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,version:''},
   onLoad(){
-    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
+    
     // 读取版本号
     try{
       const fs=wx.getFileSystemManager()
@@ -24,19 +23,19 @@ Page({
     const pref=wx.getStorageSync('sportPref')||''
     const sport=pref==='both'?(wx.getStorageSync('activeSport')||'badminton'):(pref||'badminton')
     const prefLabel={badminton:'🏸 羽毛球',tennis:'🎾 网球',both:'🏸🎾 双栖'}[pref]||'未设置'
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',sportPref:pref,activeSport:sport,heroGrad:sport==='badminton'?GRAD_B:GRAD_T,prefLabel})
+    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',avatar:user?user.avatar||'':'',sportPref:pref,activeSport:sport,heroGrad:gradOf(sport),prefLabel})
   },
   onSwitchSport(e){
     const sport=e.detail
     wx.setStorageSync('activeSport',sport)
-    this.setData({activeSport:sport,heroGrad:sport==='badminton'?GRAD_B:GRAD_T})
+    this.setData({activeSport:sport,heroGrad:gradOf(sport)})
   },
   onSportPrefConfirm(e){
     const pref=e.detail
     const sport=pref==='both'?'badminton':pref
     wx.setStorageSync('activeSport',sport)
     const prefLabel={badminton:'🏸 羽毛球',tennis:'🎾 网球',both:'🏸🎾 双栖'}[pref]||'未设置'
-    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:sport==='badminton'?GRAD_B:GRAD_T,prefLabel})
+    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:gradOf(sport),prefLabel})
   },
   showLoginSheet(){this.setData({showLogin:true})},
   hideLogin(){this.setData({showLogin:false})},
@@ -45,7 +44,7 @@ Page({
     const user=e.detail
     const token=getApp().globalData.token||''
     const pref=wx.getStorageSync('sportPref')||''
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',showLogin:false})
+    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',phone:user?user.phone||'':'',avatar:user?user.avatar||'':'',showLogin:false})
     if(!pref)this.setData({showSportPref:true})
   },
   goRacket(){wx.navigateTo({url:'/pages/racket/recommend/index'})},

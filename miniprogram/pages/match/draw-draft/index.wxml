@@ -1,16 +1,15 @@
 <view class="page">
 
   <!-- 顶部信息 -->
-  <view class="header" style="padding-top:{{sbh+8}}px">
-    <view class="nav-row">
-      <view class="back-btn" bindtap="navigateBack"><text class="back-arrow">‹</text></view>
-    </view>
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="排布预览" background="{{heroGrad}}"/>
     <view class="hd-top">
       <text class="hd-title">{{matchName}}</text>
       <text class="hd-badge">{{typeName}}</text>
     </view>
     <text class="hd-sub">共 {{draft.length}} 场 · 点击选手名可替换 · 可重新随机</text>
   </view>
+  <view class="page-body">
 
   <!-- 场次分布 -->
   <view class="dist-card">
@@ -59,4 +58,5 @@
     </view>
   </view>
 
+  </view>
 </view>

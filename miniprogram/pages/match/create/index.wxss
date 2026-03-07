@@ -1,7 +1,7 @@
 .page{background:#f0f2f5;padding-bottom:120rpx;min-height:100vh}
 
 /* header */
-.header{background:linear-gradient(145deg,#1a1a2e,#0f3460);padding:40rpx 32rpx 32rpx;display:flex;flex-wrap:wrap;align-items:center;gap:20rpx}
+.page-header{padding:0 32rpx 32rpx;display:flex;flex-wrap:wrap;align-items:center;gap:20rpx}
 .hd-emoji{font-size:56rpx}
 .hd-text{flex:1}
 .hd-title{display:block;font-size:36rpx;font-weight:bold;color:#fff}

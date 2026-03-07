@@ -18,3 +18,13 @@
 .ls-sms-btn{font-size:26rpx;color:#1a1a2e;font-weight:600;white-space:nowrap;padding-left:16rpx}
 .ls-sms-cd{color:#bbb}
 .ls-error{display:block;font-size:22rpx;color:#e53935;background:#fff0f0;border-radius:12rpx;padding:16rpx 20rpx;margin-bottom:16rpx;word-break:break-all}
+
+/* 完善资料 */
+.ls-profile-avatar{display:flex;justify-content:center;margin-bottom:32rpx}
+.ls-avatar-btn{padding:0;margin:0;background:none;border:none;width:160rpx;height:160rpx;line-height:normal;font-size:0}
+.ls-avatar-btn::after{display:none}
+.ls-avatar-img{width:160rpx;height:160rpx;border-radius:50%}
+.ls-avatar-empty{width:160rpx;height:160rpx;border-radius:50%;background:#f0f2f5;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ls-avatar-plus{font-size:48rpx}
+.ls-avatar-hint{font-size:20rpx;color:#aaa;margin-top:4rpx}
+.ls-skip{display:block;text-align:center;font-size:26rpx;color:#aaa;margin-top:16rpx}

@@ -3,6 +3,7 @@
 .hero-deco{position:absolute;font-size:200rpx;opacity:.08;right:-20rpx;top:20rpx;line-height:1}
 .hero-row{display:flex;align-items:center;gap:20rpx;position:relative;z-index:2;margin-bottom:28rpx}
 .avatar-wrap{width:100rpx;height:100rpx;border-radius:50%;border:3rpx solid rgba(255,255,255,.3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15)}
+.av-img{width:100%;height:100%}
 .av-emoji{font-size:56rpx}
 .hero-info{flex:1;min-width:0}
 .username{display:block;font-size:34rpx;font-weight:bold;color:#fff;margin-bottom:6rpx}

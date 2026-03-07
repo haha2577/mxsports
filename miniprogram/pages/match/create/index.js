@@ -1,7 +1,9 @@
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
 const { api } = require('../../../utils/api')
 Page({
   data: {
-    sbh: 20,
+    heroGrad:GRAD_B,
+    
     sport: 'badminton',
     sportPref: '',
     // 必填
@@ -35,7 +37,7 @@ Page({
     today: '',
   },
   onLoad() {
-    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
+    
     const pref = wx.getStorageSync('sportPref') || ''
     const sport = pref === 'both' ? (wx.getStorageSync('activeSport') || 'badminton') : (pref || wx.getStorageSync('activeSport') || 'badminton')
     this.setData({ sportPref: pref })
@@ -43,7 +45,7 @@ Page({
     const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`
     const tom = new Date(now.getTime() + 86400000)
     const defaultDate = `${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`
-    this.setData({ sport, today, date: defaultDate, dateDisplay: this._fmtDate(defaultDate) })
+    this.setData({ sport, heroGrad:gradOf(sport), today, date: defaultDate, dateDisplay: this._fmtDate(defaultDate) })
   },
   onName(e) { this.setData({ name: e.detail.value }) },
   onDate(e) { const d = e.detail.value; this.setData({ date: d, dateDisplay: this._fmtDate(d) }) },
@@ -97,7 +99,7 @@ Page({
   onFee(e) { this.setData({ fee: e.detail.value }) },
   setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v }) },
   setLevel(e) { this.setData({ level: e.currentTarget.dataset.v }) },
-  setSport(e) { this.setData({ sport: e.currentTarget.dataset.v }) },
+  setSport(e) { const s=e.currentTarget.dataset.v; this.setData({ sport:s, heroGrad:gradOf(s) }) },
 
   async submit() {
     const { sport, name, date, time, location, locationLat, locationLng, maxPlayers, fee, level, loading } = this.data

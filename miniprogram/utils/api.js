@@ -44,6 +44,10 @@ const api = {
   adminCancelReg: (matchId, regId) => request('DELETE', `/matches/${matchId}/registrations/${regId}`, {}),
   friends:        ()     => request('GET', '/users/friends'),
   deleteAccount:  ()     => request('DELETE', '/auth/delete-account', {}),
+  venues:         (qs)   => request('GET', '/venues' + (qs||'')),
+  news:           (qs)   => request('GET', '/news' + (qs||'')),
+  newsDetail:     (id)   => request('GET', '/news/' + id),
+  venueDetail:    (id)   => request('GET', '/venues/' + id),
 }
 
-module.exports = { api, request }
+module.exports = { api, request, BASE_URL }

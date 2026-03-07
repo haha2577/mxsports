@@ -1,9 +1,29 @@
-page { background: #f0f2f5; font-family: -apple-system, sans-serif; }
+/* ══ 全局基础 ══ */
+page { background: #f0f2f5; font-family: -apple-system, sans-serif; height: 100%; }
 view, text, input, button { box-sizing: border-box; }
 button { all: unset; }
 button::after { border: none; }
 
-/* 自定义导航返回按钮（全局） */
-.nav-row{display:flex;align-items:center;margin-bottom:8rpx}
-.back-btn{width:64rpx;height:64rpx;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15);border-radius:50%}
-.back-arrow{font-size:40rpx;color:#fff;font-weight:300;line-height:1;margin-top:-4rpx}
+/* ══ 页面框架：固定标题栏 + 滚动内容 ══ */
+.page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.page-header { flex-shrink: 0; position: relative; z-index: 100; }
+.page-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+/* ══ 通用卡片 ══ */
+.card { margin: 24rpx; background: #fff; border-radius: 24rpx; padding: 28rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,.05); }
+.card-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20rpx; }
+.card-title { font-size: 30rpx; font-weight: 600; color: #1a1a1a; }
+
+/* ══ 通用空状态 ══ */
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120rpx 40rpx; gap: 16rpx; }
+.empty .ei { font-size: 80rpx; margin-bottom: 12rpx; }
+.empty .et { color: #aaa; font-size: 28rpx; }
+
+/* ══ 通用加载 ══ */
+.loading-wrap { display: flex; align-items: center; justify-content: center; padding: 120rpx 0; color: #aaa; font-size: 28rpx; }
+
+/* ══ 通用底部弹窗 ══ */
+.sheet-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 999; display: flex; align-items: flex-end; }
+.sheet { width: 100%; background: #fff; border-radius: 32rpx 32rpx 0 0; padding: 0 32rpx 60rpx; max-height: 80vh; overflow-y: auto; }
+.sheet-handle { width: 60rpx; height: 8rpx; background: #ddd; border-radius: 4rpx; margin: 20rpx auto 24rpx; }
+.sheet-title { font-size: 32rpx; font-weight: 600; color: #1a1a1a; display: block; margin-bottom: 24rpx; }

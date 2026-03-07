@@ -1,10 +1,12 @@
 <view class="page">
-  <view class="header" style="background:{{heroGrad}}">
+  <view class="page-header" style="background:{{heroGrad}}">
+    <nav-bar title="我的视频" background="{{heroGrad}}"/>
     <view class="hd-top">
       <sport-switcher sport-pref="{{sportPref}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
       <view class="upload-btn" bindtap="chooseVideo"><text class="ui">＋</text><text class="ut">上传</text></view>
     </view>
   </view>
+  <view class="page-body">
   <view wx:if="{{!videos.length}}" class="empty">
     <text class="ei">🎬</text><text class="et">还没有视频</text>
     <text class="es">上传你的打球视频，解锁智能剪辑和 AI 评价</text>
@@ -29,5 +31,6 @@
         <view wx:elif="{{item.status==='processing'}}" class="proc-bar"><view class="proc-fill" style="width:{{item.progress}}%"/></view>
       </view>
     </view>
+  </view>
   </view>
 </view>

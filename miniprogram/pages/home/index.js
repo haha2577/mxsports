@@ -1,17 +1,16 @@
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../utils/theme')
 const { api } = require('../../utils/api')
-const GRAD_B = 'linear-gradient(145deg,#0a7a38,#1DB954,#25d366)'
-const GRAD_T = 'linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 Page({
-  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],sbh:20,showLogin:false,showSportPref:false},
+  data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
   onLoad(){
-    try{this.setData({sbh:wx.getSystemInfoSync().statusBarHeight||20})}catch(e){}
+    
   },
   onShow(){
     const token=getApp().globalData.token||''
     const user=getApp().globalData.userInfo||null
     const pref=wx.getStorageSync('sportPref')||''
     const sport=pref==='both'?(wx.getStorageSync('activeSport')||'badminton'):(pref||'badminton')
-    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',sportPref:pref,activeSport:sport,heroGrad:sport==='badminton'?GRAD_B:GRAD_T})
+    this.setData({token,nickname:user?user.nickname||'运动员':'运动员',sportPref:pref,activeSport:sport,heroGrad:gradOf(sport)})
     if(token){
       if(!pref){this.setData({showSportPref:true});return}
       this._loadData(sport)
@@ -46,14 +45,14 @@ Page({
   onSwitchSport(e){
     const sport=e.detail
     wx.setStorageSync('activeSport',sport)
-    this.setData({activeSport:sport,heroGrad:sport==='badminton'?GRAD_B:GRAD_T})
+    this.setData({activeSport:sport,heroGrad:gradOf(sport)})
     this._loadData(sport)
   },
   onSportPrefConfirm(e){
     const pref=e.detail
     const sport=pref==='both'?'badminton':pref
     wx.setStorageSync('activeSport',sport)
-    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:sport==='badminton'?GRAD_B:GRAD_T})
+    this.setData({showSportPref:false,sportPref:pref,activeSport:sport,heroGrad:gradOf(sport)})
     this._loadData(sport)
   },
   showLoginSheet(){this.setData({showLogin:true})},
