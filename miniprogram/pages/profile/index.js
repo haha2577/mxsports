@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../utils/theme')
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
 Page({
   data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',avatar:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,version:''},
   onLoad(){

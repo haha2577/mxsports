@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
 const { api } = require('../../../utils/api')
 Page({
   data: { heroGrad:GRAD_B, list: [], loading: true },

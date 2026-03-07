@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
 const{api}=require('../../../utils/api')
 const CAT_MAP={'全部':'','国际赛事':'international','国内赛事':'national','当地赛事':'local'}
 Page({

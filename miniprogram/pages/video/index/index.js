@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
 Page({
   data:{activeSport:'badminton',sportPref:'',heroGrad:GRAD_B,videos:[{id:1,title:'周末羽毛球双打',sport:'badminton',duration:'1:23:45',date:'03-02',status:'done',progress:100},{id:2,title:'网球训练赛',sport:'tennis',duration:'0:45:00',date:'03-01',status:'processing',progress:65}]},
   navigateBack(){wx.navigateBack()},

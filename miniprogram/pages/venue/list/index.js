@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
 const{api}=require('../../../utils/api')
 Page({
   data:{sport:'badminton',sportPref:'',heroGrad:GRAD_B,city:'',filterOpen:false,list:[],hasFilter:false,lat:0,lng:0,loading:true},

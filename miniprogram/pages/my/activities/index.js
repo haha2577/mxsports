@@ -1,4 +1,4 @@
-const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../utils/theme')
+const { GRAD_B, GRAD_T, gradOf, readSport, switchSport } = require('../../../utils/theme')
 const { api } = require('../../../utils/api')
 Page({
   data:{sport:'badminton',sportPref:'',heroGrad:GRAD_B,activeTab:'all',tabs:[{label:'全部',value:'all'},{label:'进行中',value:'ongoing'},{label:'已完成',value:'done'}],list:[],filteredList:[],counts:{},loading:false},
