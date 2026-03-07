@@ -38,9 +38,8 @@ Page({
   },
   onLoad() {
     
-    const pref = wx.getStorageSync('sportPref') || ''
-    const sport = pref === 'both' ? (wx.getStorageSync('activeSport') || 'badminton') : (pref || wx.getStorageSync('activeSport') || 'badminton')
-    this.setData({ sportPref: pref })
+    const sport = wx.getStorageSync('activeSport') || 'badminton'
+    this.setData({ sport, heroGrad: sport==='tennis'?GRAD_T:GRAD_B })
     const now = new Date()
     const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`
     const tom = new Date(now.getTime() + 86400000)
@@ -99,7 +98,7 @@ Page({
   onFee(e) { this.setData({ fee: e.detail.value }) },
   setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v }) },
   setLevel(e) { this.setData({ level: e.currentTarget.dataset.v }) },
-  setSport(e) { const s=e.currentTarget.dataset.v; this.setData({ sport:s, heroGrad:s==='tennis'?GRAD_T:GRAD_B }) },
+
 
   async submit() {
     const { sport, name, date, time, location, locationLat, locationLng, maxPlayers, fee, level, loading } = this.data

@@ -43,6 +43,7 @@ def user_data(user):
             'phone': user.phone or '',
             'avatar': user.avatar or '',
             'sportPref': user.sport_pref or '',
+            'activeSport': user.active_sport or 'badminton',
         }
     }
 
@@ -361,6 +362,7 @@ class ProfileView(APIView):
             'level': u.level,
             'isOrganizer': u.is_organizer,
             'sportPref': u.sport_pref or '',
+            'activeSport': u.active_sport or 'badminton',
         })
 
     def put(self, request):

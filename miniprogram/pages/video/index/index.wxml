@@ -2,7 +2,6 @@
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="我的视频" background="{{heroGrad}}"/>
     <view class="hd-top">
-      <sport-switcher sport-pref="{{sportPref}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
       <view class="upload-btn" bindtap="chooseVideo"><text class="ui">＋</text><text class="ut">上传</text></view>
     </view>
   </view>

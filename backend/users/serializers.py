@@ -12,8 +12,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    sportPref = serializers.CharField(source='sport_pref', required=False, allow_blank=True)
+    sportPref   = serializers.CharField(source='sport_pref',   required=False, allow_blank=True)
+    activeSport = serializers.CharField(source='active_sport', required=False)
 
     class Meta:
         model = User
-        fields = ['nickname', 'avatar', 'phone', 'level', 'sportPref']
+        fields = ['nickname', 'avatar', 'phone', 'level', 'sportPref', 'activeSport']
+
+    def validate(self, data):
+        # sport_pref 改为单项时，强制同步 active_sport
+        pref = data.get('sport_pref')
+        if pref in ('badminton', 'tennis'):
+            data['active_sport'] = pref
+        return data

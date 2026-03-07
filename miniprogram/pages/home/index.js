@@ -47,6 +47,8 @@ Page({
     wx.setStorageSync('activeSport',sport)
     this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._loadData(sport)
+    // 异步写入数据库
+    api.updateActiveSport(sport).catch(()=>{})
   },
   onSportPrefConfirm(e){
     const pref=e.detail

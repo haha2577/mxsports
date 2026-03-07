@@ -1,4 +1,5 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { api } = require('../../utils/api')
 Page({
   data:{token:'',sportPref:'',activeSport:'badminton',heroGrad:GRAD_B,nickname:'',phone:'',avatar:'',stats:{matches:0,wins:0,rate:'0%',points:0},prefLabel:'',showLogin:false,showSportPref:false,version:''},
   onLoad(){
@@ -29,6 +30,8 @@ Page({
     const sport=e.detail
     wx.setStorageSync('activeSport',sport)
     this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    // 异步写入数据库
+    api.updateActiveSport(sport).catch(()=>{})
   },
   onSportPrefConfirm(e){
     const pref=e.detail

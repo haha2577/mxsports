@@ -8,6 +8,7 @@ class User(models.Model):
     phone        = models.CharField(max_length=20, blank=True, default='')
     level        = models.CharField(max_length=20, default='B组（中级）')
     sport_pref   = models.CharField(max_length=20, blank=True, default='')
+    active_sport = models.CharField(max_length=20, default='badminton')  # 当前激活运动（both用户可切换）
     is_organizer = models.BooleanField(default=False)
     is_active    = models.BooleanField(default=True)
     created_at   = models.DateTimeField(auto_now_add=True)

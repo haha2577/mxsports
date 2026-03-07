@@ -1,10 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="创建活动" background="{{heroGrad}}"/>
-    <view wx:if="{{sportPref==='both'}}" class="sport-tabs" style="padding:0 32rpx 20rpx">
-      <view class="stab {{sport==='badminton'?'stab-a':''}}" bindtap="setSport" data-v="badminton">🏸 羽毛球</view>
-      <view class="stab {{sport==='tennis'?'stab-a':''}}" bindtap="setSport" data-v="tennis">🎾 网球</view>
-    </view>
   </view>
   <view class="page-body">
     <view class="form">

@@ -58,12 +58,14 @@ Component({
       wx.setStorageSync('userInfo',userInfo)
       getApp().globalData.token=token
       getApp().globalData.userInfo=userInfo
-      // 恢复后端保存的运动偏好
+      // 恢复后端保存的运动偏好和当前激活运动
       if(userInfo.sportPref){
         wx.setStorageSync('sportPref',userInfo.sportPref)
-        const sport=userInfo.sportPref==='both'?'badminton':userInfo.sportPref
-        wx.setStorageSync('activeSport',sport)
       }
+      // activeSport 以数据库为准；fallback：单项=该运动，双栖=badminton
+      const dbSport=userInfo.activeSport
+      const prefSport=userInfo.sportPref&&userInfo.sportPref!=='both'?userInfo.sportPref:'badminton'
+      wx.setStorageSync('activeSport', dbSport||prefSport)
       // 新用户 → 弹出完善资料步骤
       if(userInfo.isNew){
         this.setData({step:'profile',profileAvatar:'',profileNickname:''})

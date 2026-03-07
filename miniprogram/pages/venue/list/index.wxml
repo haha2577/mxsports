@@ -1,9 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
     <nav-bar title="附近球馆" background="{{heroGrad}}"/>
-    <view style="padding:0 32rpx">
-      <sport-switcher sport-pref="{{sportPref}}" active="{{sport}}" bindswitch="onSwitchSport"/>
-    </view>
     <scroll-view scroll-x class="filter-scroll">
       <view class="filter-row">
         <view class="chip {{filterOpen?'chip-a':''}}" bindtap="toggleOpen">🟢 {{filterOpen?'营业中 ✓':'营业中'}}</view>
