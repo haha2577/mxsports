@@ -43,6 +43,10 @@
         <text class="mi-arrow">›</text>
       </view>
     </view>
+    <view wx:if="{{token}}" class="menu-item" bindtap="goAccount">
+      <view class="mi-l"><text class="mi-icon">👤</text><text class="mi-label">账号设置</text></view>
+      <text class="mi-arrow">›</text>
+    </view>
     <view wx:if="{{token}}" class="menu-item" bindtap="showPrefSheet">
       <view class="mi-l"><text class="mi-icon">⚙️</text><text class="mi-label">爱好设置</text></view>
       <view style="display:flex;align-items:center;gap:8rpx">

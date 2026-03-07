@@ -252,6 +252,48 @@ class WxPhoneLoginView(APIView):
         return token
 
 
+# ─── 头像上传 ──────────────────────────────────────────────
+class AvatarUploadView(APIView):
+    permission_classes = [IsJWTAuthenticated]
+
+    def post(self, request):
+        import os, uuid
+        f = request.FILES.get('avatar')
+        if not f:
+            return err('未上传文件')
+        ext = os.path.splitext(f.name)[1].lower() or '.jpg'
+        if ext not in ('.jpg', '.jpeg', '.png', '.webp'):
+            return err('仅支持 jpg/png/webp 格式')
+        filename = f'{uuid.uuid4().hex}{ext}'
+        media_dir = os.path.join(os.path.dirname(__file__), '..', 'media', 'avatars')
+        os.makedirs(media_dir, exist_ok=True)
+        path = os.path.join(media_dir, filename)
+        with open(path, 'wb') as out:
+            for chunk in f.chunks():
+                out.write(chunk)
+        url = f'/media/avatars/{filename}'
+        request.user_obj.avatar = url
+        request.user_obj.save(update_fields=['avatar'])
+        return ok({'url': url}, '头像上传成功')
+
+
+# ─── 注销账号 ──────────────────────────────────────────────
+class DeleteAccountView(APIView):
+    permission_classes = [IsJWTAuthenticated]
+
+    def delete(self, request):
+        user = request.user_obj
+        # 匿名化处理（保留历史数据一致性）
+        import uuid
+        user.nickname = f'已注销用户_{uuid.uuid4().hex[:6]}'
+        user.phone = ''
+        user.openid = f'deleted_{uuid.uuid4().hex}'
+        user.avatar = ''
+        user.is_active = False
+        user.save()
+        return ok(message='账号已注销')
+
+
 # ─── 我的球友 ──────────────────────────────────────────────
 class FriendsView(APIView):
     permission_classes = [IsJWTAuthenticated]

@@ -49,6 +49,7 @@ Page({
     if(!pref)this.setData({showSportPref:true})
   },
   goRacket(){wx.navigateTo({url:'/pages/racket/recommend/index'})},
+  goAccount(){wx.navigateTo({url:'/pages/my/account/index'})},
   goActivities(){wx.navigateTo({url:'/pages/my/activities/index'})},
   goFriends(){wx.navigateTo({url:'/pages/my/friends/index'})},
   goVideo(){wx.navigateTo({url:'/pages/video/index/index'})},

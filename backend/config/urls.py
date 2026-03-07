@@ -13,6 +13,9 @@ urlpatterns = [
     path('api/', include('registrations.urls')),
     path('api/', include('rackets.urls')),
 
+    # 用户上传媒体文件
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': str(settings.MEDIA_ROOT)}),
+
     # UniApp H5 静态资源（assets/ static/ 等）
     re_path(r'^assets/(?P<path>.*)$', serve, {'document_root': str(WEB_DIR / 'assets')}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': str(WEB_DIR / 'static')}),

@@ -43,6 +43,7 @@ const api = {
   deleteMatch:    (id)         => request('DELETE', '/matches/' + id + '/status', {}),
   adminCancelReg: (matchId, regId) => request('DELETE', `/matches/${matchId}/registrations/${regId}`, {}),
   friends:        ()     => request('GET', '/users/friends'),
+  deleteAccount:  ()     => request('DELETE', '/auth/delete-account', {}),
 }
 
 module.exports = { api, request }

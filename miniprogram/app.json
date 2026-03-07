@@ -8,6 +8,7 @@
     "pages/match/detail/index",
     "pages/my/activities/index",
     "pages/my/friends/index",
+    "pages/my/account/index",
     "pages/match/draw-draft/index",
     "pages/news/list/index",
     "pages/news/detail/index",
