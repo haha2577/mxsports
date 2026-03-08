@@ -1,6 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar title="最新资讯" background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}"/>
     <view class="hd-body">
       <text class="hd-title">最新资讯</text>
       <text class="hd-sub">球圈动态、赛事新闻、技术分享</text>

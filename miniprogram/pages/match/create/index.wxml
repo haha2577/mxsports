@@ -1,6 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar title="创建活动" background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}"/>
     <view class="hd-body">
       <text class="hd-title">创建活动</text>
       <text class="hd-sub">填写信息，邀请好友一起打球</text>

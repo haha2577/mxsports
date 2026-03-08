@@ -1,6 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar title="我的活动" background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}"/>
     <view class="hd-body">
       <text class="hd-title">我的活动</text>
       <text class="hd-sub">你参与和创建的所有比赛</text>

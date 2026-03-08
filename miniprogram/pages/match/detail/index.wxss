@@ -4,10 +4,10 @@
 .loading{display:flex;align-items:center;justify-content:center;height:400rpx}
 
 /* hero */
-.hero{padding:48rpx 32rpx 40rpx;position:relative;overflow:hidden}
-.hero-deco{position:absolute;font-size:240rpx;opacity:.07;right:-20rpx;top:0;line-height:1}
+.hero{padding:0;position:relative;overflow:hidden}
+.hero-deco{position:absolute;font-size:240rpx;opacity:.07;right:-20rpx;top:0;line-height:1;pointer-events:none;z-index:1}
 .hero-inner{position:relative;z-index:2}
-.hero-top{display:flex;align-items:center;gap:12rpx;margin-bottom:16rpx}
+.hero-top{display:flex;align-items:center;gap:12rpx;margin-bottom:20rpx}
 .status-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;font-weight:600}
 .status-open{background:#e8f7ee;color:#1DB954}
 .status-ongoing{background:#fff3e0;color:#f57c00}
@@ -17,7 +17,7 @@
 .status-cancelled{background:#fce4ec;color:#e53935}
 .fee-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;background:rgba(255,255,255,.15);color:#fff;font-weight:600}
 .fee-free{background:rgba(29,185,84,.2);color:#1DB954}
-.hero-name{display:block;font-size:40rpx;font-weight:bold;color:#fff;line-height:1.4;margin-bottom:20rpx}
+.hero-name{display:block;font-size:36rpx;font-weight:bold;color:#fff;line-height:1.4;margin-bottom:16rpx}
 .hero-meta{display:flex;flex-direction:column;gap:8rpx}
 .meta-item{font-size:26rpx;color:rgba(255,255,255,.7)}
 

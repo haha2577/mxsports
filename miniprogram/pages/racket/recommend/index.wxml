@@ -1,6 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar title="球拍推荐" background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}"/>
     <view class="hd-body">
       <text class="hd-title">球拍推荐</text>
       <text class="hd-sub">根据你的水平和打法，精准匹配最适合的球拍</text>

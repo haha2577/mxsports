@@ -1,6 +1,6 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar title="资讯详情" background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}"/>
     <view class="hd-body">
       <text class="hd-title">{{news.title||'资讯详情'}}</text>
       <text class="hd-sub">{{news.category||'球圈资讯'}}</text>

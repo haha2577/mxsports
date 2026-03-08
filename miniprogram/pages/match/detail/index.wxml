@@ -11,7 +11,7 @@
     <view class="page-header hero" style="background:{{heroGrad}}">
       <nav-bar background="{{heroGrad}}"/>
       <text class="hero-deco">{{match.sport==='tennis'?'🎾':'🏸'}}</text>
-      <view class="hero-inner">
+      <view class="hd-body hero-inner">
         <view class="hero-top">
           <view class="status-badge status-{{match.status}}">{{statusMap[match.status]||match.status}}</view>
           <text wx:if="{{match.fee>0}}" class="fee-badge">¥{{match.fee}}</text>
