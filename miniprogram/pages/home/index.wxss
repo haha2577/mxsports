@@ -1,5 +1,5 @@
-.page{background:#f0f2f5;padding-bottom:120rpx}
-.hero-guest{background:linear-gradient(160deg,#1a1a2e 0%,#0f3460 70%,#0a2540 100%);padding:0 40rpx 48rpx;position:relative;overflow:hidden;min-height:340rpx;display:flex;align-items:flex-end}
+.page{background:#f0f2f5}
+.hero-guest{background:linear-gradient(160deg,#1a1a2e 0%,#0f3460 70%,#0a2540 100%);padding:0 40rpx 48rpx;position:relative;overflow:hidden;display:flex;align-items:flex-end}
 .hg-deco{position:absolute;font-size:280rpx;right:-30rpx;top:20rpx;opacity:.06;line-height:1;pointer-events:none}
 .hg-inner{position:relative;z-index:2;width:100%}
 .hg-appname{display:block;font-size:26rpx;color:rgba(255,255,255,.4);font-weight:600;margin-bottom:12rpx;letter-spacing:2rpx}

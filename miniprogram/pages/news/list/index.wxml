@@ -11,7 +11,7 @@
       </view>
     </scroll-view>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
     <view wx:if="{{loading}}" class="empty"><text>加载中...</text></view>
     <view wx:elif="{{!list.length}}" class="empty"><text class="ei">📰</text><text>暂无资讯</text></view>
     <view wx:else class="list">
@@ -27,5 +27,6 @@
         </view>
       </view>
     </view>
-  </view>
+    <view class="safe-bottom"/>
+  </scroll-view>
 </view>

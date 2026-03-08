@@ -23,7 +23,7 @@
     <view wx:else class="login-hint" bindtap="showLoginSheet"><text class="lh-txt">登录后查看你的赛事数据 ›</text></view>
   </view>
 
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
   <view class="section-card">
     <view wx:if="{{token}}" class="menu-item" bindtap="goActivities">
       <view class="mi-l"><text class="mi-icon">🏅</text><text class="mi-label">我的活动</text></view>
@@ -62,7 +62,8 @@
 
   <view wx:if="{{token}}" class="logout-btn" bindtap="logout">退出登录</view>
   <text class="version-txt">v{{version}}</text>
-  </view>
+    <view class="safe-bottom-tabbar"/>
+  </scroll-view>
 
   <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>
   <sport-pref-sheet visible="{{showSportPref}}" bindconfirm="onSportPrefConfirm"/>

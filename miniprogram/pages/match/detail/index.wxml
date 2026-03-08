@@ -24,7 +24,7 @@
         </view>
       </view>
     </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
 
     <!-- 统计栏 -->
     <view class="stat-bar">
@@ -298,7 +298,8 @@
     </view>
   </view>
 
-  </view><!-- /page-body -->
+    <view class="safe-bottom-action"/>
+  </scroll-view>
 
   </block><!-- /wx:elif match -->
 

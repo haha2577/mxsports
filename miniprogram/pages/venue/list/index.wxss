@@ -1,4 +1,4 @@
-.page{background:#f0f2f5;padding-bottom:40rpx}
+.page{background:#f0f2f5}
 .page-header{padding:0}
 .loc-bar{background:rgba(255,255,255,.12);border-radius:20rpx;display:flex;align-items:center;padding:0 20rpx;height:72rpx;margin:16rpx 0;border:1rpx solid rgba(255,255,255,.15)}
 .loc-icon{font-size:28rpx;margin-right:8rpx}.loc-city{font-size:28rpx;color:#fff;font-weight:500}

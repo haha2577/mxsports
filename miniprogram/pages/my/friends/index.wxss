@@ -1,4 +1,4 @@
-.page{background:#f0f2f5;min-height:100vh;padding-bottom:80rpx}
+.page{background:#f0f2f5}
 .page-header{padding:0}
 .es{font-size:24rpx;color:#ccc;text-align:center}
 .list{padding:24rpx}

@@ -12,7 +12,7 @@
       </view>
     </scroll-view>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
     <view class="result-bar"><text class="rt">找到 {{list.length}} 家场馆</text></view>
     <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
     <view wx:elif="{{!list.length}}" class="empty"><text class="ei">🏟️</text><text class="et">附近暂无场馆</text></view>
@@ -38,5 +38,6 @@
         </view>
       </view>
     </view>
-  </view>
+    <view class="safe-bottom"/>
+  </scroll-view>
 </view>

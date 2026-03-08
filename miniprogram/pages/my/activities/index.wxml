@@ -12,7 +12,7 @@
       </view>
     </view>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
     <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
     <view wx:elif="{{!filteredList.length}}" class="empty">
       <text class="ei">📋</text><text class="et">还没有活动</text>
@@ -40,5 +40,6 @@
         </view>
       </view>
     </view>
-  </view>
+    <view class="safe-bottom"/>
+  </scroll-view>
 </view>

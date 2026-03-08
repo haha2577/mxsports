@@ -1,4 +1,4 @@
-.page{background:#f0f2f5;padding-bottom:40rpx}
+.page{background:#f0f2f5}
 .page-header{padding:0}
 .cat-scroll{padding:0 32rpx 20rpx}
 .cat-row{display:flex;gap:12rpx;white-space:nowrap}

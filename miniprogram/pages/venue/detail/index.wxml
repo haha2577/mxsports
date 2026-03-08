@@ -6,7 +6,7 @@
       <text class="hd-sub">{{venue.city||''}}{{venue.district?(' · '+venue.district):''}}</text>
     </view>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
 
   <view wx:if="{{loading}}" class="loading-wrap"><text>加载中...</text></view>
 
@@ -84,5 +84,6 @@
       </view>
     </view>
   </block>
-  </view>
+    <view class="safe-bottom-action"/>
+  </scroll-view>
 </view>

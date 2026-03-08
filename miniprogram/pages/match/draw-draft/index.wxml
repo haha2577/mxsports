@@ -9,7 +9,7 @@
     </view>
     <text class="hd-sub">共 {{draft.length}} 场 · 点击选手名可替换 · 可重新随机</text>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
 
   <!-- 场次分布 -->
   <view class="dist-card">
@@ -58,5 +58,6 @@
     </view>
   </view>
 
-  </view>
+    <view class="safe-bottom-action"/>
+  </scroll-view>
 </view>

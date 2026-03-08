@@ -6,7 +6,7 @@
       <text class="hd-sub">填写信息，邀请好友一起打球</text>
     </view>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
     <view class="form">
       <view class="field">
         <text class="field-label">活动名称 <text class="req">*</text></text>
@@ -73,5 +73,6 @@
       <button class="sc-share-btn" open-type="share">📤 分享给好友</button>
       <view class="sc-detail-btn" bindtap="goDetail">查看活动详情 ›</view>
     </view>
-  </view>
+    <view class="safe-bottom"/>
+  </scroll-view>
 </view>

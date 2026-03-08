@@ -1,4 +1,4 @@
-.page{background:#f0f2f5;padding-bottom:120rpx}
+.page{background:#f0f2f5}
 .page-header{padding:0}
 .search-bar{background:rgba(255,255,255,.12);border-radius:20rpx;display:flex;align-items:center;padding:0 20rpx;margin:16rpx 32rpx 0;border:1rpx solid rgba(255,255,255,.15)}
 .si{font-size:30rpx;margin-right:12rpx}

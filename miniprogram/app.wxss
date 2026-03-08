@@ -5,9 +5,12 @@ button { border: none; background: transparent; padding: 0; margin: 0; line-heig
 button::after { border: none; }
 
 /* ══ 页面框架 ══ */
-.page { min-height: 100vh; }
-.page-header { position: relative; z-index: 100; overflow: hidden; }
-.page-body { }
+.page { display: flex; flex-direction: column; height: 100vh; }
+.page-header { position: relative; z-index: 100; overflow: hidden; flex-shrink: 0; }
+.page-body { flex: 1; overflow: hidden; box-sizing: border-box; }
+.safe-bottom { height: 48rpx; }                   /* 普通页面底部留白 */
+.safe-bottom-action { height: 160rpx; }           /* 有固定操作栏的页面底部留白 */
+.safe-bottom-tabbar { height: 160rpx; }           /* tabbar 页面底部留白 */
 
 /* ══ 通用子页面 Header 标题区 ══ */
 .hd-body { padding: 20rpx 32rpx 36rpx; }

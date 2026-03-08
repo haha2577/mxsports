@@ -10,7 +10,7 @@
         <text class="hg-sub">报名参赛 · 组织比赛 · 记录成长</text>
       </view>
     </view><!-- /page-header -->
-    <view class="page-body">
+    <scroll-view class="page-body" scroll-y enable-passive>
       <view class="sport-cards">
         <view class="sport-card badminton-card" bindtap="guestBadminton">
           <text class="sc-emoji">🏸</text>
@@ -34,7 +34,7 @@
         <view class="gf-item"><text class="gf-icon">🎬</text><text class="gf-label">AI视频</text></view>
         <view class="gf-item"><text class="gf-icon">🏟️</text><text class="gf-label">附近场馆</text></view>
       </view>
-    </view><!-- /page-body -->
+    </scroll-view>
   </block>
 
   <!-- 已登录 -->
@@ -50,7 +50,7 @@
         <text class="hero-sub">{{activeSport==='badminton'?'报名、组织、记录你的每一场比赛':'专业赛事管理，积分排名实时更新'}}</text>
       </view>
     </view>
-    <view class="page-body">
+    <scroll-view class="page-body" scroll-y enable-passive>
       <!-- 功能入口 -->
       <view class="action-row">
         <view class="action-card" bindtap="goCreate">
@@ -108,7 +108,8 @@
           <text class="mi-badge s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
         </view>
       </view>
-    </view>
+      <view class="safe-bottom-tabbar"/>
+    </scroll-view>
   </block>
 
   <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>

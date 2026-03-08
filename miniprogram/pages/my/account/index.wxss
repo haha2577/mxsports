@@ -1,4 +1,4 @@
-.page{background:#f0f2f5;min-height:100vh;padding-bottom:80rpx}
+.page{background:#f0f2f5
 .page-header{padding:0}
 
 .card{margin:24rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05)}
@@ -15,7 +15,7 @@
 
 /* 昵称 */
 .input-row{display:flex;align-items:center;gap:16rpx}
-.nickname-input{flex:1;background:#f8f8f8;border-radius:16rpx;padding:20rpx 24rpx;font-size:30rpx;color:#1a1a1a;min-height:88rpx;box-sizing:border-box}
+.nickname-input{flex:1;background:#f8f8f8;border-radius:16rpx;padding:20rpx 24rpx;font-size:30rpx;color:#1a1a1a;box-sizing:border-box}
 .save-btn{padding:18rpx 32rpx;background:#1a1a2e;border-radius:16rpx;flex-shrink:0}
 .save-btn text{font-size:26rpx;color:#fff;font-weight:bold}
 .save-loading{opacity:.6}

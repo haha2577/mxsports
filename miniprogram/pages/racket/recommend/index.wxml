@@ -6,7 +6,7 @@
       <text class="hd-sub">根据你的水平和打法，精准匹配最适合的球拍</text>
     </view>
   </view>
-  <view class="page-body">
+  <scroll-view class="page-body" scroll-y enable-passive>
   <view class="quiz-card" bindtap="startQuiz">
     <view class="qc-l"><text class="qc-title">开始测评</text><text class="qc-sub">3分钟找到你的专属球拍</text></view>
     <text class="qc-arrow">›</text>
@@ -22,5 +22,6 @@
       </view>
     </view>
   </view>
-  </view>
+    <view class="safe-bottom"/>
+  </scroll-view>
 </view>
