@@ -14,7 +14,7 @@
 .field-half{flex:1;padding:0}
 .field-label{display:block;font-size:26rpx;font-weight:600;color:#333;margin-bottom:16rpx}
 .req{color:#f44}
-.field-input{background:#f8f8f8;border-radius:16rpx;padding:24rpx;font-size:28rpx;color:#1a1a1a;width:100%;box-sizing:border-box;line-height:1.5}
+.field-input{background:#f8f8f8;border-radius:16rpx;padding:24rpx;font-size:28rpx;color:#1a1a1a;width:100%;box-sizing:border-box;height:88rpx;line-height:40rpx}
 .field-picker{background:#f8f8f8;border-radius:16rpx;padding:24rpx;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
 .picker-val{font-size:28rpx;color:#1a1a1a}
 .picker-ph{font-size:28rpx;color:#bbb}
@@ -24,9 +24,9 @@
 .loc-icon{font-size:28rpx}
 .loc-clear{font-size:24rpx;color:#bbb;padding:0 8rpx}
 .loc-addr{display:block;font-size:22rpx;color:#aaa;margin-top:8rpx;padding-left:4rpx;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.field-fee-wrap{display:flex;align-items:center;background:#f8f8f8;border-radius:16rpx;padding:0 24rpx}
+.field-fee-wrap{display:flex;align-items:center;background:#f8f8f8;border-radius:16rpx;padding:0 24rpx;height:88rpx}
 .fee-prefix{font-size:32rpx;color:#888;margin-right:8rpx}
-.field-fee{flex:1;font-size:28rpx;color:#1a1a1a;padding:24rpx 0}
+.field-fee{flex:1;font-size:28rpx;color:#1a1a1a;height:88rpx;line-height:88rpx}
 
 /* 标签选择 */
 .tag-row{display:flex;flex-wrap:wrap;gap:12rpx}
