@@ -21,7 +21,9 @@ Page({
     fee: '',
     level: '',
     // 选项
-    maxOptions: [4, 6, 8, 10, 12, 16],
+    maxOptions: [4, 6, 8, 10],
+    maxCustom: false,
+    maxCustomVal: '',
     levelOptions: ['不限', '入门', '业余', '中级', '高级'],
     // 日期多列
     dateColumns: [[], [], []],
@@ -202,7 +204,12 @@ Page({
     this.setData({ location: '', locationName: '', locationAddr: '', locationLat: null, locationLng: null })
   },
   onFee(e) { this.setData({ fee: e.detail.value }) },
-  setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v }) },
+  setMax(e) { this.setData({ maxPlayers: e.currentTarget.dataset.v, maxCustom: false, maxCustomVal: '' }) },
+  setMaxCustom() { this.setData({ maxCustom: true, maxPlayers: null }) },
+  onMaxCustomInput(e) {
+    const v = parseInt(e.detail.value)
+    this.setData({ maxCustomVal: e.detail.value, maxPlayers: (!isNaN(v) && v > 0) ? v : null })
+  },
   setLevel(e) { this.setData({ level: e.currentTarget.dataset.v }) },
 
   async submit() {

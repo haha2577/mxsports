@@ -41,6 +41,11 @@
         <text class="field-label">人数上限</text>
         <view class="tag-row">
           <view wx:for="{{maxOptions}}" wx:key="*this" class="tag {{maxPlayers===item?'tag-a':''}}" bindtap="setMax" data-v="{{item}}">{{item}}人</view>
+          <view class="tag {{maxCustom?'tag-a':''}}" bindtap="setMaxCustom">自定义</view>
+        </view>
+        <view wx:if="{{maxCustom}}" class="custom-max-row">
+          <input class="custom-max-input" type="number" value="{{maxCustomVal}}" bindinput="onMaxCustomInput" placeholder="输入人数" maxlength="3"/>
+          <text class="custom-max-unit">人</text>
         </view>
       </view>
       <view class="field">
