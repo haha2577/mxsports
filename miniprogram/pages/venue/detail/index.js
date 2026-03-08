@@ -1,7 +1,7 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const{api}=require('../../../utils/api')
 Page({
-  data:{heroGrad:GRAD_B,venue:null,loading:true,tags:[]},
+  data:{heroGrad:GRAD_B,venue:null,loading:true,tags:[],navTitle:'场馆详情'},
   onLoad(opts){
     const _s=wx.getStorageSync('activeSport')||'badminton';this.setData({heroGrad:_s==='tennis'?GRAD_T:GRAD_B})
     if(opts.id)this._load(opts.id)
@@ -21,7 +21,7 @@ Page({
       if(v.hasParking)tags.push(v.parkingSufficient?'🅿️ 停车充足':'🅿️ 有停车位')
       if(v.hasShower)tags.push('🚿 淋浴')
       if(v.hasLocker)tags.push('🔐 储物柜')
-      this.setData({venue:v,tags,loading:false})
+      this.setData({venue:v,tags,loading:false,navTitle:v.name||'场馆详情'})
     }catch(e){
       this.setData({loading:false})
       wx.showToast({title:'加载失败',icon:'none'})

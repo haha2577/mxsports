@@ -1,8 +1,7 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}" title="附近的约球"/>
     <view class="hd-body">
-      <text class="hd-title">附近的约球</text>
       <text class="hd-sub">找到附近合适的活动，马上报名</text>
     </view>
     <view class="search-bar">

@@ -1,8 +1,7 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar background="{{heroGrad}}"/>
+    <nav-bar background="{{heroGrad}}" title="附近场馆"/>
     <view class="hd-body">
-      <text class="hd-title">附近场馆</text>
       <text class="hd-sub">找到你附近的羽球馆和网球场</text>
     </view>
     <scroll-view scroll-x class="filter-scroll">
