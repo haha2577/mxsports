@@ -23,6 +23,9 @@ Page({
     // 选项
     maxOptions: [4, 6, 8, 10, 12, 16],
     levelOptions: ['不限', '入门', '业余', '中级', '高级'],
+    // 日期多列
+    dateColumns: [[], [], []],
+    dateIndex: [0, 0, 0],
     // 时间多列
     timeColumns: [
       Array.from({length:24}, (_,i) => `${String(i).padStart(2,'0')}时`),
@@ -35,17 +38,126 @@ Page({
     createdId: null,
     today: ''},
   onLoad() {
-    
     const sport = wx.getStorageSync('activeSport') || 'badminton'
-    this.setData({ sport, heroGrad: sport==='tennis'?GRAD_T:GRAD_B })
     const now = new Date()
     const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`
+    // 默认明天
     const tom = new Date(now.getTime() + 86400000)
     const defaultDate = `${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`
-    this.setData({ sport, heroGrad:sport==='tennis'?GRAD_T:GRAD_B, today, date: defaultDate, dateDisplay: this._fmtDate(defaultDate) })
+    const { columns, index } = this._buildDateColumns(today, defaultDate)
+    this.setData({
+      sport, heroGrad: sport==='tennis'?GRAD_T:GRAD_B,
+      today,
+      date: defaultDate,
+      dateDisplay: this._fmtDate(defaultDate),
+      dateColumns: columns,
+      dateIndex: index,
+    })
   },
+
+  // 构造日期三列：[年列, 月列, 日+星期列]，并计算初始 index
+  _buildDateColumns(todayStr, selectedStr) {
+    const WEEKS = ['周日','周一','周二','周三','周四','周五','周六']
+    const todayD = new Date(todayStr + 'T00:00:00')
+    const selD   = new Date((selectedStr || todayStr) + 'T00:00:00')
+
+    // 年：今年 ~ 今年+2
+    const startYear = todayD.getFullYear()
+    const years = [startYear, startYear+1, startYear+2].map(y => `${y}年`)
+
+    const selYear  = selD.getFullYear()
+    const selMonth = selD.getMonth() // 0-based
+    const selDay   = selD.getDate()
+
+    const yi = Math.max(0, selYear - startYear)
+
+    // 月：若是今年，从今月开始；否则从1月
+    const minMonth = (startYear + yi === todayD.getFullYear()) ? todayD.getMonth() : 0
+    const months = Array.from({length: 12 - minMonth}, (_, i) => `${String(minMonth+i+1).padStart(2,'0')}月`)
+    const mi = Math.max(0, selMonth - minMonth)
+
+    // 日：计算该月天数，若是今年今月，从今天开始
+    const curYear  = startYear + yi
+    const curMonth = minMonth + mi  // 0-based
+    const daysInMonth = new Date(curYear, curMonth+1, 0).getDate()
+    const minDay = (curYear === todayD.getFullYear() && curMonth === todayD.getMonth()) ? todayD.getDate() : 1
+    const days = Array.from({length: daysInMonth - minDay + 1}, (_, i) => {
+      const d = new Date(curYear, curMonth, minDay + i)
+      return `${String(minDay+i).padStart(2,'0')}日（${WEEKS[d.getDay()]}）`
+    })
+    const di = Math.max(0, selDay - minDay)
+
+    return { columns: [years, months, days], index: [yi, mi, di] }
+  },
+
   onName(e) { this.setData({ name: e.detail.value }) },
-  onDate(e) { const d = e.detail.value; this.setData({ date: d, dateDisplay: this._fmtDate(d) }) },
+
+  // 滚动某一列时，动态更新其他列（主要是年/月变化时重算日列）
+  onDateColumnChange(e) {
+    const { column, value } = e.detail
+    const idx = [...this.data.dateIndex]
+    idx[column] = value
+    // 触发完整重算，传入当前三列 index
+    this._updateDateColumns(idx[0], idx[1], idx[2])
+  },
+
+  _updateDateColumns(yi, mi, di) {
+    const WEEKS = ['周日','周一','周二','周三','周四','周五','周六']
+    const todayD = new Date(this.data.today + 'T00:00:00')
+    const startYear = todayD.getFullYear()
+    const curYear = startYear + yi
+    const minMonth = (curYear === todayD.getFullYear()) ? todayD.getMonth() : 0
+    const months = Array.from({length: 12 - minMonth}, (_, i) => `${String(minMonth+i+1).padStart(2,'0')}月`)
+    const safeM = Math.min(mi, months.length - 1)
+    const curMonth = minMonth + safeM
+    const daysInMonth = new Date(curYear, curMonth+1, 0).getDate()
+    const minDay = (curYear === todayD.getFullYear() && curMonth === todayD.getMonth()) ? todayD.getDate() : 1
+    const days = Array.from({length: daysInMonth - minDay + 1}, (_, i) => {
+      const d = new Date(curYear, curMonth, minDay + i)
+      return `${String(minDay+i).padStart(2,'0')}日（${WEEKS[d.getDay()]}）`
+    })
+    const safeD = Math.min(di, days.length - 1)
+    this.setData({
+      dateColumns: [this.data.dateColumns[0], months, days],
+      dateIndex: [yi, safeM, safeD],
+    })
+  },
+
+  onDateChange(e) {
+    const [yi, mi, di] = e.detail.value
+    const WEEKS = ['周日','周一','周二','周三','周四','周五','周六']
+    const todayD = new Date(this.data.today + 'T00:00:00')
+    const startYear = todayD.getFullYear()
+    const curYear = startYear + yi
+    const minMonth = (curYear === todayD.getFullYear()) ? todayD.getMonth() : 0
+    const curMonth = minMonth + mi  // 0-based
+    const daysInMonth = new Date(curYear, curMonth+1, 0).getDate()
+    const minDay = (curYear === todayD.getFullYear() && curMonth === todayD.getMonth()) ? todayD.getDate() : 1
+
+    // 重新生成月列、日列（年变化时月列起点可能变）
+    const months = Array.from({length: 12 - minMonth}, (_, i) => `${String(minMonth+i+1).padStart(2,'0')}月`)
+    const days = Array.from({length: daysInMonth - minDay + 1}, (_, i) => {
+      const d = new Date(curYear, curMonth, minDay + i)
+      return `${String(minDay+i).padStart(2,'0')}日（${WEEKS[d.getDay()]}）`
+    })
+
+    // 修正越界
+    const safeM = Math.min(mi, months.length - 1)
+    const safeD = Math.min(di, days.length - 1)
+    const realDay = minDay + safeD
+
+    const dateStr = `${curYear}-${String(curMonth+1).padStart(2,'0')}-${String(realDay).padStart(2,'0')}`
+    const displayD = new Date(curYear, curMonth, realDay)
+    const dateDisplay = `${curMonth+1}月${realDay}日（${WEEKS[displayD.getDay()]}）`
+
+    this.setData({
+      dateColumns: [this.data.dateColumns[0], months, days],
+      dateIndex: [yi, safeM, safeD],
+      date: dateStr,
+      dateDisplay,
+    })
+  },
+
   _fmtDate(dateStr) {
     if (!dateStr) return ''
     const d = new Date(dateStr + 'T00:00:00')
