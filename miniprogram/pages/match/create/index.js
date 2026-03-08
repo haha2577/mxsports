@@ -48,7 +48,7 @@ Page({
   onDate(e) { const d = e.detail.value; this.setData({ date: d, dateDisplay: this._fmtDate(d) }) },
   _fmtDate(dateStr) {
     if (!dateStr) return ''
-    const d = new Date(dateStr + ',T00:00:00')
+    const d = new Date(dateStr + 'T00:00:00')
     const weeks = ['周日','周一','周二','周三','周四','周五','周六']
     return `${d.getMonth()+1}月${d.getDate()}日（${weeks[d.getDay()]}）`
   },
