@@ -1,5 +1,6 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../utils/api')
+const { fmtTime } = require('../../utils/time')
 Page({
   data:{token:'',canSwitch:false,activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
   onLoad(){
@@ -31,7 +32,7 @@ Page({
         api.myRegs(sq),
       ])
       const list = r1.status==='fulfilled' ? ((r1.value.data.data&&r1.value.data.data.list)||r1.value.data.data||[]) : []
-      this.setData({matches: list.slice(0,3)})
+      this.setData({matches: list.slice(0,3).map(m=>({...m,startTime:fmtTime(m.startTime)}))})
       const mine  = r2.status==='fulfilled' ? (r2.value.data.data||[]) : []
       const regs  = r3.status==='fulfilled' ? (r3.value.data.data||[]) : []
       const ongoingIds = new Set()
@@ -39,7 +40,7 @@ Page({
       const push = (m, role) => {
         if(m.status==='ongoing' && !ongoingIds.has(m.id)){
           ongoingIds.add(m.id)
-          ongoing.push({...m, role})
+          ongoing.push({...m, role, startTime:fmtTime(m.startTime)})
         }
       }
       mine.forEach(m => push(m, 'organizer'))

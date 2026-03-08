@@ -1,10 +1,11 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../../utils/api')
+const { fmtTime } = require('../../../utils/time')
 Page({
   data:{sport:'badminton',keyword:'',filterLevel:'',filterFee:'',heroGrad:GRAD_B,list:[],loading:false,hasFilter:false,feeLabel:''},
   onLoad(opts){
     const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
   onShow(){
@@ -25,7 +26,7 @@ Page({
       if(filterLevel) list=list.filter(m=>(m.levels||[]).includes(filterLevel)||(m.level===filterLevel))
       if(filterFee==='free') list=list.filter(m=>!m.fee||m.fee==0)
       if(filterFee==='50') list=list.filter(m=>m.fee<=50&&m.fee>0)
-      this.setData({list})
+      this.setData({list:list.map(m=>({...m,startTime:fmtTime(m.startTime)}))})
     }catch(e){
       wx.showToast({title:'加载失败',icon:'none'})
     }finally{
@@ -40,8 +41,4 @@ Page({
   navigateBack(){wx.navigateBack()},
   goDetail(e){wx.navigateTo({url:'/pages/match/detail/index?id='+e.currentTarget.dataset.id})},
   goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},
-  _fmtTime(dt){
-    if(!dt)return''
-    const d=new Date(dt)
-    return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
-  }})
+})

@@ -1,10 +1,11 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../../utils/api')
+const { fmtTime } = require('../../../utils/time')
 Page({
   data:{sport:'badminton',heroGrad:GRAD_B,activeTab:'all',tabs:[{label:'全部',value:'all'},{label:'进行中',value:'ongoing'},{label:'已完成',value:'done'}],list:[],filteredList:[],counts:{},loading:false},
   onLoad(){
     const sport=wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sportheroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
     this._load()
   },
   onShow(){
@@ -30,7 +31,7 @@ Page({
       // 我报名的活动（去掉已在 created 里的）
       const createdIds = new Set(created.map(m=>m.id))
       const regs = ((regsRes&&regsRes.data&&regsRes.data.data)||[]).filter(r=>!createdIds.has(r.id)).map(r=>({...r,role:'participant'}))
-      const list=[...created,...regs]
+      const list=[...created,...regs].map(m=>({...m,startTime:fmtTime(m.startTime)}))
       this.setData({list})
       this._filter()
     }catch(e){
@@ -57,8 +58,4 @@ Page({
   navigateBack(){wx.navigateBack()},
   goDetail(e){wx.navigateTo({url:'/pages/match/detail/index?id='+e.currentTarget.dataset.id})},
   goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},
-  _fmtTime(dt){
-    if(!dt)return''
-    const d=new Date(dt)
-    return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
-  }})
+})

@@ -1,5 +1,6 @@
 const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
 const { api } = require('../../../utils/api')
+const { fmtTime } = require('../../../utils/time')
 Page({
   data: {
     
@@ -62,7 +63,8 @@ Page({
       const isOrganizer = myId && match.organizerId === myId
       // 检查是否已报名
       const isRegistered = token && match.players && match.players.some(p => p.id === myId)
-      this.setData({ match, loading: false, myUserId: myId, isOrganizer, isRegistered, heroGrad:match.sport==='tennis'?GRAD_T:GRAD_B })
+      const fmtMatch = { ...match, startTime: fmtTime(match.startTime) }
+      this.setData({ match: fmtMatch, loading: false, myUserId: myId, isOrganizer, isRegistered, heroGrad:match.sport==='tennis'?GRAD_T:GRAD_B })
       this._loadGames()
     } catch(e) {
       this.setData({ loading: false })
