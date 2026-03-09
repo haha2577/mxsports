@@ -1,4 +1,4 @@
-.page{background:#f0f2f5
+.page{background:#f0f2f5}
 .page-header{padding:0}
 
 .card{margin:24rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05)}

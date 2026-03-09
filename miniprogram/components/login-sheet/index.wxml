@@ -9,10 +9,12 @@
         <text class="ls-btn-icon">💬</text>
         <text class="ls-btn-txt">{{loading?'登录中...':'微信快速登录'}}</text>
       </view>
+      <!-- [临时屏蔽] 短信登录 - 上线后恢复
       <view class="ls-btn ls-sms" bindtap="goSms">
         <text class="ls-btn-icon">📱</text>
         <text class="ls-btn-txt">短信登录</text>
       </view>
+      -->
       <text wx:if="{{errorMsg}}" class="ls-error">{{errorMsg}}</text>
       <text class="ls-agree">登录即同意用户协议和隐私政策</text>
     </block>
