@@ -1,9 +1,9 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, getSportData } = require('../../../utils/sport-config')
 const{api}=require('../../../utils/api')
 Page({
-  data:{heroGrad:GRAD_B,venue:null,loading:true,tags:[],navTitle:'场馆详情'},
+  data:{...getSportData('badminton'),venue:null,loading:true,tags:[],navTitle:'场馆详情'},
   onLoad(opts){
-    const _s=wx.getStorageSync('activeSport')||'badminton';this.setData({heroGrad:_s==='tennis'?GRAD_T:GRAD_B})
+    applySport(this)
     if(opts.id)this._load(opts.id)
   },
   navigateBack(){wx.navigateBack()},
@@ -11,7 +11,6 @@ Page({
     try{
       const r=await api.venueDetail(id)
       const v=r.data.data
-      // 生成标签
       const tags=[]
       if(v.isIndoor)tags.push('🏠 室内')
       else tags.push('🌳 室外')

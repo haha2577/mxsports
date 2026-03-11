@@ -21,7 +21,7 @@
       <text class="rt">共 {{list.length}} 个约球</text>
     </view>
     <view wx:if="{{!list.length}}" class="empty">
-      <text class="ei">{{sport==='badminton'?'🏸':'🎾'}}</text>
+      <text class="ei">{{sportEmoji}}</text>
       <text class="et">附近暂无约球活动</text>
     </view>
     <view wx:else class="list">

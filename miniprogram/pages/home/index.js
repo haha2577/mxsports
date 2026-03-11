@@ -1,23 +1,21 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, switchSport, getSportData } = require('../../utils/sport-config')
 const { api } = require('../../utils/api')
 const { fmtTime } = require('../../utils/time')
 Page({
-  data:{token:'',canSwitch:false,activeSport:'badminton',heroGrad:GRAD_B,nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
+  data:{token:'',canSwitch:false,...getSportData('badminton'),nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
   onLoad(){
     this._refresh()
   },
   onShow(){
-    // 每次显示重读（从首页切换运动后返回要刷新）
-    const sport=wx.getStorageSync('activeSport')||'badminton'
-    this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    applySport(this)
     this._refresh()
   },
   _refresh(){
     const token=wx.getStorageSync('token')
     const user=wx.getStorageSync('userInfo')||{}
-    const sport=wx.getStorageSync('activeSport')||'badminton'
+    const sport=applySport(this)
     const canSwitch=wx.getStorageSync('canSwitch')||false
-    this.setData({token,nickname:user.nickname||'运动员',canSwitch,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({token,nickname:user.nickname||'运动员',canSwitch})
     if(token){
       if(!user.sportPref){this.setData({showSportPref:true});return}
       this._loadData(sport)
@@ -49,15 +47,14 @@ Page({
     }catch(e){ this.setData({matches:[], ongoingMatches:[]}) }
   },
   onSwitchSport(e){
-    const sport=e.detail
-    wx.setStorageSync('activeSport',sport)
-    this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
-    this._loadData(sport)
-    api.updateActiveSport(sport).catch(()=>{})
+    switchSport(this, e, (sport) => {
+      this._loadData(sport)
+      api.updateActiveSport(sport).catch(()=>{})
+    })
   },
   onSportPrefConfirm(e){
     const {pref, activeSport, canSwitch}=e.detail
-    this.setData({showSportPref:false,canSwitch,activeSport,heroGrad:activeSport==='tennis'?GRAD_T:GRAD_B})
+    this.setData({showSportPref:false, canSwitch, ...getSportData(activeSport)})
     this._loadData(activeSport)
   },
   showLoginSheet(){this.setData({showLogin:true})},
@@ -66,8 +63,8 @@ Page({
     const user=e.detail||{}
     const sport=wx.getStorageSync('activeSport')||'badminton'
     const canSwitch=wx.getStorageSync('canSwitch')||false
-    this.setData({token:wx.getStorageSync('token'),nickname:user.nickname||'运动员',canSwitch,activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B,showLogin:false})
-    if(!user.sportPref) this.setData({showSportPref:true})  // 新用户未设置偏好
+    this.setData({token:wx.getStorageSync('token'),nickname:user.nickname||'运动员',canSwitch,...getSportData(sport),showLogin:false})
+    if(!user.sportPref) this.setData({showSportPref:true})
     else this._loadData(sport)
   },
   guestBadminton(){wx.setStorageSync('activeSport','badminton');this.setData({showLogin:true})},

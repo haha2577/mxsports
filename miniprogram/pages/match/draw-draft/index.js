@@ -1,8 +1,8 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, getSportData } = require('../../../utils/sport-config')
 const { api } = require('../../../utils/api')
 Page({
   data: {
-    heroGrad:GRAD_B,
+    ...getSportData("badminton"),
     matchId: null,
     matchName: '',
     type: '',
@@ -18,7 +18,7 @@ Page({
     if (!d) { wx.navigateBack(); return }
     const sport=wx.getStorageSync('activeSport')||'badminton'
     this.setData({
-      heroGrad:sport==='tennis'?GRAD_T:GRAD_B,
+      ...getSportData(sport),
       matchId: d.matchId,
       matchName: d.matchName,
       type: d.type,

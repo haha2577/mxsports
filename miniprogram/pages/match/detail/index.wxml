@@ -10,7 +10,7 @@
     <!-- Hero -->
     <view class="page-header hero" style="background:{{heroGrad}}">
       <nav-bar background="{{heroGrad}}"/>
-      <text class="hero-deco">{{match.sport==='tennis'?'🎾':'🏸'}}</text>
+      <text class="hero-deco">{{sportEmoji}}</text>
       <view class="hd-body hero-inner">
         <view class="hero-top">
           <view class="status-badge status-{{match.status}}">{{statusMap[match.status]||match.status}}</view>

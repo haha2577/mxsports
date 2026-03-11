@@ -1,10 +1,10 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, getSportData } = require('../../../utils/sport-config')
 const { api } = require('../../../utils/api')
 const { fmtDate } = require('../../../utils/time')
 Page({
-  data: { heroGrad:GRAD_B, list: [], loading: true },
+  data: { ...getSportData("badminton"), list: [], loading: true },
   onLoad() {
-    const _s=wx.getStorageSync('activeSport')||'badminton';this.setData({heroGrad:_s==='tennis'?GRAD_T:GRAD_B})
+    applySport(this)
     this._load()
   },
   onShow() { this._load() },

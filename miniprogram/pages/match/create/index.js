@@ -1,8 +1,8 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, getSportData } = require('../../../utils/sport-config')
 const { api } = require('../../../utils/api')
 Page({
   data: {
-    heroGrad:GRAD_B,
+    ...getSportData("badminton"),
     
     sport: 'badminton',
     // 必填
@@ -48,7 +48,7 @@ Page({
     const defaultDate = `${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`
     const { columns, index } = this._buildDateColumns(today, defaultDate)
     this.setData({
-      sport, heroGrad: sport==='tennis'?GRAD_T:GRAD_B,
+      ...getSportData(sport),
       today,
       date: defaultDate,
       dateDisplay: this._fmtDate(defaultDate),

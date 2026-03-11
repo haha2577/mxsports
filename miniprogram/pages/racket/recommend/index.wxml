@@ -13,7 +13,7 @@
   <text class="sec-t">热门推荐</text>
   <view class="list">
     <view wx:for="{{rackets}}" wx:key="id" class="racket-card" bindtap="goDetail" data-id="{{item.id}}">
-      <view class="rc-cover"><text style="font-size:60rpx;opacity:.5">{{sport==='badminton'?'🏸':'🎾'}}</text></view>
+      <view class="rc-cover"><text style="font-size:60rpx;opacity:.5">{{sportEmoji}}</text></view>
       <view class="rc-body">
         <text class="rc-name">{{item.name}}</text>
         <view class="rc-tags"><text wx:for="{{item.tags}}" wx:key="*this" class="rc-tag">{{item}}</text></view>

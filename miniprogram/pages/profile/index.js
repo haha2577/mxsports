@@ -1,16 +1,15 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, switchSport, getSportData } = require('../../utils/sport-config')
 const { api } = require('../../utils/api')
 
 const PREF_LABEL = {badminton:'🏸 羽毛球', tennis:'🎾 网球', both:'🏸🎾 双栖'}
 
 Page({
-  data:{token:'',canSwitch:false,activeSport:'badminton',heroGrad:GRAD_B,
+  data:{token:'',canSwitch:false,...getSportData('badminton'),
         nickname:'',phone:'',avatar:'',prefLabel:'未设置',
         stats:{matches:0,wins:0,rate:'0%',points:0},
         showLogin:false,showSportPref:false,version:''},
 
   onLoad(){
-    // 读取版本号
     try{
       const fs=wx.getFileSystemManager()
       const vj=JSON.parse(fs.readFileSync('/version.json','utf8'))
@@ -20,18 +19,15 @@ Page({
 
   onShow(){
     const token=wx.getStorageSync('token')||''
-    const sport=wx.getStorageSync('activeSport')||'badminton'
+    const sport=applySport(this)
     const canSwitch=wx.getStorageSync('canSwitch')||false
-    // 从本地缓存快速渲染
     const user=wx.getStorageSync('userInfo')||{}
     this.setData({
-      token, canSwitch, activeSport:sport,
-      heroGrad:sport==='tennis'?GRAD_T:GRAD_B,
+      token, canSwitch,
       nickname:user.nickname||'运动员',
       phone:user.phone||'',
       avatar:user.avatar||'',
     })
-    // 从服务端拉取最新数据（个人信息 + 运动偏好）
     if(token) this._fetchProfile()
   },
 
@@ -39,7 +35,6 @@ Page({
     try{
       const r=await api.getProfile()
       const u=r.data.data
-      // 更新本地缓存
       const userInfo=wx.getStorageSync('userInfo')||{}
       Object.assign(userInfo,{
         nickname:u.nickname, phone:u.phone, avatar:u.avatar,
@@ -49,27 +44,26 @@ Page({
       wx.setStorageSync('activeSport',u.activeSport||'badminton')
       wx.setStorageSync('canSwitch',u.canSwitch||false)
       getApp().globalData.userInfo=userInfo
+      const sportData = getSportData(u.activeSport||'badminton')
       this.setData({
         nickname:u.nickname, phone:u.phone||'', avatar:u.avatar||'',
         prefLabel:PREF_LABEL[u.sportPref]||'未设置',
         canSwitch:u.canSwitch||false,
-        activeSport:u.activeSport||'badminton',
-        heroGrad:(u.activeSport||'badminton')==='tennis'?GRAD_T:GRAD_B,
+        ...sportData,
       })
     }catch(e){}
   },
 
   onSwitchSport(e){
-    const sport=e.detail
-    wx.setStorageSync('activeSport',sport)
-    this.setData({activeSport:sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
-    api.updateActiveSport(sport).catch(()=>{})
+    switchSport(this, e, (sport) => {
+      api.updateActiveSport(sport).catch(()=>{})
+    })
   },
 
   onSportPrefConfirm(e){
     const {pref, activeSport, canSwitch}=e.detail
     const prefLabel=PREF_LABEL[pref]||'未设置'
-    this.setData({showSportPref:false, canSwitch, activeSport, heroGrad:activeSport==='tennis'?GRAD_T:GRAD_B, prefLabel})
+    this.setData({showSportPref:false, canSwitch, prefLabel, ...getSportData(activeSport)})
   },
 
   showLoginSheet(){this.setData({showLogin:true})},
@@ -85,9 +79,7 @@ Page({
       nickname:user.nickname||'运动员',
       phone:user.phone||'',
       avatar:user.avatar||'',
-      canSwitch, activeSport:sport,
-      heroGrad:sport==='tennis'?GRAD_T:GRAD_B,
-      showLogin:false
+      canSwitch, ...getSportData(sport), showLogin:false
     })
     if(!user.sportPref) this.setData({showSportPref:true})
     else this._fetchProfile()

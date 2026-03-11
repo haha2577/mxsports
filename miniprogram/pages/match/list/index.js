@@ -1,16 +1,14 @@
-const GRAD_B='linear-gradient(145deg,#0a7a38,#1DB954,#25d366)',GRAD_T='linear-gradient(145deg,#8a3010,#d4541f,#e8712a)'
+const { applySport, switchSport, getSportData } = require('../../../utils/sport-config')
 const { api } = require('../../../utils/api')
 const { fmtTime } = require('../../../utils/time')
 Page({
-  data:{sport:'badminton',keyword:'',filterLevel:'',filterFee:'',heroGrad:GRAD_B,list:[],loading:false,hasFilter:false,feeLabel:''},
+  data:{...getSportData('badminton'),keyword:'',filterLevel:'',filterFee:'',list:[],loading:false,hasFilter:false,feeLabel:''},
   onLoad(opts){
-    const sport=opts.sport||wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    const sport=applySport(this, opts.sport)
     this._load()
   },
   onShow(){
-    const sport=wx.getStorageSync('activeSport')||'badminton'
-    this.setData({sport,heroGrad:sport==='tennis'?GRAD_T:GRAD_B})
+    applySport(this)
     this._load()
   },
   async _load(){
@@ -22,7 +20,6 @@ Page({
       if(keyword) qs+=`&search=${encodeURIComponent(keyword)}`
       const r=await api.matches(qs)
       let list=(r.data.data&&r.data.data.list)||r.data.data||[]
-      // 本地过滤（后端暂不支持这些参数时兜底）
       if(filterLevel) list=list.filter(m=>(m.levels||[]).includes(filterLevel)||(m.level===filterLevel))
       if(filterFee==='free') list=list.filter(m=>!m.fee||m.fee==0)
       if(filterFee==='50') list=list.filter(m=>m.fee<=50&&m.fee>0)
@@ -33,7 +30,7 @@ Page({
       this.setData({loading:false})
     }
   },
-  onSwitchSport(e){const s=e.detail;wx.setStorageSync('activeSport',s);this.setData({sport:s,heroGrad:s==='tennis'?GRAD_T:GRAD_B});this._load()},
+  onSwitchSport(e){ switchSport(this, e, () => this._load()) },
   onKeyword(e){this.setData({keyword:e.detail.value});this._load()},
   openLevel(){wx.showActionSheet({itemList:['入门','业余','中级','高级','不限'],success:r=>{const l=r.tapIndex===4?'':['入门','业余','中级','高级'][r.tapIndex];this.setData({filterLevel:l,hasFilter:!!(l||(this.data.filterFee))});this._load()}})},
   openFee(){wx.showActionSheet({itemList:['免费','50元以内','全部'],success:r=>{const f=['free','50',''][r.tapIndex];this.setData({filterFee:f,feeLabel:['免费','50元以内',''][r.tapIndex],hasFilter:!!(this.data.filterLevel||f)});this._load()}})},

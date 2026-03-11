@@ -17,8 +17,8 @@
     <view wx:elif="{{!list.length}}" class="empty"><text class="ei">🏟️</text><text class="et">附近暂无场馆</text></view>
     <view wx:else class="list">
       <view wx:for="{{list}}" wx:key="id" class="venue-card" bindtap="goDetail" data-id="{{item.id}}">
-        <view class="vc-cover" style="background:{{sport==='badminton'?'#e8f7ee':'#fdf0e8'}}">
-          <text style="font-size:80rpx;opacity:.5">{{sport==='badminton'?'🏸':'🎾'}}</text>
+        <view class="vc-cover" style="background:{{sportListIconBg}}">
+          <text style="font-size:80rpx;opacity:.5">{{sportEmoji}}</text>
         </view>
         <view class="vc-body">
           <view class="vc-top"><text class="vc-name">{{item.name}}</text><text class="vc-dist" wx:if="{{item.distanceLabel}}">📏 {{item.distanceLabel}}</text></view>
