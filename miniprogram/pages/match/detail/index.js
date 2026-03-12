@@ -27,7 +27,8 @@ Page({
     editingGame: null,
     editScore1: '',
     editScore2: '',
-    showPlayerSheet: false},
+    showPlayerSheet: false,
+    showLogin: false},
 
   onLoad(opts) {
     this.setData({ id: opts.id })
@@ -74,7 +75,7 @@ Page({
 
   async doRegister() {
     const token = wx.getStorageSync('token')
-    if (!token) { wx.showToast({ title: '请先登录', icon: 'none' }); return }
+    if (!token) { this.setData({ showLogin: true }); return }
     const { id, registering, isRegistered } = this.data
     if (registering) return
     this.setData({ registering: true })
@@ -276,6 +277,9 @@ Page({
       title: match ? match.name : '快来参加我的活动！',
       path: `/pages/match/detail/index?id=${id}`}
   },
+
+  hideLogin() { this.setData({ showLogin: false }) },
+  onLoginSuccess() { this.setData({ showLogin: false }); this._load() },
 
   _fmt(dt) {
     if (!dt) return ''

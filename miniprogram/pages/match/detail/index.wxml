@@ -303,4 +303,5 @@
 
   </block><!-- /wx:elif match -->
 
+  <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>
 </view><!-- /page -->

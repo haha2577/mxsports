@@ -16,10 +16,8 @@ Page({
     const sport=applySport(this)
     const canSwitch=wx.getStorageSync('canSwitch')||false
     this.setData({token,nickname:user.nickname||'运动员',canSwitch})
-    if(token){
-      if(!user.sportPref){this.setData({showSportPref:true});return}
-      this._loadData(sport)
-    }
+    if(token&&!user.sportPref){this.setData({showSportPref:true});return}
+    this._loadData(sport)
   },
   async _loadData(sport){
     try{
@@ -69,7 +67,10 @@ Page({
   },
   guestBadminton(){wx.setStorageSync('activeSport','badminton');this.setData({showLogin:true})},
   guestTennis(){wx.setStorageSync('activeSport','tennis');this.setData({showLogin:true})},
-  goCreate(){wx.navigateTo({url:'/pages/match/create/index'})},
+  goCreate(){
+    if(!this.data.token){this.setData({showLogin:true});return}
+    wx.navigateTo({url:'/pages/match/create/index'})
+  },
   goMatchList(){wx.navigateTo({url:'/pages/match/list/index'})},
   goMatchDetail(e){wx.navigateTo({url:`/pages/match/detail/index?id=${e.currentTarget.dataset.id}`})},
   goVenue(){wx.navigateTo({url:'/pages/venue/list/index'})},
