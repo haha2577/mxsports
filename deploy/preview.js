@@ -4,6 +4,7 @@ const path = require('path')
 const fs   = require('fs')
 const https = require('https')
 const os    = require('os')
+const { withProdEnv } = require('./with-prod-env')
 
 const APPID        = 'wx686427f3488d40ab'
 const ROOT         = path.resolve(__dirname, '..')
@@ -55,14 +56,17 @@ async function main() {
   const t0 = Date.now()
 
   try {
-    const r = await ci.preview({
-      project,
-      version,
-      desc: `预览 ${new Date().toLocaleString('zh-CN')}`,
-      setting: { es6: true, minify: false, autoPrefixWXSS: true },
-      qrcodeFormat: 'image',
-      qrcodeOutputDest: QR_OUTPUT,
-      onProgressUpdate(task) { if (task._msg) process.stdout.write(`\r  ${task._msg}`) },
+    let r
+    await withProdEnv(async () => {
+      r = await ci.preview({
+        project,
+        version,
+        desc: `预览 ${new Date().toLocaleString('zh-CN')}`,
+        setting: { es6: true, minify: false, autoPrefixWXSS: true },
+        qrcodeFormat: 'image',
+        qrcodeOutputDest: QR_OUTPUT,
+        onProgressUpdate(task) { if (task._msg) process.stdout.write(`\r  ${task._msg}`) },
+      })
     })
 
     const elapsed = ((Date.now() - t0) / 1000).toFixed(1)

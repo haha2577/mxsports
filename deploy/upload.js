@@ -6,6 +6,7 @@ require('./load-env')
 const ci   = require('miniprogram-ci')
 const path = require('path')
 const fs   = require('fs')
+const { withProdEnv } = require('./with-prod-env')
 
 const APPID        = 'wx686427f3488d40ab'
 const ROOT         = path.resolve(__dirname, '..')
@@ -35,12 +36,14 @@ async function main() {
   const t0 = Date.now()
 
   try {
-    await ci.upload({
-      project,
-      version,
-      desc: `体验版 ${new Date().toLocaleString('zh-CN')}`,
-      setting: { es6: true, minify: true, autoPrefixWXSS: true },
-      onProgressUpdate(task) { if (task._msg) process.stdout.write(`\r  ${task._msg}`) },
+    await withProdEnv(async () => {
+      await ci.upload({
+        project,
+        version,
+        desc: `体验版 ${new Date().toLocaleString('zh-CN')}`,
+        setting: { es6: true, minify: true, autoPrefixWXSS: true },
+        onProgressUpdate(task) { if (task._msg) process.stdout.write(`\r  ${task._msg}`) },
+      })
     })
 
     const elapsed = ((Date.now() - t0) / 1000).toFixed(1)
