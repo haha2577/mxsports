@@ -1,13 +1,13 @@
 const { applySport, switchSport, getSportData } = require('../../utils/sport-config')
 const { api } = require('../../utils/api')
 
-const PREF_LABEL = {badminton:'🏸 羽毛球', tennis:'🎾 网球', both:'🏸🎾 双栖'}
+const PREF_LABEL = {badminton:'羽毛球', tennis:'网球', both:'双栖'}
 
 Page({
   data:{token:'',canSwitch:false,...getSportData('badminton'),
         nickname:'',phone:'',avatar:'',prefLabel:'未设置',
         stats:{matches:0,wins:0,rate:'0%',points:0},
-        showLogin:false,showSportPref:false,version:''},
+        showLogin:false,showSportPref:false,version:'',showVideoEntry:false,showRacketEntry:false},
 
   onLoad(){
     try{
@@ -18,12 +18,13 @@ Page({
   },
 
   onShow(){
+    const {showVideoEntry=false, showRacketEntry=false}=getApp().globalData
     const token=wx.getStorageSync('token')||''
     const sport=applySport(this)
     const canSwitch=wx.getStorageSync('canSwitch')||false
     const user=wx.getStorageSync('userInfo')||{}
     this.setData({
-      token, canSwitch,
+      token, canSwitch, showVideoEntry, showRacketEntry,
       nickname:user.nickname||'运动员',
       phone:user.phone||'',
       avatar:user.avatar||'',

@@ -30,7 +30,7 @@ const SPORTS = {
     // 文案
     heroSub: '报名、组织、记录你的每一场比赛',
     emptyText: '附近暂无约球活动',
-    sportTag: '🏸 羽毛球',
+    sportTag: '羽毛球',
     // 功能开关（以后按需扩展）
     features: {
       racketRecommend: true,
@@ -50,7 +50,7 @@ const SPORTS = {
     tagClass: 'tag-t',
     heroSub: '专业赛事管理，积分排名实时更新',
     emptyText: '附近暂无约球活动',
-    sportTag: '🎾 网球',
+    sportTag: '网球',
     features: {
       racketRecommend: true,
       videoAnalysis: true,

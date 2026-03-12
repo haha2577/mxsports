@@ -6,7 +6,7 @@
     </view>
     <scroll-view scroll-x class="filter-scroll">
       <view class="filter-row">
-        <view class="chip {{filterOpen?'chip-a':''}}" bindtap="toggleOpen">🟢 {{filterOpen?'营业中 ✓':'营业中'}}</view>
+        <view class="chip {{filterOpen?'chip-a':''}}" bindtap="toggleOpen">{{filterOpen?'营业中 ✓':'营业中'}}</view>
         <view wx:if="{{hasFilter}}" class="chip chip-reset" bindtap="resetAll">✕ 清除</view>
       </view>
     </scroll-view>
@@ -14,19 +14,19 @@
   <scroll-view class="page-body" scroll-y enable-passive>
     <view class="result-bar"><text class="rt">找到 {{list.length}} 家场馆</text></view>
     <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
-    <view wx:elif="{{!list.length}}" class="empty"><text class="ei">🏟️</text><text class="et">附近暂无场馆</text></view>
+    <view wx:elif="{{!list.length}}" class="empty"><svg-icon name="building" size="80" color="#ddd"/><text class="et">附近暂无场馆</text></view>
     <view wx:else class="list">
       <view wx:for="{{list}}" wx:key="id" class="venue-card" bindtap="goDetail" data-id="{{item.id}}">
         <view class="vc-cover" style="background:{{sportListIconBg}}">
-          <text style="font-size:80rpx;opacity:.5">{{sportEmoji}}</text>
+          <svg-icon name="building" size="80" color="{{sportPrimary}}" style="opacity:.4"/>
         </view>
         <view class="vc-body">
-          <view class="vc-top"><text class="vc-name">{{item.name}}</text><text class="vc-dist" wx:if="{{item.distanceLabel}}">📏 {{item.distanceLabel}}</text></view>
-          <text class="vc-addr">📍 {{item.district}} {{item.address}}</text>
+          <view class="vc-top"><text class="vc-name">{{item.name}}</text><view wx:if="{{item.distanceLabel}}" class="vc-dist icon-row"><svg-icon name="ruler" size="22" color="#bbb"/><text>{{item.distanceLabel}}</text></view></view>
+          <view class="vc-addr icon-row"><svg-icon name="map-pin" size="24" color="#aaa"/><text>{{item.district}} {{item.address}}</text></view>
           <view class="vc-tags">
-            <text wx:if="{{item.hasParking}}" class="vc-tag">{{item.parkingSufficient?'🅿️充足':'🅿️有'}}</text>
-            <text wx:if="{{item.hasShower}}" class="vc-tag">🚿淋浴</text>
-            <text wx:if="{{item.hasAc}}" class="vc-tag">❄️空调</text>
+            <text wx:if="{{item.hasParking}}" class="vc-tag">{{item.parkingSufficient?'停车充足':'有停车'}}</text>
+            <text wx:if="{{item.hasShower}}" class="vc-tag">淋浴</text>
+            <text wx:if="{{item.hasAc}}" class="vc-tag">空调</text>
             <text class="vc-tag">{{item.floorLabel}}</text>
             <text class="vc-tag">{{item.courtCount}}片场地</text>
           </view>

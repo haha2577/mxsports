@@ -12,14 +12,14 @@ Page({
       const r=await api.venueDetail(id)
       const v=r.data.data
       const tags=[]
-      if(v.isIndoor)tags.push('🏠 室内')
-      else tags.push('🌳 室外')
-      tags.push(`🏟️ ${v.courtCount}片场地`)
-      tags.push(`🪵 ${v.floorLabel}`)
-      if(v.hasAc)tags.push('❄️ 空调')
-      if(v.hasParking)tags.push(v.parkingSufficient?'🅿️ 停车充足':'🅿️ 有停车位')
-      if(v.hasShower)tags.push('🚿 淋浴')
-      if(v.hasLocker)tags.push('🔐 储物柜')
+      if(v.isIndoor)tags.push('室内')
+      else tags.push('室外')
+      tags.push(`${v.courtCount}片场地`)
+      tags.push(v.floorLabel)
+      if(v.hasAc)tags.push('空调')
+      if(v.hasParking)tags.push(v.parkingSufficient?'停车充足':'有停车位')
+      if(v.hasShower)tags.push('淋浴')
+      if(v.hasLocker)tags.push('储物柜')
       this.setData({venue:v,tags,loading:false,navTitle:v.name||'场馆详情'})
     }catch(e){
       this.setData({loading:false})

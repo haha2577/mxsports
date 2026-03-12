@@ -29,6 +29,9 @@ button::after { border: none; }
 /* ══ 通用加载 ══ */
 .loading-wrap { display: flex; align-items: center; justify-content: center; padding: 120rpx 0; color: #aaa; font-size: 28rpx; }
 
+/* ══ 图标行：图标 + 文字横向排列 ══ */
+.icon-row { display: flex; align-items: center; gap: 8rpx; }
+
 /* ══ 通用底部弹窗 ══ */
 .sheet-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 999; display: flex; align-items: flex-end; }
 .sheet { width: 100%; background: #fff; border-radius: 32rpx 32rpx 0 0; padding: 0 32rpx 60rpx; max-height: 80vh; overflow-y: auto; }

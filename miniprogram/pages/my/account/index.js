@@ -98,7 +98,7 @@ Page({
       confirmColor: '#e53935'})
     if (!res1.confirm) return
     const res2 = await wx.showModal({
-      title: '⚠️ 最终确认',
+      title: '最终确认',
       content: '账号注销后无法找回，确认注销？',
       confirmText: '确认注销',
       confirmColor: '#e53935'})

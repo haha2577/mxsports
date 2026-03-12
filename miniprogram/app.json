@@ -47,7 +47,8 @@
     "nav-bar": "/components/nav-bar/index",
     "sport-switcher": "/components/sport-switcher/index",
     "login-sheet": "/components/login-sheet/index",
-    "sport-pref-sheet": "/components/sport-pref-sheet/index"
+    "sport-pref-sheet": "/components/sport-pref-sheet/index",
+    "svg-icon": "/components/icon/index"
   },
   "permission": {
     "scope.userLocation": {

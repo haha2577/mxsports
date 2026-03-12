@@ -11,7 +11,7 @@
   <view wx:if="{{loading}}" class="empty"><text class="et">加载中...</text></view>
 
   <view wx:elif="{{!list.length}}" class="empty">
-    <text class="ei">🤝</text>
+    <svg-icon name="users" size="80" color="#ddd"/>
     <text class="et">还没有球友</text>
     <text class="es">报名参加活动，认识更多球友吧！</text>
   </view>
@@ -19,7 +19,7 @@
   <view wx:else class="list">
     <view wx:for="{{list}}" wx:key="id" class="friend-card" bindtap="goMatch" data-id="{{item.lastMatch.id}}">
       <view class="avatar">
-        <text class="av-emoji">🙋</text>
+        <svg-icon name="user" size="48" color="#bbb"/>
       </view>
       <view class="info">
         <text class="nickname">{{item.nickname}}</text>
@@ -28,8 +28,8 @@
           <text class="lm-name">{{item.lastMatch.name}}</text>
         </view>
         <view class="lm-meta">
-          <text wx:if="{{item.lastMatch.startTime}}" class="lm-time">🕐 {{item.lastMatch.startTime}}</text>
-          <text wx:if="{{item.lastMatch.location}}" class="lm-loc">📍 {{item.lastMatch.location}}</text>
+          <view wx:if="{{item.lastMatch.startTime}}" class="lm-time icon-row"><svg-icon name="clock" size="24" color="#bbb"/><text>{{item.lastMatch.startTime}}</text></view>
+          <view wx:if="{{item.lastMatch.location}}" class="lm-loc icon-row"><svg-icon name="map-pin" size="24" color="#bbb"/><text>{{item.lastMatch.location}}</text></view>
         </view>
       </view>
       <text class="arrow">›</text>

@@ -16,15 +16,15 @@
     <!-- 功能入口 -->
     <view class="action-row">
       <view class="action-card" bindtap="goCreate">
-        <view class="ac-icon" style="background:{{sportCardBg}}"><text>🏆</text></view>
+        <view class="ac-icon" style="background:{{sportCardBg}}"><svg-icon name="trophy" size="48" color="{{sportPrimary}}"/></view>
         <text class="ac-title">创建活动</text>
       </view>
       <view class="action-card" bindtap="goVenue">
-        <view class="ac-icon" style="background:#e8f0fd"><text>🏟️</text></view>
+        <view class="ac-icon" style="background:#e8f0fd"><svg-icon name="building" size="48" color="#5b85d0"/></view>
         <text class="ac-title">附近场馆</text>
       </view>
       <view class="action-card" bindtap="goNews">
-        <view class="ac-icon" style="background:#fff0e0"><text>📰</text></view>
+        <view class="ac-icon" style="background:#fff0e0"><svg-icon name="newspaper" size="48" color="#e07b30"/></view>
         <text class="ac-title">最新资讯</text>
       </view>
     </view>
@@ -40,7 +40,7 @@
           <view class="oc-live-dot"/>
           <view class="oc-info">
             <text class="oc-name">{{item.name}}</text>
-            <text class="oc-meta">📍{{item.location}}</text>
+            <view class="oc-meta icon-row"><svg-icon name="map-pin" size="24" color="#bbb"/><text>{{item.location}}</text></view>
           </view>
         </view>
         <view class="oc-right">
@@ -61,11 +61,11 @@
       <view wx:if="{{matches.length===0}}" class="empty">暂无约球活动</view>
       <view wx:for="{{matches}}" wx:key="id" class="match-item" bindtap="goMatchDetail" data-id="{{item.id}}">
         <view class="mi-icon" style="background:{{sportListIconBg}}">
-          <text>{{sportEmoji}}</text>
+          <svg-icon name="award" size="32" color="{{sportPrimary}}"/>
         </view>
         <view class="mi-body">
           <text class="mi-name">{{item.name}}</text>
-          <text class="mi-info">📍{{item.location}}{{item.startTime?' · '+item.startTime:''}}</text>
+          <view class="mi-info icon-row"><svg-icon name="map-pin" size="24" color="#aaa"/><text>{{item.location}}{{item.startTime?' · '+item.startTime:''}}</text></view>
         </view>
         <text class="mi-badge s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
       </view>

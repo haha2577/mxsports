@@ -28,7 +28,7 @@
       <view class="field">
         <text class="field-label">活动地点 <text class="req">*</text></text>
         <view class="field-picker loc-picker" bindtap="pickLocation">
-          <view class="loc-left"><text class="loc-icon">📍</text><text class="{{location?'picker-val':'picker-ph'}}">{{locationName||location||'搜索地点'}}</text></view>
+          <view class="loc-left"><svg-icon name="map-pin" size="32" color="#999"/><text class="{{location?'picker-val':'picker-ph'}}">{{locationName||location||'搜索地点'}}</text></view>
           <view style="display:flex;align-items:center;gap:8rpx">
             <text wx:if="{{location}}" class="loc-clear" catchtap="clearLocation">✕</text>
             <text class="picker-arrow">›</text>
@@ -59,17 +59,17 @@
       </view>
     </view>
     <view class="submit-btn {{loading?'submit-loading':''}}" bindtap="submit">
-      <text>{{loading?'创建中...':'✅ 创建并分享'}}</text>
+      <text>{{loading?'创建中...':'确认创建'}}</text>
     </view>
   </scroll-view>
 
   <view wx:if="{{showSuccess}}" class="success-mask" bindtap="closeSuccess">
     <view class="success-card" catchtap="">
       <view class="sc-close" bindtap="closeSuccess">✕</view>
-      <text class="sc-emoji">🎉</text>
+      <svg-icon name="sparkles" size="80" color="#f59e0b"/>
       <text class="sc-title">活动创建成功！</text>
       <text class="sc-sub">分享给好友，邀请他们一起来参加</text>
-      <button class="sc-share-btn" open-type="share">📤 分享给好友</button>
+      <button class="sc-share-btn" open-type="share">分享给好友</button>
       <view class="sc-detail-btn" bindtap="goDetail">查看活动详情 ›</view>
     </view>
     <view class="safe-bottom"/>

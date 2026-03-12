@@ -19,8 +19,8 @@
         </view>
         <text class="hero-name">{{match.name}}</text>
         <view class="hero-meta">
-          <text class="meta-item">📍 {{match.location}}</text>
-          <text wx:if="{{match.startTime}}" class="meta-item">🕐 {{match.startTime}}</text>
+          <view class="meta-item icon-row"><svg-icon name="map-pin" size="26" color="rgba(255,255,255,0.8)"/><text>{{match.location}}</text></view>
+          <view wx:if="{{match.startTime}}" class="meta-item icon-row"><svg-icon name="clock" size="26" color="rgba(255,255,255,0.8)"/><text>{{match.startTime}}</text></view>
         </view>
       </view>
     </view>
@@ -48,35 +48,35 @@
     <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card">
       <text class="card-title">活动信息</text>
       <view class="info-row">
-        <text class="info-icon">🏟️</text>
+        <svg-icon name="map-pin" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">地点</text>
           <text class="info-val">{{match.location||'未填写'}}</text>
         </view>
       </view>
       <view wx:if="{{match.startTime}}" class="info-row">
-        <text class="info-icon">📅</text>
+        <svg-icon name="calendar" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">时间</text>
           <text class="info-val">{{match.startTime}}</text>
         </view>
       </view>
       <view class="info-row">
-        <text class="info-icon">👥</text>
+        <svg-icon name="users" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">人数</text>
           <text class="info-val">{{match.registeredCount}} / {{match.maxPlayers}} 人</text>
         </view>
       </view>
       <view wx:if="{{match.levels&&match.levels.length}}" class="info-row">
-        <text class="info-icon">🏅</text>
+        <svg-icon name="star" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">水平要求</text>
           <text class="info-val">{{match.levels.join('、')}}</text>
         </view>
       </view>
       <view wx:if="{{match.description}}" class="info-row">
-        <text class="info-icon">📝</text>
+        <svg-icon name="file-text" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">活动说明</text>
           <text class="info-val desc">{{match.description}}</text>
@@ -95,7 +95,7 @@
       </view>
       <view wx:else class="players-list">
         <view wx:for="{{match.players}}" wx:key="id" class="player-row">
-          <view class="player-avatar"><text class="pa-emoji">🙋</text></view>
+          <view class="player-avatar"><svg-icon name="user" size="40" color="#aaa"/></view>
           <view class="player-info">
             <text class="player-name">{{item.name}}</text>
             <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>
@@ -113,7 +113,7 @@
       <!-- 场次列表 -->
       <view class="card">
         <view class="card-hd">
-          <text class="card-title">🏸 场次记录</text>
+          <text class="card-title">场次记录</text>
           <text class="card-count">{{games.length}}场</text>
         </view>
         <view wx:if="{{!games.length}}" class="empty-players"><text>暂无场次</text></view>
@@ -151,7 +151,7 @@
       <!-- 积分排行榜 -->
       <view class="card" wx:if="{{leaderboard.length}}">
         <view class="card-hd">
-          <text class="card-title">🏆 积分排行</text>
+          <text class="card-title">积分排行</text>
         </view>
         <view class="lb-header">
           <text class="lb-rank">名次</text>
@@ -160,9 +160,9 @@
           <text class="lb-wdl">胜/平/负</text>
         </view>
         <view wx:for="{{leaderboard}}" wx:key="id" class="lb-row {{index<3?'lb-top':''}}">
-          <text wx:if="{{item.rank===1}}" class="lb-rank">🥇</text>
-          <text wx:elif="{{item.rank===2}}" class="lb-rank">🥈</text>
-          <text wx:elif="{{item.rank===3}}" class="lb-rank">🥉</text>
+          <text wx:if="{{item.rank===1}}" class="lb-rank" style="color:#f59e0b;font-weight:700">1</text>
+          <text wx:elif="{{item.rank===2}}" class="lb-rank" style="color:#9ca3af;font-weight:700">2</text>
+          <text wx:elif="{{item.rank===3}}" class="lb-rank" style="color:#b45309;font-weight:700">3</text>
           <text wx:else class="lb-rank">{{item.rank}}</text>
           <text class="lb-name">{{item.name}}</text>
           <text class="lb-pts lb-pts-val">{{item.points}}</text>
@@ -172,7 +172,7 @@
 
       <!-- 已结束横幅 -->
       <view wx:if="{{match.status==='finished'}}" class="finished-banner">
-        <text class="fb-emoji">🎉</text>
+        <svg-icon name="sparkles" size="80" color="#f59e0b"/>
         <text class="fb-txt">比赛已结束，感谢参与！</text>
       </view>
 
@@ -184,7 +184,7 @@
   <view wx:if="{{match}}" class="action-bar">
     <!-- 分享按钮 -->
     <view class="share-btn" bindtap="shareMatch">
-      <text>📤</text>
+      <svg-icon name="share" size="36" color="#555"/>
       <text class="share-txt">分享</text>
     </view>
 
@@ -192,13 +192,13 @@
     <block wx:if="{{isOrganizer}}">
       <view wx:if="{{match.status==='open'}}" class="org-action-row">
         <view class="reg-btn reg-half" bindtap="doRegister">
-          <text>{{registering?'处理中...':(isRegistered?'✅ 已报名':'🎤 我也报名')}}</text>
+          <text>{{registering?'处理中...':(isRegistered?'已报名':'我也报名')}}</text>
         </view>
         <view class="org-btn org-start" bindtap="openFormatSheet">
           <text>▶ 开始比赛</text>
         </view>
         <view class="org-btn org-pause" bindtap="pauseMatch">
-          <text>⏸ 暂停</text>
+          <text>暂停</text>
         </view>
       </view>
       <view wx:elif="{{match.status==='paused'}}" class="org-action-row">
@@ -206,23 +206,23 @@
           <text>▶ 恢复报名</text>
         </view>
         <view class="org-btn org-cancel" bindtap="cancelMatch">
-          <text>🗑 取消活动</text>
+          <text>取消活动</text>
         </view>
       </view>
       <view wx:elif="{{match.status==='ongoing'}}" class="org-action-row">
         <view class="org-btn org-restart" bindtap="openFormatSheet">
-          <text>🔄 重新开始</text>
+          <text>重新开始</text>
         </view>
         <view class="org-btn org-finish" bindtap="finishMatch">
-          <text>🏁 结束比赛</text>
+          <text>结束比赛</text>
         </view>
       </view>
       <view wx:else class="org-action-row">
         <view class="reg-btn reg-disabled" style="flex:1">
-          <text>{{match.status==='cancelled'?'已取消':'✅ 已完赛'}}</text>
+          <text>{{match.status==='cancelled'?'已取消':'已完赛'}}</text>
         </view>
         <view wx:if="{{match.status==='cancelled'}}" class="org-btn org-delete" bindtap="deleteMatch">
-          <text>🗑 彻底删除</text>
+          <text>彻底删除</text>
         </view>
       </view>
     </block>
@@ -232,7 +232,7 @@
       <view wx:if="{{match.status==='open'}}"
         class="reg-btn {{isRegistered?'reg-cancel':''}} {{registering?'reg-loading':''}}"
         bindtap="doRegister">
-        <text>{{registering?'处理中...':(isRegistered?'✅ 已报名（点击取消）':'🙋 立即报名')}}</text>
+        <text>{{registering?'处理中...':(isRegistered?'已报名（点击取消）':'立即报名')}}</text>
       </view>
       <view wx:else class="reg-btn reg-disabled">
         <text>{{match.status==='paused'?'报名已暂停':match.status==='ongoing'?'进行中':match.status==='cancelled'?'已取消':'已结束'}}</text>
@@ -269,7 +269,7 @@
       </view>
       <view wx:else class="players-list" style="padding:0 32rpx 20rpx">
         <view wx:for="{{match.players}}" wx:key="id" class="player-row">
-          <view class="player-avatar"><text class="pa-emoji">🙋</text></view>
+          <view class="player-avatar"><svg-icon name="user" size="40" color="#aaa"/></view>
           <view class="player-info">
             <text class="player-name">{{item.name}}</text>
             <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>

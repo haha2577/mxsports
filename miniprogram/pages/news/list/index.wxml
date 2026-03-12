@@ -12,11 +12,11 @@
   </view>
   <scroll-view class="page-body" scroll-y enable-passive>
     <view wx:if="{{loading}}" class="empty"><text>加载中...</text></view>
-    <view wx:elif="{{!list.length}}" class="empty"><text class="ei">📰</text><text>暂无资讯</text></view>
+    <view wx:elif="{{!list.length}}" class="empty"><svg-icon name="newspaper" size="80" color="#ddd"/><text>暂无资讯</text></view>
     <view wx:else class="list">
       <view wx:for="{{list}}" wx:key="id" class="news-item" bindtap="goDetail" data-id="{{item.id}}">
         <view class="ni-cover" style="background:{{item.category==='international'?'#1DB95415':item.category==='national'?'#1565c015':'#f57c0015'}}">
-          <text class="ni-icon">{{item.category==='international'?'🌍':item.category==='national'?'🏆':'📍'}}</text>
+          <svg-icon class="ni-icon" name="{{item.category==='international'?'globe':item.category==='national'?'trophy':'map-pin'}}" size="48" color="{{item.category==='international'?'#1DB954':item.category==='national'?'#1565c0':'#f57c00'}}"/>
         </view>
         <view class="ni-body">
           <text class="ni-cat" style="color:{{item.category==='international'?'#1DB954':item.category==='national'?'#1565c0':'#f57c00'}};background:{{item.category==='international'?'#1DB95415':item.category==='national'?'#1565c015':'#f57c0015'}}">{{item.categoryLabel}}</text>

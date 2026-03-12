@@ -13,7 +13,7 @@
     <!-- 场馆名称区 -->
     <view class="name-card">
       <view class="name-top">
-        <text class="venue-icon">{{venue.sport==='badminton'?'🏸':venue.sport==='tennis'?'🎾':'🏟️'}}</text>
+        <svg-icon class="venue-icon" name="building" size="48" color="#888"/>
         <view class="name-body">
           <text class="venue-name">{{venue.name}}</text>
           <view class="rating-row">
@@ -28,28 +28,28 @@
     <!-- 基本信息 -->
     <view class="info-card">
       <view class="info-row" bindtap="openMap">
-        <text class="info-icon">📍</text>
+        <svg-icon name="map-pin" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">地址</text>
           <text class="info-val link">{{venue.district}} {{venue.address}} ›</text>
         </view>
       </view>
       <view class="info-row">
-        <text class="info-icon">🕐</text>
+        <svg-icon name="clock" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">营业时间</text>
           <text class="info-val">{{venue.businessHours||'暂无信息'}}</text>
         </view>
       </view>
       <view class="info-row">
-        <text class="info-icon">💰</text>
+        <svg-icon name="banknote" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">参考价格</text>
           <text class="info-val">¥{{venue.priceFrom}}/小时起</text>
         </view>
       </view>
       <view wx:if="{{venue.phone}}" class="info-row" bindtap="callPhone">
-        <text class="info-icon">📞</text>
+        <svg-icon name="phone" size="40" color="#aaa"/>
         <view class="info-body">
           <text class="info-label">电话</text>
           <text class="info-val link">{{venue.phone}} ›</text>
@@ -74,11 +74,11 @@
     <!-- 底部操作栏 -->
     <view class="bottom-bar">
       <view class="call-btn" bindtap="callPhone">
-        <text class="call-icon">📞</text>
+        <svg-icon name="phone" size="40" color="#1565c0"/>
         <text class="call-txt">拨打电话</text>
       </view>
       <view class="map-btn" bindtap="openMap">
-        <text class="map-icon">🗺️</text>
+        <svg-icon name="map" size="40" color="#fff"/>
         <text class="map-txt">导航前往</text>
       </view>
     </view>

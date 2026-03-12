@@ -6,11 +6,11 @@
       <text class="ls-title">登录 铭心乐Go</text>
       <text class="ls-sub">登录后享受完整功能</text>
       <view class="ls-btn ls-wechat" bindtap="wxLogin">
-        <text class="ls-btn-icon">💬</text>
+        <svg-icon name="message-circle" size="40" color="#07c160"/>
         <text class="ls-btn-txt">{{loading?'登录中...':'微信快速登录'}}</text>
       </view>
       <view class="ls-btn ls-sms" bindtap="goSms">
-        <text class="ls-btn-icon">📱</text>
+        <svg-icon name="smartphone" size="40" color="#1565c0"/>
         <text class="ls-btn-txt">短信登录</text>
       </view>
       <text wx:if="{{errorMsg}}" class="ls-error">{{errorMsg}}</text>
@@ -39,7 +39,7 @@
         <button class="ls-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onProfileAvatar">
           <image wx:if="{{profileAvatar}}" class="ls-avatar-img" src="{{profileAvatar}}" mode="aspectFill"/>
           <view wx:else class="ls-avatar-empty">
-            <text class="ls-avatar-plus">📷</text>
+            <svg-icon name="camera" size="48" color="#ccc"/>
             <text class="ls-avatar-hint">点击选头像</text>
           </view>
         </button>

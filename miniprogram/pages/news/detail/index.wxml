@@ -16,15 +16,15 @@
       </view>
       <text class="article-title">{{news.title}}</text>
       <view class="article-meta">
-        <text class="meta-sport">{{news.sport==='badminton'?'🏸 羽毛球':'🎾 网球'}}</text>
-        <text wx:if="{{news.city}}" class="meta-city">📍 {{news.city}}</text>
+        <text class="meta-sport">{{news.sport==='badminton'?'羽毛球':'网球'}}</text>
+        <view wx:if="{{news.city}}" class="meta-city icon-row"><svg-icon name="map-pin" size="24" color="#aaa"/><text>{{news.city}}</text></view>
         <text class="meta-date">{{news.publishedAt}}</text>
       </view>
       <view class="article-body">
         <text class="article-content">{{news.content}}</text>
       </view>
       <view wx:if="{{news.sourceUrl}}" class="source-bar" bindtap="openSource">
-        <text class="source-label">📎 来源链接</text>
+        <view class="source-label icon-row"><svg-icon name="paperclip" size="26" color="#888"/><text>来源链接</text></view>
         <text class="source-url">{{news.sourceUrl}}</text>
       </view>
     </view>

@@ -14,8 +14,8 @@
     <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
       <view class="avatar-wrap">
         <image wx:if="{{avatar}}" class="avatar-img" src="{{avatar}}" mode="aspectFill"/>
-        <view wx:else class="avatar-placeholder"><text class="ap-emoji">🏅</text></view>
-        <view class="avatar-edit-badge"><text>📷</text></view>
+        <view wx:else class="avatar-placeholder"><svg-icon name="user-circle" size="60" color="#ccc"/></view>
+        <view class="avatar-edit-badge"><svg-icon name="camera" size="28" color="#fff"/></view>
       </view>
     </button>
   </view>
@@ -35,7 +35,7 @@
   <!-- 危险区域 -->
   <view class="danger-zone">
     <view class="danger-btn" bindtap="deleteAccount">
-      <text class="danger-icon">⚠️</text>
+      <svg-icon name="alert-triangle" size="40" color="#e53935"/>
       <text class="danger-label">注销账号</text>
       <text class="danger-sub">删除所有数据，不可恢复</text>
     </view>
