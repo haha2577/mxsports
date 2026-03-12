@@ -1,12 +1,12 @@
 <view class="page">
   <view class="page-header" style="background:{{heroGrad}}">
-    <nav-bar background="{{heroGrad}}" title="附近的约球"/>
+    <nav-bar background="{{heroGrad}}" title="附近的比赛"/>
     <view class="hd-body">
-      <text class="hd-sub">找到附近合适的活动，马上报名</text>
+      <text class="hd-sub">找到附近合适的比赛，马上报名</text>
     </view>
     <view class="search-bar">
       <svg-icon name="search" size="32" color="rgba(255,255,255,0.7)"/>
-      <input class="si-input" value="{{keyword}}" bindinput="onKeyword" placeholder="搜索地点、活动名称"/>
+      <input class="si-input" value="{{keyword}}" bindinput="onKeyword" placeholder="搜索地点、比赛名称" placeholder-style="color:rgba(255,255,255,0.5)"/>
     </view>
     <scroll-view scroll-x class="filter-scroll">
       <view class="filter-row">
@@ -16,35 +16,69 @@
       </view>
     </scroll-view>
   </view>
+
   <scroll-view class="page-body" scroll-y enable-passive>
     <view class="result-bar">
-      <text class="rt">共 {{list.length}} 个约球</text>
+      <text class="rt">共 {{list.length}} 场比赛</text>
     </view>
+
     <view wx:if="{{!list.length}}" class="empty">
       <svg-icon name="award" size="80" color="#ddd"/>
-      <text class="et">附近暂无约球活动</text>
+      <text class="et">附近暂无比赛</text>
     </view>
+
     <view wx:else class="list">
       <view wx:for="{{list}}" wx:key="id" class="match-card" bindtap="goDetail" data-id="{{item.id}}">
+
+        <!-- 顶部：运动类型 + 状态 -->
         <view class="mc-top">
           <view class="sport-tag {{item.sport==='badminton'?'tag-b':'tag-t'}}">{{item.sport==='badminton'?'羽毛球':'网球'}}</view>
-          <text class="status-dot s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
+          <text class="status-badge s-{{item.status}}">{{item.status==='open'?'报名中':item.status==='full'?'已满员':'已结束'}}</text>
         </view>
+
+        <!-- 比赛名称 -->
         <text class="mc-title">{{item.name}}</text>
-        <view class="mc-info icon-row"><svg-icon name="map-pin" size="24" color="#999"/><text>{{item.location}}</text><text class="mc-sep"> · </text><svg-icon name="ruler" size="24" color="#999"/><text>{{item.distance}}</text></view>
-        <view class="mc-info icon-row"><svg-icon name="calendar" size="24" color="#999"/><text>{{item.date}}</text><text class="mc-sep"> · </text><svg-icon name="clock" size="24" color="#999"/><text>{{item.time}}</text></view>
+
+        <!-- 地点 -->
+        <view wx:if="{{item.location}}" class="mc-info-row">
+          <svg-icon name="map-pin" size="26" color="#aaa"/>
+          <text class="mc-info-text">{{item.location}}</text>
+        </view>
+
+        <!-- 时间 -->
+        <view wx:if="{{item.startTime}}" class="mc-info-row">
+          <svg-icon name="clock" size="26" color="#aaa"/>
+          <text class="mc-info-text">{{item.startTime}}</text>
+        </view>
+
+        <!-- 标签：水平 / 人数 / 费用 -->
         <view class="mc-tags">
-          <view class="mt-tag level-tag icon-row"><svg-icon name="star" size="22" color="#f57c00"/>{{item.level}}</view>
-          <view class="mt-tag people-tag icon-row"><svg-icon name="users" size="22" color="#1565c0"/>{{item.joined}}/{{item.maxPlayers}}人</view>
-          <view class="mt-tag fee-tag icon-row"><svg-icon name="banknote" size="22" color="#7b1fa2"/>{{item.fee>0?item.fee+'元/人':'免费'}}</view>
+          <view wx:if="{{item.level}}" class="mt-tag level-tag">
+            <svg-icon name="star" size="20" color="#f57c00"/>
+            <text>{{item.level}}</text>
+          </view>
+          <view class="mt-tag people-tag">
+            <svg-icon name="users" size="20" color="#1565c0"/>
+            <text>{{item.registeredCount||0}}/{{item.maxPlayers}}人</text>
+          </view>
+          <view class="mt-tag fee-tag">
+            <svg-icon name="banknote" size="20" color="#7b1fa2"/>
+            <text>{{item.fee>0?item.fee+'元/人':'免费'}}</text>
+          </view>
         </view>
+
+        <!-- 底部：发起人 + 报名按钮 -->
         <view class="mc-footer">
-          <text class="org">{{item.organizer}} 发起</text>
-          <view class="join-btn {{item.status!=='open'?'join-dis':''}}">{{item.status==='open'?'报名参加':'已截止'}}</view>
+          <text class="org">{{item.creatorName||item.organizer||'发起'}} 发起</text>
+          <view class="join-btn {{item.status!=='open'?'join-dis':''}}">
+            {{item.status==='open'?'报名参加':'已截止'}}
+          </view>
         </view>
+
       </view>
     </view>
-    <view class="fab" bindtap="goCreate"><text class="fab-t">＋ 发起约球</text></view>
+
+    <view class="fab" bindtap="goCreate"><text class="fab-t">＋ 发起比赛</text></view>
     <view class="safe-bottom"/>
   </scroll-view>
 </view>

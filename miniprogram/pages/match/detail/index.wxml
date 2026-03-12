@@ -7,26 +7,25 @@
 
   <block wx:elif="{{match}}">
 
-    <!-- Hero -->
-    <view class="page-header hero" style="background:{{heroGrad}}">
-      <nav-bar background="{{heroGrad}}"/>
+  <!-- 固定顶部：Hero + 统计栏 -->
+  <view class="page-top" id="page-top">
+    <view class="hero" style="background:{{heroGrad}}">
+      <nav-bar title="比赛报名" background="{{heroGrad}}"/>
       <text class="hero-deco">{{sportEmoji}}</text>
       <view class="hd-body hero-inner">
+        <text class="hero-name">{{match.name}}</text>
         <view class="hero-top">
           <view class="status-badge status-{{match.status}}">{{statusMap[match.status]||match.status}}</view>
           <text wx:if="{{match.fee>0}}" class="fee-badge">¥{{match.fee}}</text>
           <text wx:else class="fee-badge fee-free">免费</text>
         </view>
-        <text class="hero-name">{{match.name}}</text>
         <view class="hero-meta">
           <view class="meta-item icon-row"><svg-icon name="map-pin" size="26" color="rgba(255,255,255,0.8)"/><text>{{match.location}}</text></view>
           <view wx:if="{{match.startTime}}" class="meta-item icon-row"><svg-icon name="clock" size="26" color="rgba(255,255,255,0.8)"/><text>{{match.startTime}}</text></view>
         </view>
       </view>
     </view>
-  <scroll-view class="page-body" scroll-y enable-passive>
-
-    <!-- 统计栏 -->
+    <!-- 统计栏：在固定区内，视觉上叠入 hero 底部 -->
     <view class="stat-bar">
       <view class="stat-item" bindtap="togglePlayerSheet">
         <text class="stat-n">{{match.registeredCount}}</text>
@@ -43,46 +42,10 @@
         <text class="stat-l">剩余名额</text>
       </view>
     </view>
+  </view>
 
-    <!-- 活动信息（进行中/已结束时隐藏） -->
-    <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card">
-      <text class="card-title">活动信息</text>
-      <view class="info-row">
-        <svg-icon name="map-pin" size="40" color="#aaa"/>
-        <view class="info-body">
-          <text class="info-label">地点</text>
-          <text class="info-val">{{match.location||'未填写'}}</text>
-        </view>
-      </view>
-      <view wx:if="{{match.startTime}}" class="info-row">
-        <svg-icon name="calendar" size="40" color="#aaa"/>
-        <view class="info-body">
-          <text class="info-label">时间</text>
-          <text class="info-val">{{match.startTime}}</text>
-        </view>
-      </view>
-      <view class="info-row">
-        <svg-icon name="users" size="40" color="#aaa"/>
-        <view class="info-body">
-          <text class="info-label">人数</text>
-          <text class="info-val">{{match.registeredCount}} / {{match.maxPlayers}} 人</text>
-        </view>
-      </view>
-      <view wx:if="{{match.levels&&match.levels.length}}" class="info-row">
-        <svg-icon name="star" size="40" color="#aaa"/>
-        <view class="info-body">
-          <text class="info-label">水平要求</text>
-          <text class="info-val">{{match.levels.join('、')}}</text>
-        </view>
-      </view>
-      <view wx:if="{{match.description}}" class="info-row">
-        <svg-icon name="file-text" size="40" color="#aaa"/>
-        <view class="info-body">
-          <text class="info-label">活动说明</text>
-          <text class="info-val desc">{{match.description}}</text>
-        </view>
-      </view>
-    </view>
+  <!-- 可滚动内容区，top 由 JS 测量 page-top 真实高度决定 -->
+  <scroll-view class="page-body" scroll-y enable-passive style="top:{{topHeight}}px">
 
     <!-- 报名列表（进行中/已结束时隐藏） -->
     <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card">
@@ -95,7 +58,10 @@
       </view>
       <view wx:else class="players-list">
         <view wx:for="{{match.players}}" wx:key="id" class="player-row">
-          <view class="player-avatar"><svg-icon name="user" size="40" color="#aaa"/></view>
+          <view class="player-avatar">
+            <image wx:if="{{item.avatar}}" src="{{item.avatar}}" class="av-img" mode="aspectFill"/>
+            <svg-icon wx:else name="user" size="40" color="#aaa"/>
+          </view>
           <view class="player-info">
             <text class="player-name">{{item.name}}</text>
             <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>
@@ -178,7 +144,8 @@
 
     </block>
 
-  <!-- action-bar and modals are inside page-body (fixed/absolute positioned) -->
+    <view class="safe-bottom-action"/>
+  </scroll-view>
 
   <!-- 底部操作栏 -->
   <view wx:if="{{match}}" class="action-bar">
@@ -206,7 +173,7 @@
           <text>▶ 恢复报名</text>
         </view>
         <view class="org-btn org-cancel" bindtap="cancelMatch">
-          <text>取消活动</text>
+          <text>取消比赛</text>
         </view>
       </view>
       <view wx:elif="{{match.status==='ongoing'}}" class="org-action-row">
@@ -238,7 +205,7 @@
         <text>{{match.status==='paused'?'报名已暂停':match.status==='ongoing'?'进行中':match.status==='cancelled'?'已取消':'已结束'}}</text>
       </view>
     </block>
-  </view><!-- /action-bar -->
+  </view>
 
   <!-- 记分弹窗 -->
   <view wx:if="{{showScoreModal}}" class="sheet-mask" bindtap="closeScoreModal">
@@ -269,7 +236,10 @@
       </view>
       <view wx:else class="players-list" style="padding:0 32rpx 20rpx">
         <view wx:for="{{match.players}}" wx:key="id" class="player-row">
-          <view class="player-avatar"><svg-icon name="user" size="40" color="#aaa"/></view>
+          <view class="player-avatar">
+            <image wx:if="{{item.avatar}}" src="{{item.avatar}}" class="av-img" mode="aspectFill"/>
+            <svg-icon wx:else name="user" size="40" color="#aaa"/>
+          </view>
           <view class="player-info">
             <text class="player-name">{{item.name}}</text>
             <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>
@@ -297,9 +267,6 @@
       </view>
     </view>
   </view>
-
-    <view class="safe-bottom-action"/>
-  </scroll-view>
 
   </block><!-- /wx:elif match -->
 

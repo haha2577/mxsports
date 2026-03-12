@@ -2,8 +2,10 @@ const { applySport, switchSport, getSportData } = require('../../utils/sport-con
 const { api } = require('../../utils/api')
 const { fmtTime } = require('../../utils/time')
 Page({
-  data:{token:'',canSwitch:false,...getSportData('badminton'),nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false},
+  data:{token:'',canSwitch:false,...getSportData('badminton'),nickname:'',matches:[],ongoingMatches:[],showLogin:false,showSportPref:false,showVenueEntry:false},
   onLoad(){
+    const {showVenueEntry=false}=getApp().globalData
+    this.setData({showVenueEntry})
     this._refresh()
   },
   onShow(){

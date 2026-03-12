@@ -15,6 +15,12 @@ App({
       wx.setStorageSync('canSwitch', userInfo.sportPref === 'both')
     }
     this.globalData.lang = 'zh'
+    try {
+      const env = require('./utils/env.js')
+      this.globalData.showVideoEntry  = !!env.SHOW_VIDEO_ENTRY
+      this.globalData.showRacketEntry = !!env.SHOW_RACKET_ENTRY
+      this.globalData.showVenueEntry  = !!env.SHOW_VENUE_ENTRY
+    } catch(e) {}
   },
-  globalData: { token: '', userInfo: null, lang: 'zh' }
+  globalData: { token: '', userInfo: null, lang: 'zh', showVideoEntry: false, showRacketEntry: false, showVenueEntry: false }
 })

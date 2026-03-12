@@ -1,5 +1,5 @@
 const { getSportData, getSportConfig } = require('../../../utils/sport-config')
-const { api } = require('../../../utils/api')
+const { api, resolveUrl } = require('../../../utils/api')
 const { fmtTime } = require('../../../utils/time')
 Page({
   data: {
@@ -28,7 +28,9 @@ Page({
     editScore1: '',
     editScore2: '',
     showPlayerSheet: false,
-    showLogin: false},
+    showLogin: false,
+    topHeight: 0,
+  },
 
   onLoad(opts) {
     this.setData({ id: opts.id })
@@ -37,6 +39,17 @@ Page({
 
   onShow() {
     if (this.data.id && !this.data.loading) this._load()
+  },
+
+  onReady() {
+    this._measureTop()
+  },
+
+  _measureTop() {
+    const query = wx.createSelectorQuery().in(this)
+    query.select('#page-top').boundingClientRect(rect => {
+      if (rect) this.setData({ topHeight: rect.height })
+    }).exec()
   },
 
   navigateBack() { wx.navigateBack() },
@@ -62,10 +75,16 @@ Page({
       const userInfo = wx.getStorageSync('userInfo') || {}
       const myId = userInfo.id || null
       const isOrganizer = myId && match.organizerId === myId
+      // 补全头像完整 URL
+      if (match.players) {
+        match.players = match.players.map(p => ({ ...p, avatar: resolveUrl(p.avatar) }))
+      }
       // 检查是否已报名
       const isRegistered = token && match.players && match.players.some(p => p.id === myId)
       const fmtMatch = { ...match, startTime: fmtTime(match.startTime) }
       this.setData({ match: fmtMatch, loading: false, myUserId: myId, isOrganizer, isRegistered, ...getSportData(match.sport) })
+      // 数据渲染后重新测量顶部高度
+      wx.nextTick(() => this._measureTop())
       this._loadGames()
     } catch(e) {
       this.setData({ loading: false })
@@ -242,11 +261,11 @@ Page({
 
   async cancelMatch() {
     const { id } = this.data
-    const res = await wx.showModal({ title: '取消活动', content: '确定取消？取消后可以彻底删除。' })
+    const res = await wx.showModal({ title: '取消比赛', content: '确定取消？取消后可以彻底删除。' })
     if (!res.confirm) return
     try {
       await api.matchAction(id, 'cancel')
-      wx.showToast({ title: '活动已取消', icon: 'success' })
+      wx.showToast({ title: '比赛已取消', icon: 'success' })
       this._load()
     } catch(e) {
       wx.showToast({ title: (e && e.data && e.data.message) || '操作失败', icon: 'none' })
@@ -274,7 +293,7 @@ Page({
   onShareAppMessage() {
     const { match, id } = this.data
     return {
-      title: match ? match.name : '快来参加我的活动！',
+      title: match ? match.name : '快来参加我的比赛！',
       path: `/pages/match/detail/index?id=${id}`}
   },
 

@@ -17,9 +17,9 @@
     <view class="action-row">
       <view class="action-card" bindtap="goCreate">
         <view class="ac-icon" style="background:{{sportCardBg}}"><svg-icon name="trophy" size="48" color="{{sportPrimary}}"/></view>
-        <text class="ac-title">创建活动</text>
+        <text class="ac-title">创建比赛</text>
       </view>
-      <view class="action-card" bindtap="goVenue">
+      <view wx:if="{{showVenueEntry}}" class="action-card" bindtap="goVenue">
         <view class="ac-icon" style="background:#e8f0fd"><svg-icon name="building" size="48" color="#5b85d0"/></view>
         <text class="ac-title">附近场馆</text>
       </view>
@@ -33,7 +33,7 @@
     <view wx:if="{{ongoingMatches.length}}" class="section">
       <view class="sec-hd">
         <view class="sec-hd-l"><view class="dot dot-live"/><text class="sec-title">进行中的比赛</text></view>
-        <text class="sec-more" bindtap="goActivities">我的活动 ›</text>
+        <text class="sec-more" bindtap="goActivities">我的比赛 ›</text>
       </view>
       <view wx:for="{{ongoingMatches}}" wx:key="id" class="ongoing-card" bindtap="goMatchDetail" data-id="{{item.id}}">
         <view class="oc-left">
@@ -52,13 +52,13 @@
       </view>
     </view>
 
-    <!-- 附近约球 -->
+    <!-- 附近比赛 -->
     <view class="section">
       <view class="sec-hd">
-        <view class="sec-hd-l"><view class="dot" style="background:{{sportPrimary}}"/><text class="sec-title">附近的约球</text></view>
+        <view class="sec-hd-l"><view class="dot" style="background:{{sportPrimary}}"/><text class="sec-title">附近的比赛</text></view>
         <text class="sec-more" style="color:{{sportPrimary}}" bindtap="goMatchList">全部 ›</text>
       </view>
-      <view wx:if="{{matches.length===0}}" class="empty">暂无约球活动</view>
+      <view wx:if="{{matches.length===0}}" class="empty">附近暂无比赛</view>
       <view wx:for="{{matches}}" wx:key="id" class="match-item" bindtap="goMatchDetail" data-id="{{item.id}}">
         <view class="mi-icon" style="background:{{sportListIconBg}}">
           <svg-icon name="award" size="32" color="{{sportPrimary}}"/>

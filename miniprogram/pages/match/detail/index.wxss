@@ -1,35 +1,41 @@
-.page{background:#f0f2f5;padding-bottom:160rpx;min-height:100vh}
+.page{background:#f0f2f5;height:100vh;overflow:hidden}
+
+/* 固定顶部区（Hero + 统计栏） */
+.page-top{position:fixed;top:0;left:0;right:0;z-index:10}
+
+/* 可滚动内容区 */
+.page-body{position:fixed;left:0;right:0;bottom:0;overflow:hidden;padding-bottom:160rpx}
 
 /* 加载 */
 .loading{display:flex;align-items:center;justify-content:center;height:400rpx}
 
 /* hero */
-.hero{padding:0;position:relative;overflow:hidden}
+.hero{padding:0 0 48rpx;position:relative;overflow:hidden}
 .hero-deco{position:absolute;font-size:240rpx;opacity:.07;right:-20rpx;top:0;line-height:1;pointer-events:none;z-index:1}
-.hero-inner{position:relative;z-index:2}
-.hero-top{display:flex;align-items:center;gap:12rpx;margin-bottom:20rpx}
-.status-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;font-weight:600}
-.status-open{background:#e8f7ee;color:#1DB954}
-.status-ongoing{background:#fff3e0;color:#f57c00}
-.status-done,.status-finished{background:#f5f5f5;color:#999}
-.status-draft{background:#e8eaf6;color:#5c6bc0}
-.status-paused{background:#fff3e0;color:#f57c00}
-.status-cancelled{background:#fce4ec;color:#e53935}
-.fee-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;background:rgba(255,255,255,.15);color:#fff;font-weight:600}
-.fee-free{background:rgba(29,185,84,.2);color:#1DB954}
-.hero-name{display:block;font-size:36rpx;font-weight:bold;color:#fff;line-height:1.4;margin-bottom:16rpx}
+.hero-inner{position:relative;z-index:2;padding:0 32rpx 0}
+.hero-top{display:flex;align-items:center;gap:12rpx;margin-bottom:16rpx}
+.status-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;font-weight:600;background:rgba(255,255,255,.22);color:#fff}
+.status-open{background:rgba(29,185,84,.25);color:#ccffdd}
+.status-ongoing{background:rgba(245,124,0,.3);color:#ffe0b2}
+.status-done,.status-finished{background:rgba(255,255,255,.15);color:rgba(255,255,255,.7)}
+.status-draft{background:rgba(92,107,192,.3);color:#c5cae9}
+.status-paused{background:rgba(245,124,0,.3);color:#ffe0b2}
+.status-cancelled{background:rgba(229,57,53,.3);color:#ffcdd2}
+.fee-badge{font-size:22rpx;padding:6rpx 20rpx;border-radius:50rpx;background:rgba(255,255,255,.9);color:#f57c00;font-weight:600}
+.fee-free{background:rgba(255,255,255,.9);color:#1DB954}
+.hero-name{display:block;font-size:40rpx;font-weight:bold;color:#fff;line-height:1.3;margin-bottom:20rpx}
 .hero-meta{display:flex;flex-direction:column;gap:8rpx}
 .meta-item{font-size:26rpx;color:rgba(255,255,255,.7)}
 
-/* 统计栏 */
-.stat-bar{margin:0 24rpx;background:#fff;border-radius:24rpx;display:flex;padding:28rpx 0;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06);transform:translateY(-20rpx)}
+/* 统计栏：用负 margin 叠入 hero 底部，形成浮动卡片效果 */
+.stat-bar{margin:-32rpx 24rpx 0;background:#fff;border-radius:24rpx;display:flex;padding:28rpx 0;box-shadow:0 4rpx 20rpx rgba(0,0,0,.10);position:relative;z-index:2}
 .stat-item{flex:1;text-align:center}
 .stat-n{display:block;font-size:40rpx;font-weight:bold;color:#1a1a1a;margin-bottom:4rpx}
 .stat-l{font-size:22rpx;color:#888}
 .stat-sep{width:1rpx;background:#f0f0f0}
 
 /* 卡片 */
-.card{margin:0 24rpx 24rpx;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05)}
+.card{margin:24rpx 24rpx 0;background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 2rpx 12rpx rgba(0,0,0,.05)}
 .card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20rpx}
 .card-title{font-size:30rpx;font-weight:bold;color:#1a1a1a;margin-bottom:20rpx;display:block}
 .card-hd .card-title{margin-bottom:0}
@@ -49,7 +55,8 @@
 .players-list{display:flex;flex-direction:column;gap:0}
 .player-row{display:flex;align-items:center;gap:16rpx;padding:16rpx 0;border-bottom:1rpx solid #f5f5f5}
 .player-row:last-child{border-bottom:none}
-.player-avatar{width:72rpx;height:72rpx;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.player-avatar{width:72rpx;height:72rpx;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.player-avatar .av-img{width:72rpx;height:72rpx;border-radius:50%}
 .pa-emoji{font-size:36rpx}
 .player-info{flex:1}
 .player-name{display:block;font-size:28rpx;color:#1a1a1a}

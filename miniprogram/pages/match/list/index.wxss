@@ -1,30 +1,161 @@
-.page{background:#f0f2f5}
-.page-header{padding:0}
-.search-bar{background:rgba(255,255,255,.12);border-radius:20rpx;display:flex;align-items:center;padding:0 20rpx;margin:16rpx 32rpx 0;border:1rpx solid rgba(255,255,255,.15)}
-.si{font-size:30rpx;margin-right:12rpx}
-.si-input{flex:1;height:72rpx;font-size:28rpx;color:#fff}
-.filter-scroll{padding:12rpx 32rpx 0}
-.filter-row{display:flex;gap:12rpx;white-space:nowrap}
-.chip{display:inline-flex;align-items:center;gap:6rpx;padding:12rpx 22rpx;background:rgba(255,255,255,.12);border:1rpx solid rgba(255,255,255,.2);border-radius:50rpx;font-size:24rpx;color:rgba(255,255,255,.8);flex-shrink:0}
-.chip-a{background:rgba(255,255,255,.9);color:#1a1a2e;font-weight:bold}
-.chip-reset{background:rgba(220,53,69,.2);color:#ff8080}
-.result-bar{padding:16rpx 32rpx}
-.rt{font-size:24rpx;color:#999}
-.list{padding:0 24rpx;display:flex;flex-direction:column;gap:16rpx}
-.match-card{background:#fff;border-radius:24rpx;padding:28rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.06)}
-.mc-top{display:flex;justify-content:space-between;margin-bottom:14rpx}
-.sport-tag{font-size:22rpx;padding:6rpx 18rpx;border-radius:50rpx;font-weight:500}
-.tag-b{background:#e8f7ee;color:#1DB954}.tag-t{background:#fdf0e8;color:#d4541f}
-.status-dot{font-size:22rpx;padding:6rpx 18rpx;border-radius:50rpx}
-.s-open{background:#e8f7ee;color:#1DB954}.s-full{background:#f0f0f0;color:#999}
-.mc-title{display:block;font-size:34rpx;font-weight:bold;color:#1a1a1a;margin-bottom:12rpx}
-.mc-info{display:block;font-size:24rpx;color:#666;margin-bottom:8rpx}
-.mc-tags{display:flex;gap:10rpx;flex-wrap:wrap;margin:16rpx 0}
-.mt-tag{font-size:22rpx;padding:6rpx 18rpx;border-radius:50rpx}
-.level-tag{background:#fff8e1;color:#f57c00}.people-tag{background:#e8f4fd;color:#1565c0}.fee-tag{background:#f3e5f5;color:#7b1fa2}
-.mc-footer{display:flex;justify-content:space-between;align-items:center;border-top:1rpx solid #f5f5f5;padding-top:20rpx;margin-top:4rpx}
-.org{font-size:24rpx;color:#888}
-.join-btn{background:#1a1a2e;color:#fff;font-size:26rpx;padding:14rpx 32rpx;border-radius:50rpx}
-.join-dis{background:#e0e0e0;color:#999}
-.fab{position:fixed;bottom:48rpx;right:32rpx;background:#1a1a2e;border-radius:50rpx;padding:22rpx 36rpx;box-shadow:0 8rpx 28rpx rgba(26,26,46,.35)}
-.fab-t{font-size:28rpx;color:#fff;font-weight:500}
+/* ── 页面容器 ── */
+.page { background: #f0f2f5; min-height: 100vh; }
+
+/* ── 顶部 Hero 区 ── */
+.page-header { padding: 0; }
+.hd-body { padding: 4rpx 32rpx 20rpx; }
+.hd-sub { font-size: 26rpx; color: rgba(255,255,255,0.85); }
+
+/* ── 搜索框 ── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: rgba(255,255,255,.15);
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+  margin: 0 32rpx 16rpx;
+  border: 1rpx solid rgba(255,255,255,.2);
+  height: 80rpx;
+}
+.si-input { flex: 1; font-size: 28rpx; color: #fff; }
+
+/* ── 筛选栏 ── */
+.filter-scroll { padding: 0 32rpx 24rpx; }
+.filter-row { display: flex; gap: 12rpx; white-space: nowrap; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 10rpx 24rpx;
+  background: rgba(255,255,255,.15);
+  border: 1rpx solid rgba(255,255,255,.25);
+  border-radius: 50rpx;
+  font-size: 24rpx;
+  color: rgba(255,255,255,.9);
+  flex-shrink: 0;
+}
+.chip-a { background: rgba(255,255,255,.92); color: #1a1a2e; font-weight: 600; }
+.chip-reset { background: rgba(220,53,69,.25); border-color: rgba(220,53,69,.3); color: #ff8080; }
+
+/* ── 结果统计 ── */
+.result-bar { padding: 20rpx 32rpx 12rpx; }
+.rt { font-size: 24rpx; color: #999; }
+
+/* ── 空状态 ── */
+.empty { display: flex; flex-direction: column; align-items: center; padding: 100rpx 0; gap: 20rpx; }
+.et { font-size: 28rpx; color: #bbb; }
+
+/* ── 卡片列表 ── */
+.list { padding: 0 24rpx 160rpx; display: flex; flex-direction: column; gap: 20rpx; }
+
+/* ── 比赛卡片 ── */
+.match-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx 28rpx 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,.06);
+}
+
+/* 顶部行：运动标签 + 状态 */
+.mc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+.sport-tag {
+  font-size: 22rpx;
+  padding: 5rpx 18rpx;
+  border-radius: 50rpx;
+  font-weight: 500;
+}
+.tag-b { background: #e8f7ee; color: #1DB954; }
+.tag-t { background: #fdf0e8; color: #d4541f; }
+.status-badge {
+  font-size: 22rpx;
+  padding: 5rpx 18rpx;
+  border-radius: 50rpx;
+  font-weight: 500;
+}
+.s-open { background: #e8f7ee; color: #1DB954; }
+.s-full { background: #f5f5f5; color: #999; }
+.s-finished { background: #f5f5f5; color: #bbb; }
+
+/* 标题 */
+.mc-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16rpx;
+  line-height: 1.3;
+}
+
+/* 信息行（地点、时间） */
+.mc-info-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 10rpx;
+}
+.mc-info-text {
+  font-size: 24rpx;
+  color: #888;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 标签组 */
+.mc-tags {
+  display: flex;
+  gap: 10rpx;
+  flex-wrap: wrap;
+  margin: 16rpx 0 20rpx;
+}
+.mt-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 50rpx;
+}
+.level-tag  { background: #fff8e1; color: #f57c00; }
+.people-tag { background: #e8f4fd; color: #1565c0; }
+.fee-tag    { background: #f3e5f5; color: #7b1fa2; }
+
+/* 底部：发起人 + 报名按钮 */
+.mc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1rpx solid #f0f0f0;
+  padding-top: 20rpx;
+}
+.org { font-size: 24rpx; color: #aaa; }
+.join-btn {
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 26rpx;
+  font-weight: 500;
+  padding: 14rpx 36rpx;
+  border-radius: 50rpx;
+}
+.join-dis { background: #e8e8e8; color: #bbb; }
+
+/* ── FAB 按钮 ── */
+.fab {
+  position: fixed;
+  bottom: 48rpx;
+  right: 32rpx;
+  background: #1a1a2e;
+  border-radius: 50rpx;
+  padding: 22rpx 40rpx;
+  box-shadow: 0 8rpx 28rpx rgba(26,26,46,.35);
+}
+.fab-t { font-size: 28rpx; color: #fff; font-weight: 500; }
+
+.safe-bottom { height: 40rpx; }
