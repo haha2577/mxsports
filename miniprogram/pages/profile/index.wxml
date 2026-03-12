@@ -14,44 +14,43 @@
       </view>
       <sport-switcher wx:if="{{token}}" can-switch="{{canSwitch}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
     </view>
-    <view wx:if="{{token}}" class="stat-row">
+    <view class="stat-row" bindtap="onStatsTap">
       <view class="stat-col"><text class="stat-n">{{stats.matches}}</text><text class="stat-l">参赛场次</text></view>
       <view class="stat-sep"/><view class="stat-col"><text class="stat-n">{{stats.wins}}</text><text class="stat-l">胜场</text></view>
       <view class="stat-sep"/><view class="stat-col"><text class="stat-n">{{stats.rate}}</text><text class="stat-l">胜率</text></view>
       <view class="stat-sep"/><view class="stat-col"><text class="stat-n">{{stats.points}}</text><text class="stat-l">积分</text></view>
     </view>
-    <view wx:else class="login-hint" bindtap="showLoginSheet"><text class="lh-txt">登录后查看你的赛事数据 ›</text></view>
   </view>
 
   <scroll-view class="page-body" scroll-y enable-passive>
   <view class="section-card">
-    <view wx:if="{{token}}" class="menu-item" bindtap="goActivities">
+    <view class="menu-item" bindtap="goActivities">
       <view class="mi-l"><text class="mi-icon">🏅</text><text class="mi-label">我的活动</text></view>
       <text class="mi-arrow">›</text>
     </view>
-    <view wx:if="{{token}}" class="menu-item" bindtap="goFriends">
+    <view class="menu-item" bindtap="goFriends">
       <view class="mi-l"><text class="mi-icon">🤝</text><text class="mi-label">我的球友</text></view>
       <text class="mi-arrow">›</text>
     </view>
-    <view wx:if="{{token}}" class="menu-item" bindtap="goVideo">
+    <view class="menu-item" bindtap="goVideo">
       <view class="mi-l"><text class="mi-icon">🎬</text><text class="mi-label">我的视频</text></view>
       <view style="display:flex;align-items:center;gap:8rpx">
         <text style="font-size:22rpx;color:#1DB954;background:#e8f7ee;padding:4rpx 14rpx;border-radius:50rpx">智能剪辑·AI评价</text>
         <text class="mi-arrow">›</text>
       </view>
     </view>
-    <view wx:if="{{token}}" class="menu-item" bindtap="goRacket">
+    <view class="menu-item" bindtap="goRacket">
       <view class="mi-l"><text class="mi-icon">{{sportEmoji}}</text><text class="mi-label">智能球拍推荐</text></view>
       <view style="display:flex;align-items:center;gap:8rpx">
         <text style="font-size:22rpx;color:#f57c00;background:#fff3e0;padding:4rpx 14rpx;border-radius:50rpx">AI精准匹配</text>
         <text class="mi-arrow">›</text>
       </view>
     </view>
-    <view wx:if="{{token}}" class="menu-item" bindtap="goAccount">
+    <view class="menu-item" bindtap="goAccount">
       <view class="mi-l"><text class="mi-icon">👤</text><text class="mi-label">账号设置</text></view>
       <text class="mi-arrow">›</text>
     </view>
-    <view wx:if="{{token}}" class="menu-item" bindtap="showPrefSheet">
+    <view class="menu-item" bindtap="showPrefSheet">
       <view class="mi-l"><text class="mi-icon">⚙️</text><text class="mi-label">爱好设置</text></view>
       <view style="display:flex;align-items:center;gap:8rpx">
         <text class="mi-val">{{prefLabel}}</text>
@@ -61,10 +60,11 @@
   </view>
 
   <view wx:if="{{token}}" class="logout-btn" bindtap="logout">退出登录</view>
+  <view wx:else class="logout-btn" bindtap="showLoginSheet">登录</view>
   <text class="version-txt">v{{version}}</text>
     <view class="safe-bottom-tabbar"/>
   </scroll-view>
 
   <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>
-  <sport-pref-sheet visible="{{showSportPref}}" bindconfirm="onSportPrefConfirm"/>
+  <sport-pref-sheet visible="{{showSportPref}}" bindconfirm="onSportPrefConfirm" bindclose="hidePrefSheet"/>
 </view>

@@ -68,7 +68,8 @@ Page({
 
   showLoginSheet(){this.setData({showLogin:true})},
   hideLogin(){this.setData({showLogin:false})},
-  showPrefSheet(){this.setData({showSportPref:true})},
+  showPrefSheet(){this._requireLogin(()=>this.setData({showSportPref:true}))},
+  hidePrefSheet(){this.setData({showSportPref:false})},
 
   onLoginSuccess(e){
     const user=e.detail||{}
@@ -85,11 +86,16 @@ Page({
     else this._fetchProfile()
   },
 
-  goRacket(){wx.navigateTo({url:'/pages/racket/recommend/index'})},
-  goAccount(){wx.navigateTo({url:'/pages/my/account/index'})},
-  goActivities(){wx.navigateTo({url:'/pages/my/activities/index'})},
-  goFriends(){wx.navigateTo({url:'/pages/my/friends/index'})},
-  goVideo(){wx.navigateTo({url:'/pages/video/index/index'})},
+  onStatsTap(){this._requireLogin(()=>{})},
+  _requireLogin(fn){
+    if(!this.data.token){this.setData({showLogin:true});return}
+    fn()
+  },
+  goRacket(){this._requireLogin(()=>wx.navigateTo({url:'/pages/racket/recommend/index'}))},
+  goAccount(){this._requireLogin(()=>wx.navigateTo({url:'/pages/my/account/index'}))},
+  goActivities(){this._requireLogin(()=>wx.navigateTo({url:'/pages/my/activities/index'}))},
+  goFriends(){this._requireLogin(()=>wx.navigateTo({url:'/pages/my/friends/index'}))},
+  goVideo(){this._requireLogin(()=>wx.navigateTo({url:'/pages/video/index/index'}))},
 
   logout(){
     wx.showModal({title:'退出登录',content:'确定要退出吗？',success:res=>{
