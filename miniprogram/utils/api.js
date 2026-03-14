@@ -71,6 +71,47 @@ const api = {
  */
 function aiChat(messages, onChunk, onDone, onError) {
   let buffer = ''
+  let finished = false
+
+  function finish() {
+    if (finished) return
+    finished = true
+    if (onDone) onDone()
+  }
+
+  function fail(msg) {
+    if (finished) return
+    finished = true
+    if (onError) onError(msg)
+  }
+
+  // UTF-8 ArrayBuffer → String 解码器
+  function decodeUTF8(ab) {
+    if (typeof TextDecoder !== 'undefined') {
+      return new TextDecoder('utf-8').decode(ab)
+    }
+    // 手动解码 UTF-8
+    var bytes = new Uint8Array(ab)
+    var out = ''
+    var i = 0
+    while (i < bytes.length) {
+      var b = bytes[i]
+      if (b < 0x80) {
+        out += String.fromCharCode(b); i++
+      } else if (b < 0xe0) {
+        out += String.fromCharCode(((b & 0x1f) << 6) | (bytes[i+1] & 0x3f)); i += 2
+      } else if (b < 0xf0) {
+        out += String.fromCharCode(((b & 0x0f) << 12) | ((bytes[i+1] & 0x3f) << 6) | (bytes[i+2] & 0x3f)); i += 3
+      } else {
+        var cp = ((b & 0x07) << 18) | ((bytes[i+1] & 0x3f) << 12) | ((bytes[i+2] & 0x3f) << 6) | (bytes[i+3] & 0x3f)
+        // surrogate pair
+        cp -= 0x10000
+        out += String.fromCharCode(0xd800 + (cp >> 10), 0xdc00 + (cp & 0x3ff)); i += 4
+      }
+    }
+    return out
+  }
+
   const task = wx.request({
     url: BASE_URL + '/ai/chat',
     method: 'POST',
@@ -78,35 +119,32 @@ function aiChat(messages, onChunk, onDone, onError) {
     header: { 'Content-Type': 'application/json' },
     enableChunkedTransfer: true,
     responseType: 'text',
-    success: () => { if (onDone) onDone() },
-    fail: (err) => { if (onError) onError(err.errMsg || '网络错误') },
+    success: function() { finish() },
+    fail: function(err) { fail(err.errMsg || '网络错误') },
   })
 
-  task.onChunkReceived && task.onChunkReceived(function(res) {
-    try {
-      const text = typeof res.data === 'string'
-        ? res.data
-        : String.fromCharCode.apply(null, new Uint8Array(res.data))
-      buffer += text
-      // Parse SSE lines
-      const lines = buffer.split('\n')
-      buffer = lines.pop() || ''
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue
-        const jsonStr = line.slice(6).trim()
-        if (!jsonStr) continue
-        try {
-          const obj = JSON.parse(jsonStr)
-          if (obj.error) {
-            if (onError) onError(obj.error)
-            return
-          }
-          if (obj.content && onChunk) onChunk(obj.content)
-          if (obj.done && onDone) onDone()
-        } catch (e) {}
-      }
-    } catch (e) {}
-  })
+  if (task.onChunkReceived) {
+    task.onChunkReceived(function(res) {
+      try {
+        var text = typeof res.data === 'string' ? res.data : decodeUTF8(res.data)
+        buffer += text
+        var lines = buffer.split('\n')
+        buffer = lines.pop() || ''
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i]
+          if (line.indexOf('data: ') !== 0) continue
+          var jsonStr = line.slice(6).trim()
+          if (!jsonStr) continue
+          try {
+            var obj = JSON.parse(jsonStr)
+            if (obj.error) { fail(obj.error); return }
+            if (obj.content && onChunk) onChunk(obj.content)
+            if (obj.done) finish()
+          } catch (e) {}
+        }
+      } catch (e) {}
+    })
+  }
 
   return task
 }
