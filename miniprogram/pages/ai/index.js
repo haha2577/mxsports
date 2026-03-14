@@ -64,23 +64,28 @@ Page({
     const aiMsgIndex = messages.length - 1
     let accumulated = ''
 
+    console.log('[AI页面] 发送消息, aiMsgIndex:', aiMsgIndex, 'apiMessages:', apiMessages.length)
+
     this._task = aiChat(
       apiMessages,
       // onChunk
       (chunk) => {
         accumulated += chunk
+        console.log('[AI页面] onChunk, 累计长度:', accumulated.length, '片段:', chunk.slice(0, 50))
         const key = `messages[${aiMsgIndex}].content`
         const loadKey = `messages[${aiMsgIndex}].loading`
         this.setData({ [key]: accumulated, [loadKey]: false, scrollId: aiMsg.id })
       },
       // onDone
       () => {
+        console.log('[AI页面] onDone, 总内容长度:', accumulated.length)
         const loadKey = `messages[${aiMsgIndex}].loading`
         this.setData({ [loadKey]: false, sending: false })
         this._task = null
       },
       // onError
       (err) => {
+        console.log('[AI页面] onError:', err)
         const key = `messages[${aiMsgIndex}].content`
         const loadKey = `messages[${aiMsgIndex}].loading`
         this.setData({

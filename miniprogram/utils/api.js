@@ -112,6 +112,8 @@ function aiChat(messages, onChunk, onDone, onError) {
     return out
   }
 
+  console.log('[AI] 发起请求, messages:', messages.length, 'url:', BASE_URL + '/ai/chat')
+
   const task = wx.request({
     url: BASE_URL + '/ai/chat',
     method: 'POST',
@@ -119,14 +121,42 @@ function aiChat(messages, onChunk, onDone, onError) {
     header: { 'Content-Type': 'application/json' },
     enableChunkedTransfer: true,
     responseType: 'text',
-    success: function() { finish() },
-    fail: function(err) { fail(err.errMsg || '网络错误') },
+    success: function(res) {
+      console.log('[AI] request success, statusCode:', res.statusCode, 'dataType:', typeof res.data, 'dataLen:', res.data ? res.data.length : 0)
+      console.log('[AI] response data (前200字):', typeof res.data === 'string' ? res.data.slice(0, 200) : '(非string)')
+      // 如果 onChunkReceived 没触发过，尝试从 success 里解析完整响应
+      if (!chunkReceived && res.data) {
+        console.log('[AI] onChunkReceived 未触发，从 success 回调解析')
+        var fullText = typeof res.data === 'string' ? res.data : ''
+        var sseLines = fullText.split('\n')
+        for (var j = 0; j < sseLines.length; j++) {
+          var sl = sseLines[j]
+          if (sl.indexOf('data: ') !== 0) continue
+          var js = sl.slice(6).trim()
+          if (!js) continue
+          try {
+            var o = JSON.parse(js)
+            if (o.content && onChunk) onChunk(o.content)
+          } catch(e) {}
+        }
+      }
+      finish()
+    },
+    fail: function(err) {
+      console.log('[AI] request fail:', JSON.stringify(err))
+      fail(err.errMsg || '网络错误')
+    },
   })
+
+  var chunkReceived = false
+  console.log('[AI] task.onChunkReceived 可用:', !!task.onChunkReceived)
 
   if (task.onChunkReceived) {
     task.onChunkReceived(function(res) {
+      chunkReceived = true
       try {
         var text = typeof res.data === 'string' ? res.data : decodeUTF8(res.data)
+        console.log('[AI] chunk 收到, 类型:', typeof res.data, '长度:', text.length, '内容(前100):', text.slice(0, 100))
         buffer += text
         var lines = buffer.split('\n')
         buffer = lines.pop() || ''
@@ -137,12 +167,17 @@ function aiChat(messages, onChunk, onDone, onError) {
           if (!jsonStr) continue
           try {
             var obj = JSON.parse(jsonStr)
+            console.log('[AI] 解析SSE:', JSON.stringify(obj).slice(0, 100))
             if (obj.error) { fail(obj.error); return }
             if (obj.content && onChunk) onChunk(obj.content)
             if (obj.done) finish()
-          } catch (e) {}
+          } catch (e) {
+            console.log('[AI] JSON解析失败:', jsonStr.slice(0, 100), e.message)
+          }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.log('[AI] chunk处理异常:', e.message)
+      }
     })
   }
 
