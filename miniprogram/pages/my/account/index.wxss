@@ -20,6 +20,27 @@
 .save-btn text{font-size:26rpx;color:#fff;font-weight:bold}
 .save-loading{opacity:.6}
 
+/* 手机号 */
+.phone-row{display:flex;align-items:center;justify-content:space-between}
+.phone-val{font-size:30rpx;color:#1a1a1a}
+.phone-empty{color:#bbb}
+.bind-btn{font-size:26rpx;color:#1a1a2e;font-weight:600}
+
+/* 绑定手机号弹窗 */
+.bind-mask{position:fixed;top:0;left:0;right:0;bottom:0;z-index:998;background:rgba(0,0,0,.5);display:flex;align-items:flex-end}
+.bind-sheet{width:100%;background:#fff;border-radius:32rpx 32rpx 0 0;padding:32rpx 48rpx 60rpx;box-sizing:border-box}
+.bind-title{display:block;font-size:36rpx;font-weight:bold;color:#1a1a1a;margin-bottom:32rpx}
+.ls-input-wrap{display:flex;align-items:center;border:2rpx solid #e8e8e8;border-radius:16rpx;padding:0 24rpx;height:96rpx;margin-bottom:20rpx}
+.ls-prefix{font-size:30rpx;color:#333;font-weight:500;margin-right:16rpx;border-right:2rpx solid #e8e8e8;padding-right:16rpx}
+.ls-input{flex:1;font-size:30rpx;color:#1a1a1a}
+.ls-sms-btn{font-size:26rpx;color:#1a1a2e;font-weight:600;white-space:nowrap;padding-left:16rpx}
+.ls-sms-cd{color:#bbb}
+.ls-error{display:block;font-size:22rpx;color:#e53935;background:#fff0f0;border-radius:12rpx;padding:16rpx 20rpx;margin-bottom:16rpx}
+.ls-btn{display:flex;align-items:center;justify-content:center;height:96rpx;border-radius:50rpx;margin-bottom:20rpx}
+.ls-confirm{background:#1a1a2e}
+.ls-disabled{opacity:.4}
+.ls-btn-txt{font-size:32rpx;font-weight:600;color:#fff}
+
 /* 危险区 */
 .danger-zone{margin:48rpx 24rpx 0}
 .danger-btn{background:#fff;border-radius:24rpx;padding:28rpx 32rpx;display:flex;align-items:center;gap:16rpx;box-shadow:0 4rpx 16rpx rgba(0,0,0,.05)}

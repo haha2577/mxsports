@@ -10,6 +10,7 @@
       <view class="hero-info">
         <text class="username">{{token?nickname:'未登录'}}</text>
         <text wx:if="{{token&&phone}}" class="phone-txt">{{phone}}</text>
+        <text wx:elif="{{token&&!phone}}" class="phone-sub" bindtap="goAccount">绑定手机号 ›</text>
         <text wx:elif="{{!token}}" class="phone-sub" bindtap="showLoginSheet">点击登录 ›</text>
       </view>
       <sport-switcher wx:if="{{token}}" can-switch="{{canSwitch}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
