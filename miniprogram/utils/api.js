@@ -61,4 +61,54 @@ const api = {
   venueDetail:    (id)   => request('GET', '/venues/' + id),
 }
 
-module.exports = { api, request, BASE_URL }
+/**
+ * AI 流式对话
+ * @param {Array} messages - [{role, content}]
+ * @param {Function} onChunk - 每次收到内容片段的回调 (content: string)
+ * @param {Function} onDone - 流结束回调
+ * @param {Function} onError - 错误回调 (errMsg: string)
+ * @returns {RequestTask} 可调用 .abort() 取消
+ */
+function aiChat(messages, onChunk, onDone, onError) {
+  let buffer = ''
+  const task = wx.request({
+    url: BASE_URL + '/ai/chat',
+    method: 'POST',
+    data: JSON.stringify({ messages }),
+    header: { 'Content-Type': 'application/json' },
+    enableChunkedTransfer: true,
+    responseType: 'text',
+    success: () => { if (onDone) onDone() },
+    fail: (err) => { if (onError) onError(err.errMsg || '网络错误') },
+  })
+
+  task.onChunkReceived && task.onChunkReceived(function(res) {
+    try {
+      const text = typeof res.data === 'string'
+        ? res.data
+        : String.fromCharCode.apply(null, new Uint8Array(res.data))
+      buffer += text
+      // Parse SSE lines
+      const lines = buffer.split('\n')
+      buffer = lines.pop() || ''
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue
+        const jsonStr = line.slice(6).trim()
+        if (!jsonStr) continue
+        try {
+          const obj = JSON.parse(jsonStr)
+          if (obj.error) {
+            if (onError) onError(obj.error)
+            return
+          }
+          if (obj.content && onChunk) onChunk(obj.content)
+          if (obj.done && onDone) onDone()
+        } catch (e) {}
+      }
+    } catch (e) {}
+  })
+
+  return task
+}
+
+module.exports = { api, request, BASE_URL, aiChat }

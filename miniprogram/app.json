@@ -14,7 +14,8 @@
     "pages/news/detail/index",
     "pages/venue/list/index",
     "pages/venue/detail/index",
-    "pages/racket/recommend/index"
+    "pages/racket/recommend/index",
+    "pages/ai/index"
   ],
   "tabBar": {
     "color": "#888",
@@ -27,6 +28,12 @@
         "text": "首页",
         "iconPath": "images/tabbar/home.png",
         "selectedIconPath": "images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/ai/index",
+        "text": "AI",
+        "iconPath": "images/tabbar/ai.png",
+        "selectedIconPath": "images/tabbar/ai-active.png"
       },
       {
         "pagePath": "pages/profile/index",

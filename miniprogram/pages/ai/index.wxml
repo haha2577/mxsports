@@ -1,0 +1,76 @@
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="header" style="background:linear-gradient(145deg,#1a1a2e,#0f3460)">
+    <nav-bar title="AI 助手" back="{{false}}" background="linear-gradient(145deg,#1a1a2e,#0f3460)" bindheight="onNavHeight"/>
+    <view class="header-sub" wx:if="{{messages.length}}">
+      <text class="header-clear" bindtap="onClearChat">清空对话</text>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view
+    class="chat-body"
+    scroll-y
+    scroll-into-view="{{scrollId}}"
+    scroll-with-animation
+    enable-passive
+    style="top:{{navHeight + 40}}px"
+  >
+    <!-- 欢迎界面 -->
+    <view wx:if="{{!messages.length}}" class="welcome">
+      <view class="welcome-icon">🤖</view>
+      <text class="welcome-title">Hi，我是你的运动AI助手</text>
+      <text class="welcome-desc">有什么关于羽毛球、网球的问题，都可以问我！</text>
+      <view class="quick-list">
+        <view
+          wx:for="{{quickQuestions}}" wx:key="text"
+          class="quick-btn"
+          bindtap="onQuickTap"
+          data-text="{{item.text}}"
+        >
+          <text class="quick-icon">{{item.icon}}</text>
+          <text class="quick-text">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 消息气泡 -->
+    <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="msg-wrap msg-{{item.role}}">
+      <!-- AI 头像 -->
+      <view wx:if="{{item.role === 'assistant'}}" class="ai-avatar">🤖</view>
+
+      <view class="bubble bubble-{{item.role}}" bindlongpress="onCopyMsg" data-content="{{item.content}}">
+        <!-- 打字动画 -->
+        <view wx:if="{{item.loading}}" class="typing">
+          <view class="dot d1"/>
+          <view class="dot d2"/>
+          <view class="dot d3"/>
+        </view>
+        <text wx:else class="bubble-text" user-select>{{item.content}}</text>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view class="bottom-spacer"/>
+  </scroll-view>
+
+  <!-- 输入区 -->
+  <view class="input-bar">
+    <view class="input-wrap">
+      <input
+        class="chat-input"
+        value="{{inputText}}"
+        placeholder="问点什么..."
+        placeholder-class="input-ph"
+        confirm-type="send"
+        bindinput="onInput"
+        bindconfirm="onSend"
+        adjust-position="{{true}}"
+        cursor-spacing="20"
+      />
+      <view class="send-btn {{inputText && !sending ? 'active' : ''}}" bindtap="onSend">
+        <text class="send-arrow">➤</text>
+      </view>
+    </view>
+  </view>
+</view>

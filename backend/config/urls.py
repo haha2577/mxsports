@@ -14,6 +14,7 @@ urlpatterns = [
     path('api/', include('rackets.urls')),
     path('api/', include('venues.urls')),
     path('api/', include('news.urls')),
+    path('api/', include('ai_chat.urls')),
 
     # 用户上传媒体文件
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': str(settings.MEDIA_ROOT)}),

@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rackets',
     'venues',
     'news',
+    'ai_chat',
 ]
 
 MIDDLEWARE = [
