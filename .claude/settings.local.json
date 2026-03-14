@@ -21,7 +21,19 @@
       "WebFetch(domain:www.proracket.net)",
       "WebFetch(domain:www.cappellasports.com)",
       "WebFetch(domain:badminton-racket-review.com)",
-      "WebFetch(domain:www.babolat.com)"
+      "WebFetch(domain:www.babolat.com)",
+      "Bash(git -C /root/mxsports log --oneline -15)",
+      "Bash(pkill -f \"manage.py runserver\" 2>/dev/null; sleep 2; pgrep -f \"manage.py runserver\" || echo \"old process killed\")",
+      "Bash(git push:*)",
+      "Bash(.venv/bin/python3 -m ensurepip 2>&1 && .venv/bin/python3 -m pip install requests beautifulsoup4 lxml 2>&1)",
+      "Bash(sed:*)",
+      "Bash(PYTHONPATH=.venv/lib/python3.12/site-packages python3 -c \"import httpx; print\\('httpx ok'\\); import django; print\\('django ok'\\)\")",
+      "WebFetch(domain:sports.sina.com.cn)",
+      "Bash(PYTHONPATH=.venv/lib/python3.12/site-packages python3 -c \"\nimport html.parser\nprint\\('html.parser ok'\\)\nimport re\nprint\\('re ok'\\)\n\")",
+      "Bash(PYTHONPATH=.venv/lib/python3.12/site-packages DJANGO_SETTINGS_MODULE=config.settings python3 manage.py fetch_news --limit 15 2>&1)",
+      "Bash(source:*)",
+      "Bash(.venv/bin/python3 -m pip install alibabacloud_dysmsapi20170525 2>&1 | tail -10)",
+      "Bash(PYTHONPATH=. .venv/bin/python3 -c \"\nfrom alibabacloud_dysmsapi20170525.client import Client\nfrom alibabacloud_dysmsapi20170525.models import SendSmsRequest\nfrom alibabacloud_tea_openapi.models import Config\nprint\\('SDK 导入成功'\\)\n\")"
     ]
   }
 }

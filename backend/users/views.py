@@ -106,15 +106,48 @@ class SendSmsView(APIView):
         cache.set(f'sms_code_{phone}', code, timeout=300)
         cache.set(cache_key, True, timeout=60)
 
-        # ── 实际项目替换为真实短信服务（阿里云/腾讯云）──
-        if settings.DEBUG:
-            # 开发模式：直接返回验证码（方便测试）
+        # 发送短信
+        if settings.DEBUG and not settings.ALI_ACCESS_KEY_ID:
+            # 开发模式且未配置阿里云：直接返回验证码
             print(f'[SMS DEV] {phone} 的验证码: {code}')
             return ok({'dev_code': code}, f'验证码已发送（开发模式：{code}）')
 
-        # TODO: 接入真实短信 SDK
-        # sms_client.send(phone, code)
+        ok_sent, errmsg = self._send_aliyun_sms(phone, code)
+        if not ok_sent:
+            logger.error('[SMS] 发送失败 phone=%s err=%s', phone, errmsg)
+            return err(f'短信发送失败：{errmsg}')
         return ok(None, '验证码已发送')
+
+    @staticmethod
+    def _send_aliyun_sms(phone, code):
+        """调用阿里云短信 API 发送验证码，返回 (success, errmsg)"""
+        import json
+        from alibabacloud_dysmsapi20170525.client import Client
+        from alibabacloud_dysmsapi20170525.models import SendSmsRequest
+        from alibabacloud_tea_openapi.models import Config
+
+        try:
+            config = Config(
+                access_key_id=settings.ALI_ACCESS_KEY_ID,
+                access_key_secret=settings.ALI_ACCESS_KEY_SECRET,
+                endpoint='dysmsapi.aliyuncs.com',
+            )
+            client = Client(config)
+            req = SendSmsRequest(
+                phone_numbers=phone,
+                sign_name=settings.ALI_SMS_SIGN_NAME,
+                template_code=settings.ALI_SMS_TEMPLATE_CODE,
+                template_param=json.dumps({'code': code}),
+            )
+            resp = client.send_sms(req)
+            body = resp.body
+            if body.code == 'OK':
+                logger.info('[SMS] 发送成功 phone=%s', phone)
+                return True, None
+            else:
+                return False, f'{body.code}: {body.message}'
+        except Exception as e:
+            return False, str(e)
 
 
 # ─── 手机号 + 验证码登录 ────────────────────────────────────
@@ -128,13 +161,12 @@ class PhoneLoginView(APIView):
         if not phone or not code:
             return err('手机号和验证码不能为空')
 
-        # 验证码校验（6688 为后门万能码）
-        if code != '6688':
-            cached_code = cache.get(f'sms_code_{phone}')
-            if not cached_code:
-                return err('验证码已过期，请重新获取')
-            if cached_code != code:
-                return err('验证码错误')
+        # 验证码校验
+        cached_code = cache.get(f'sms_code_{phone}')
+        if not cached_code:
+            return err('验证码已过期，请重新获取')
+        if cached_code != code:
+            return err('验证码错误')
 
         # 清除已使用的验证码
         cache.delete(f'sms_code_{phone}')
@@ -267,13 +299,12 @@ class BindPhoneView(APIView):
         if not phone or not code:
             return err('手机号和验证码不能为空')
 
-        # 验证码校验（6688 为后门万能码）
-        if code != '6688':
-            cached_code = cache.get(f'sms_code_{phone}')
-            if not cached_code:
-                return err('验证码已过期，请重新获取')
-            if cached_code != code:
-                return err('验证码错误')
+        # 验证码校验
+        cached_code = cache.get(f'sms_code_{phone}')
+        if not cached_code:
+            return err('验证码已过期，请重新获取')
+        if cached_code != code:
+            return err('验证码错误')
 
         cache.delete(f'sms_code_{phone}')
 

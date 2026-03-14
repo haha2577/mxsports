@@ -100,6 +100,12 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': '羽毛球赛事管理平台接口文档',
 }
 
+# ===== 阿里云短信 =====
+ALI_ACCESS_KEY_ID = os.getenv('ALI_ACCESS_KEY_ID', '')
+ALI_ACCESS_KEY_SECRET = os.getenv('ALI_ACCESS_KEY_SECRET', '')
+ALI_SMS_SIGN_NAME = os.getenv('ALI_SMS_SIGN_NAME', '铭心乐Go')
+ALI_SMS_TEMPLATE_CODE = os.getenv('ALI_SMS_TEMPLATE_CODE', '')
+
 # ===== 微信小程序 =====
 WX_APPID = 'wx686427f3488d40ab'
 WX_SECRET = os.getenv('WX_SECRET', '')
