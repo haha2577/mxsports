@@ -1,7 +1,7 @@
 <view class="page">
   <!-- 顶部导航 -->
-  <view class="header" style="background:linear-gradient(145deg,#1a1a2e,#0f3460)">
-    <nav-bar title="AI 助手" back="{{false}}" background="linear-gradient(145deg,#1a1a2e,#0f3460)" bindheight="onNavHeight"/>
+  <view class="header" style="background:{{heroGrad}}">
+    <nav-bar title="AI 助手" back="{{false}}" background="{{heroGrad}}" bindheight="onNavHeight"/>
     <view class="header-sub" wx:if="{{messages.length}}">
       <text class="header-clear" bindtap="onClearChat">清空对话</text>
     </view>
@@ -18,10 +18,15 @@
   >
     <!-- 欢迎界面 -->
     <view wx:if="{{!messages.length}}" class="welcome">
-      <view class="welcome-icon">🤖</view>
+      <view class="welcome-icon" style="background:{{heroGrad}}">
+        <text class="welcome-icon-text">{{sportEmoji}}</text>
+      </view>
       <text class="welcome-title">Hi，我是你的运动AI助手</text>
       <text class="welcome-desc">有什么关于羽毛球、网球的问题，都可以问我！</text>
-      <view class="quick-list">
+      <view wx:if="{{!token}}" class="login-hint" bindtap="showLoginSheet">
+        <text class="login-hint-text">登录后开始对话 ›</text>
+      </view>
+      <view wx:else class="quick-list">
         <view
           wx:for="{{quickQuestions}}" wx:key="text"
           class="quick-btn"
@@ -37,14 +42,22 @@
     <!-- 消息气泡 -->
     <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="msg-wrap msg-{{item.role}}">
       <!-- AI 头像 -->
-      <view wx:if="{{item.role === 'assistant'}}" class="ai-avatar">🤖</view>
+      <view wx:if="{{item.role === 'assistant'}}" class="avatar ai-avatar" style="background:{{heroGrad}}">
+        <text class="ai-avatar-emoji">{{sportEmoji}}</text>
+      </view>
+
+      <!-- 用户头像 -->
+      <image wx:if="{{item.role === 'user' && userAvatar}}" class="avatar user-avatar" src="{{userAvatar}}" mode="aspectFill"/>
+      <view wx:if="{{item.role === 'user' && !userAvatar}}" class="avatar user-avatar-default" style="background:{{heroGrad}}">
+        <text class="user-avatar-text">我</text>
+      </view>
 
       <view class="bubble bubble-{{item.role}}" bindlongpress="onCopyMsg" data-content="{{item.content}}">
         <!-- 打字动画 -->
         <view wx:if="{{item.loading}}" class="typing">
-          <view class="dot d1"/>
-          <view class="dot d2"/>
-          <view class="dot d3"/>
+          <view class="dot d1" style="background:{{sportPrimary}}"/>
+          <view class="dot d2" style="background:{{sportPrimary}}"/>
+          <view class="dot d3" style="background:{{sportPrimary}}"/>
         </view>
         <text wx:else class="bubble-text" user-select>{{item.content}}</text>
       </view>
@@ -60,17 +73,20 @@
       <input
         class="chat-input"
         value="{{inputText}}"
-        placeholder="问点什么..."
+        placeholder="{{token ? '问点什么...' : '请先登录'}}"
         placeholder-class="input-ph"
         confirm-type="send"
+        disabled="{{!token}}"
         bindinput="onInput"
         bindconfirm="onSend"
         adjust-position="{{true}}"
         cursor-spacing="20"
       />
-      <view class="send-btn {{inputText && !sending ? 'active' : ''}}" bindtap="onSend">
+      <view class="send-btn {{inputText && !sending ? 'active' : ''}}" style="{{inputText && !sending ? 'background:' + heroGrad : ''}}" bindtap="onSend">
         <text class="send-arrow">➤</text>
       </view>
     </view>
   </view>
+
+  <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>
 </view>

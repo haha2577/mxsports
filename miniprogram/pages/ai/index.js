@@ -1,4 +1,5 @@
-const { aiChat } = require('../../utils/api')
+const { aiChat, resolveUrl } = require('../../utils/api')
+const { applySport, getSportData } = require('../../utils/sport-config')
 
 const QUICK_QUESTIONS = [
   { icon: '🏸', text: '羽毛球基本规则' },
@@ -15,15 +16,42 @@ Page({
     sending: false,
     quickQuestions: QUICK_QUESTIONS,
     scrollId: '',
+    // auth
+    token: '',
+    userAvatar: '',
+    showLogin: false,
+    // sport theme
+    ...getSportData('badminton'),
   },
 
   _task: null,           // current SSE request task
   _msgIdCounter: 0,
 
-  onLoad() {},
+  onLoad() {
+    this._refreshAuth()
+  },
+
+  onShow() {
+    applySport(this)
+    this._refreshAuth()
+  },
+
+  _refreshAuth() {
+    const token = wx.getStorageSync('token')
+    const user = wx.getStorageSync('userInfo') || {}
+    const avatar = user.avatar ? resolveUrl(user.avatar) : ''
+    this.setData({ token, userAvatar: avatar })
+  },
 
   onNavHeight(e) {
     this.setData({ navHeight: e.detail.height })
+  },
+
+  showLoginSheet() { this.setData({ showLogin: true }) },
+  hideLogin() { this.setData({ showLogin: false }) },
+  onLoginSuccess() {
+    this._refreshAuth()
+    this.setData({ showLogin: false })
   },
 
   // ---- Input handling ----
@@ -42,6 +70,7 @@ Page({
   },
 
   doSend() {
+    if (!this.data.token) { this.setData({ showLogin: true }); return }
     const content = (this.data.inputText || '').trim()
     if (!content || this.data.sending) return
 

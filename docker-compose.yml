@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./backend/.env
+    volumes:
+      # 持久化 SQLite 数据库
+      - ./backend/mxsports.db:/app/mxsports.db
+      # 持久化用户上传文件
+      - ./backend/media:/app/media
+      # H5 SPA 静态文件（web_views.py 和 urls.py 引用 BASE_DIR.parent / 'web'）
+      - ./web:/web
+      # 日志
+      - ./backend/server.log:/app/server.log
+    restart: unless-stopped

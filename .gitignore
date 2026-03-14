@@ -19,7 +19,6 @@ deploy/private.*.key
 deploy/preview-qrcode.jpg
 deploy/node_modules/
 deploy/*.jpg
-id_ed25519
 
 # Local dev config
 miniprogram/utils/env.js

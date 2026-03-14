@@ -4,22 +4,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MX Sports — a badminton and tennis event management platform. Targets WeChat mini-program (primary) and H5 web. Currently in Phase 1 (tool stage): match creation, registration, draw generation, score recording.
+MX Sports (铭心乐Go) — a badminton and tennis event management platform. Primary target is WeChat mini-program; H5 web is secondary. Currently in Phase 1 (tool stage): match creation, registration, draw generation, score recording, AI chat assistant.
 
 ## Repository Layout
 
 ```
-backend/    Django 6 + DRF API server (also hosts the H5 SPA)
-frontend/   UniApp (Vue3 + Vite) cross-platform source
-web/        Built H5 output — served statically by Django
-deploy/     WeChat miniprogram CI scripts (miniprogram-ci)
+miniprogram/  Native WeChat miniprogram (WXML/WXSS/JS, no framework)
+backend/      Django 6 + DRF API server (also hosts the H5 SPA)
+frontend/     UniApp (Vue3 + Vite) — legacy/alternate frontend, may not be present
+web/          Built H5 output — served statically by Django
+deploy/       WeChat miniprogram CI scripts (miniprogram-ci)
 ```
+
+**Important:** The active miniprogram frontend is `miniprogram/` (native WeChat), not `frontend/` (UniApp). The `frontend/` directory may not exist in the current checkout.
 
 ## Common Commands
 
 ### Backend (run from `backend/`)
 
 ```bash
+# Activate venv first
+source .venv/bin/activate
+
 # Start dev server
 python manage.py runserver
 
@@ -35,71 +41,97 @@ python manage.py test
 python manage.py test users       # single app
 python manage.py test matches
 python manage.py test registrations
+
+# Seed racket data
+python manage.py seed_rackets
 ```
 
 Swagger UI: `http://localhost:8001/api/docs/`
-Backend must use the venv at `backend/.venv/`; env vars loaded from `backend/.env`.
+Backend venv: `backend/.venv/`; env vars loaded from `backend/.env`.
 
-> `seed_rackets` management command（在 BUILD.md 中提及）目前尚未实现。
+### Miniprogram Development
 
-### Frontend (run from `frontend/`)
+Open `miniprogram/` in WeChat Developer Tools. No build step — source is deployed directly.
 
-```bash
-npm run dev:mp-weixin   # WeChat miniprogram dev (watch mode)
-npm run dev:h5          # H5 web dev server
-npm run build:mp-weixin # Build WeChat miniprogram → frontend/dist/build/mp-weixin/
-npm run build:h5        # Build H5 → frontend/dist/build/h5/ (copy output to web/)
+To use local backend, set `miniprogram/utils/env.js`:
+```js
+module.exports = { API_BASE: 'http://localhost:8001/api' }
 ```
+This file is gitignored. Production fallback is `https://mxsports.vip/api`.
 
 ### Deploy WeChat Miniprogram (run from repo root)
 
 ```bash
-# 构建 + 上传预览 + 发二维码到 Telegram（一步完成）
-node deploy/preview.js
-
-# 或用 shell 包装脚本
-./deploy/build-and-preview.sh
+node deploy/preview.js    # Build + upload preview + send QR to Telegram
+node deploy/upload.js     # Upload as experience version (15-person whitelist)
 ```
 
-`preview.js` 内部会调用 `npm run build:mp-weixin`，**不支持跳过构建**（BUILD.md 里写的 `--no-build` 参数实际未实现）。
-每次执行自动递增 `deploy/VERSION` 的 patch 版本号。
-需要 `deploy/.env` 中配置 `TG_TOKEN` 和 `TG_CHAT`。
+`preview.js` auto-increments `miniprogram/version.json` patch version and temporarily switches `env.js` to production during upload. Requires `deploy/.env` with `TG_TOKEN` and `TG_CHAT`.
 
-### Deploy H5 Web（mxsports.vip）
+### Deploy H5 Web (mxsports.vip)
 
 ```bash
-# 构建
 cd frontend && npm run build:h5
-
-# 替换线上静态文件（Django 自动 serve，无需重启）
-rm -rf web
-cp -r frontend/dist/build/h5 web
+rm -rf web && cp -r frontend/dist/build/h5 web
+# Django auto-serves web/ — no restart needed
 ```
 
 ## Architecture
 
+### Backend (Django)
+
+**Stack:** Django 6.0.2 + DRF + SQLite (`mxsports.db`)
+
+**Apps:**
+- `users/` — Custom user model (not Django AbstractUser), JWT auth, WeChat + SMS login
+- `matches/` — Match/tournament CRUD, draw generation, score recording, leaderboard
+- `registrations/` — Player registration with pending/approved/rejected workflow
+- `rackets/` — Sports equipment database with filtering
+- `venues/` — Venue listings with location-based search
+- `news/` — Articles filtered by sport and geography
+- `ai_chat/` — Streaming AI chat via MiniMax-Text-01 (SSE format)
+
+**Critical patterns:**
+- Auth uses custom JWT middleware (`users/middleware.py`) that sets `request.user_obj` — NOT `request.user`
+- All API responses use `ok(data, message)` / `err(message, status)` returning `{code: 0/-1, data, message}`
+- Organizer auth check: `match.organizer_id != user.id and not user.is_organizer`
+
+**Draw algorithms** (`matches/views.py`): `round_robin`, `knockout` (elimination bracket with byes), `group` (groups of N, round-robin within), `rotation_doubles` (pair into teams, teams round-robin).
+
+**Environment variables** (`.env`): `SECRET_KEY`, `DEBUG`, `WX_APPID`, `WX_SECRET`, `MINIMAX_API_KEY`
+
+**Logging:** `backend/server.log` (general), `backend/.log/ai_chat.log` (AI requests)
+
+### Miniprogram (Native WeChat)
+
+**Global components** (registered in `app.json`, available everywhere):
+- `nav-bar` — Custom nav bar (required on all pages since `navigationStyle: custom`)
+- `sport-switcher` — Badminton/tennis toggle
+- `login-sheet` — Bottom-sheet handling WeChat OAuth + SMS login + profile setup
+- `sport-pref-sheet` — First-time sport preference picker
+
+**Sport theming:** `utils/sport-config.js` is the single source of truth. Use `applySport(this)` in `onShow` for tab pages, `switchSport(page, e)` for toggle events.
+
+**Storage keys:** `token` (JWT), `userInfo` (cached user), `activeSport` ('badminton'/'tennis'), `canSwitch` (boolean)
+
+**Tab bar:** Home | AI | Profile (3 tabs)
+
 ### How frontend and backend connect
 
-- **WeChat miniprogram**: The UniApp source in `frontend/` is compiled to `frontend/dist/build/mp-weixin/`. The mini-program calls `https://mxsports.vip/api` directly.
-- **H5 web**: The UniApp H5 build output goes to `web/`. Django serves the SPA at all non-`/api/` routes via `backend/web_views.py`; assets at `assets/` and `static/` are served from `web/` as well.
-- **API base URL** is hardcoded in `frontend/src/api/index.js` as `https://mxsports.vip/api`.
-
-### Request flow (H5)
-
-Browser → Django (port 8001) → `web_views.index` serves `web/index.html` for all non-API paths → UniApp SPA bootstraps → calls `/api/...` endpoints.
+- **Miniprogram**: Calls `https://mxsports.vip/api` directly (or localhost in dev via `env.js`)
+- **H5 web**: Django serves `web/index.html` for all non-`/api/` routes via `backend/web_views.py`
 
 ### Authentication
 
-JWT stored in `uni.storage` under key `token`. Sent as `Authorization: Bearer <token>`. On 401, token and userInfo are cleared from storage. See `backend/CLAUDE.md` for full auth details including dev mode shortcuts.
+Two login methods:
+1. **WeChat:** Client sends `code` → server exchanges for `openid` → JWT issued
+2. **Phone/SMS:** Request SMS code → submit phone + code → JWT issued
 
-### Frontend page structure
+Dev mode (`DEBUG=True`): WeChat login creates `dev_<code>` openid; SMS codes print to stdout.
 
-Pages are declared in `frontend/src/pages.json`. Tab bar has two entries: Home and Profile. Sport-specific index pages (`badminton/`, `tennis/`) have distinct color themes (green / orange).
+JWT stored in `wx.storage` under key `token`, sent as `Authorization: Bearer <token>`.
 
-### i18n
+## Detailed Subsystem Docs
 
-`vue-i18n` with locale files in `frontend/src/locales/` (zh.js, en.js). Language can be changed via `pages/settings/language`.
-
-## Detailed Backend Docs
-
-`backend/CLAUDE.md` contains full details on: app structure, auth flow, authorization pattern, tournament draw algorithms, response format (`ok()`/`err()`), and how to add new endpoints.
+- `backend/CLAUDE.md` — Backend auth flow, authorization, draw algorithms, adding endpoints
+- `miniprogram/CLAUDE.md` — Miniprogram components, state management, page conventions
