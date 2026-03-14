@@ -16,6 +16,7 @@ backend/server.pid
 # Deploy secrets
 deploy/.env
 deploy/private.*.key
+config/id_ed25519
 deploy/preview-qrcode.jpg
 deploy/node_modules/
 deploy/*.jpg
