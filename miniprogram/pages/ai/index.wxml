@@ -1,10 +1,11 @@
 <view class="page">
   <!-- 顶部导航 -->
   <view class="header" style="background:{{heroGrad}}">
-    <nav-bar title="AI 助手" back="{{false}}" background="{{heroGrad}}" bindheight="onNavHeight"/>
-    <view class="header-sub" wx:if="{{messages.length}}">
-      <text class="header-clear" bindtap="onClearChat">清空对话</text>
-    </view>
+    <nav-bar title="AI 助手" back="{{false}}" background="{{heroGrad}}" bindheight="onNavHeight">
+      <view slot="left" wx:if="{{messages.length}}" class="clear-btn" bindtap="onClearChat">
+        <image class="clear-icon" src="/images/clear.svg" mode="aspectFit"/>
+      </view>
+    </nav-bar>
   </view>
 
   <!-- 消息列表 -->
@@ -14,6 +15,7 @@
     scroll-into-view="{{scrollId}}"
     scroll-with-animation
     enable-passive
+    show-scrollbar="{{false}}"
     style="top:{{navHeight + 40}}px"
   >
     <!-- 欢迎界面 -->
@@ -52,13 +54,16 @@
         <text class="user-avatar-text">我</text>
       </view>
 
-      <view class="bubble bubble-{{item.role}}" bindlongpress="onCopyMsg" data-content="{{item.content}}">
+      <view class="bubble bubble-{{item.role}}" style="{{item.role === 'user' ? 'background:' + heroGrad : ''}}" bindlongpress="onCopyMsg" data-content="{{item.content}}">
         <!-- 打字动画 -->
         <view wx:if="{{item.loading}}" class="typing">
           <view class="dot d1" style="background:{{sportPrimary}}"/>
           <view class="dot d2" style="background:{{sportPrimary}}"/>
           <view class="dot d3" style="background:{{sportPrimary}}"/>
         </view>
+        <block wx:elif="{{item.role === 'assistant'}}">
+          <rich-text class="bubble-text md-body" nodes="{{item.nodes}}"/>
+        </block>
         <text wx:else class="bubble-text" user-select>{{item.content}}</text>
       </view>
     </view>

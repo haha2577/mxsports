@@ -3,7 +3,7 @@
     <nav-bar back="{{false}}" background="{{heroGrad}}"/>
     <text class="hero-deco">{{sportEmoji}}</text>
     <view class="hero-topbar">
-      <sport-switcher can-switch="{{true}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
+      <sport-switcher wx:if="{{canSwitch}}" can-switch="{{true}}" active="{{activeSport}}" bindswitch="onSwitchSport"/>
     </view>
     <view class="hero-inner">
       <text wx:if="{{token}}" class="hero-greeting">Hi，{{nickname}} 👋</text>

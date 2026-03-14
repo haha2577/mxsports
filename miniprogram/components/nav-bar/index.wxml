@@ -4,11 +4,13 @@
   <view style="height:{{statusBarHeight}}px"/>
   <!-- 导航栏内容区：与胶囊按钮同行等高 -->
   <view class="nav-content" style="height:{{navHeight}}px">
-    <!-- 返回按钮 -->
+    <!-- 返回按钮 / 左侧插槽 -->
     <view wx:if="{{back}}" class="back-btn" bindtap="onBack">
       <image class="back-icon" src="/images/back-arrow.svg" mode="aspectFit"/>
     </view>
-    <view wx:else class="back-placeholder"/>
+    <view wx:else class="back-placeholder">
+      <slot name="left"/>
+    </view>
     <!-- 标题：绝对居中 -->
     <text wx:if="{{title}}" class="nav-title">{{title}}</text>
     <!-- 自定义内容插槽 -->

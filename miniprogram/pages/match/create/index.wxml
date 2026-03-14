@@ -27,14 +27,13 @@
       </view>
       <view class="field">
         <text class="field-label">活动地点 <text class="req">*</text></text>
-        <view class="field-picker loc-picker" bindtap="pickLocation">
-          <view class="loc-left"><svg-icon name="map-pin" size="32" color="#999"/><text class="{{location?'picker-val':'picker-ph'}}">{{locationName||location||'搜索地点'}}</text></view>
-          <view style="display:flex;align-items:center;gap:8rpx">
-            <text wx:if="{{location}}" class="loc-clear" catchtap="clearLocation">✕</text>
-            <text class="picker-arrow">›</text>
+        <view class="loc-input-wrap">
+          <svg-icon name="map-pin" size="32" color="#999"/>
+          <input class="loc-text-input" value="{{location}}" bindinput="onLocation" placeholder="输入地点名称" maxlength="50"/>
+          <view class="loc-map-btn" catchtap="pickLocation">
+            <svg-icon name="map" size="32" color="#999"/>
           </view>
         </view>
-        <text wx:if="{{locationAddr}}" class="loc-addr">{{locationAddr}}</text>
       </view>
       <view class="field">
         <text class="field-label">人数上限</text>
@@ -66,11 +65,13 @@
   <view wx:if="{{showSuccess}}" class="success-mask" bindtap="closeSuccess">
     <view class="success-card" catchtap="">
       <view class="sc-close" bindtap="closeSuccess">✕</view>
-      <svg-icon name="sparkles" size="80" color="#f59e0b"/>
-      <text class="sc-title">活动创建成功！</text>
-      <text class="sc-sub">分享给好友，邀请他们一起来参加</text>
-      <button class="sc-share-btn" open-type="share">分享给好友</button>
-      <view class="sc-detail-btn" bindtap="goDetail">查看活动详情 ›</view>
+      <svg-icon name="sparkles" size="56" color="#f59e0b"/>
+      <text class="sc-title">比赛创建成功</text>
+      <text class="sc-sub">邀请好友一起来参加吧</text>
+      <view class="sc-btns">
+        <button class="sc-share-btn" open-type="share">分享给好友</button>
+        <view class="sc-detail-btn" bindtap="goDetail">查看比赛详情</view>
+      </view>
     </view>
     <view class="safe-bottom"/>
   </view>

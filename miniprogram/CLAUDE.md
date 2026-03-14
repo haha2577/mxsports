@@ -76,3 +76,7 @@ All four are available in every page without local registration:
 
 - `utils/time.js` — `fmtTime(isoString)` → `"3月14日 12:04"`, `fmtDate(isoString)` → `"3月14日（周六）"`
 - `version.json` — version info read by profile page via `wx.getFileSystemManager()`
+
+## Rules
+
+- **`sport-switcher` 必须加 `wx:if="{{canSwitch}}"`，`can-switch` 绑定 `{{canSwitch}}`，不能写死 `true`。**

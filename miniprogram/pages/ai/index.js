@@ -1,5 +1,6 @@
 const { aiChat, resolveUrl } = require('../../utils/api')
 const { applySport, getSportData } = require('../../utils/sport-config')
+const { mdToNodes } = require('../../utils/markdown')
 
 const QUICK_QUESTIONS = [
   { icon: '🏸', text: '羽毛球基本规则' },
@@ -102,23 +103,37 @@ Page({
         accumulated += chunk
         console.log('[AI页面] onChunk, 累计长度:', accumulated.length, '片段:', chunk.slice(0, 50))
         const key = `messages[${aiMsgIndex}].content`
+        const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
-        this.setData({ [key]: accumulated, [loadKey]: false, scrollId: aiMsg.id })
+        this.setData({
+          [key]: accumulated,
+          [nodesKey]: mdToNodes(accumulated),
+          [loadKey]: false,
+          scrollId: aiMsg.id,
+        })
       },
       // onDone
       () => {
         console.log('[AI页面] onDone, 总内容长度:', accumulated.length)
+        const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
-        this.setData({ [loadKey]: false, sending: false })
+        this.setData({
+          [nodesKey]: mdToNodes(accumulated),
+          [loadKey]: false,
+          sending: false,
+        })
         this._task = null
       },
       // onError
       (err) => {
         console.log('[AI页面] onError:', err)
+        const text = accumulated || '抱歉，服务暂时不可用，请稍后再试。'
         const key = `messages[${aiMsgIndex}].content`
+        const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
         this.setData({
-          [key]: accumulated || '抱歉，服务暂时不可用，请稍后再试。',
+          [key]: text,
+          [nodesKey]: mdToNodes(text),
           [loadKey]: false,
           sending: false,
         })

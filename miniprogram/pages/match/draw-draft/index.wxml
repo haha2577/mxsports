@@ -7,20 +7,24 @@
       <text class="hd-title">{{matchName}}</text>
       <text class="hd-badge">{{typeName}}</text>
     </view>
-    <text class="hd-sub">共 {{draft.length}} 场 · 点击选手名可替换 · 可重新随机</text>
+    <text class="hd-sub">点击选手名可替换 · 可重新随机</text>
   </view>
-  <scroll-view class="page-body" scroll-y enable-passive>
-
-  <!-- 场次分布 -->
-  <view class="dist-card">
-    <text class="dist-title">场次分布</text>
-    <view class="dist-row">
-      <view wx:for="{{players}}" wx:key="id" class="dist-item">
-        <text class="di-name">{{item.name}}</text>
-        <text class="di-cnt">{{item.games}}场</text>
-      </view>
+  <!-- 总场数调节器 -->
+  <view class="round-ctrl">
+    <view class="rc-left">
+      <text class="rc-total">总共 {{totalRounds}} 场</text>
+    </view>
+    <view class="rc-center">
+      <view class="rc-btn {{totalRounds<=step?'rc-btn-dis':''}}" bindtap="decRounds">−</view>
+      <text class="rc-num">{{totalRounds}}</text>
+      <view class="rc-btn" bindtap="incRounds">+</view>
+    </view>
+    <view class="rc-right">
+      <text class="rc-per">每人 {{totalRounds*4/players.length}} 场</text>
     </view>
   </view>
+
+  <scroll-view class="page-body" scroll-y enable-passive>
 
   <!-- 场次列表 -->
   <view class="games-list">
@@ -58,6 +62,5 @@
     </view>
   </view>
 
-    <view class="safe-bottom-action"/>
   </scroll-view>
 </view>

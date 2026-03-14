@@ -11,6 +11,7 @@ const BASE_URL = (function() {
 })()
 
 function request(method, url, data) {
+  console.log('[API]', method, BASE_URL + url, data || '')
   return new Promise((resolve, reject) => {
     const token = wx.getStorageSync('token')
     wx.request({

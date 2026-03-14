@@ -1,5 +1,5 @@
 const { applySport, switchSport, getSportData } = require('../../utils/sport-config')
-const { api } = require('../../utils/api')
+const { api, resolveUrl } = require('../../utils/api')
 
 const PREF_LABEL = {badminton:'羽毛球', tennis:'网球', both:'双栖'}
 
@@ -27,7 +27,7 @@ Page({
       token, canSwitch, showVideoEntry, showRacketEntry,
       nickname:user.nickname||'运动员',
       phone:user.phone||'',
-      avatar:user.avatar||'',
+      avatar:resolveUrl(user.avatar)||'',
     })
     if(token) this._fetchProfile()
   },
@@ -38,7 +38,7 @@ Page({
       const u=r.data.data
       const userInfo=wx.getStorageSync('userInfo')||{}
       Object.assign(userInfo,{
-        nickname:u.nickname, phone:u.phone, avatar:u.avatar,
+        nickname:u.nickname, phone:u.phone, avatar:resolveUrl(u.avatar),
         sportPref:u.sportPref, activeSport:u.activeSport, canSwitch:u.canSwitch
       })
       wx.setStorageSync('userInfo',userInfo)
@@ -47,7 +47,7 @@ Page({
       getApp().globalData.userInfo=userInfo
       const sportData = getSportData(u.activeSport||'badminton')
       this.setData({
-        nickname:u.nickname, phone:u.phone||'', avatar:u.avatar||'',
+        nickname:u.nickname, phone:u.phone||'', avatar:resolveUrl(u.avatar)||'',
         prefLabel:PREF_LABEL[u.sportPref]||'未设置',
         canSwitch:u.canSwitch||false,
         ...sportData,
@@ -80,7 +80,7 @@ Page({
       token:wx.getStorageSync('token'),
       nickname:user.nickname||'运动员',
       phone:user.phone||'',
-      avatar:user.avatar||'',
+      avatar:resolveUrl(user.avatar)||'',
       canSwitch, ...getSportData(sport), showLogin:false
     })
     if(!user.sportPref) this.setData({showSportPref:true})

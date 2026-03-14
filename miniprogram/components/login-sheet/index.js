@@ -1,4 +1,4 @@
-const { api } = require('../../utils/api')
+const { api, BASE_URL, resolveUrl } = require('../../utils/api')
 Component({
   properties:{visible:{type:Boolean,value:false}},
   observers:{'visible'(v){if(v)this.setData({step:'options',phone:'',code:'',errorMsg:'',loading:false})}},
@@ -84,20 +84,20 @@ Component({
       if(this.data.loading)return
       this.setData({loading:true})
       const token=wx.getStorageSync('token')
-      const BASE='https://mxsports.vip/api'
+      const ORIGIN=BASE_URL.replace('/api','')
       const tasks=[]
       // 上传头像
       if(this.data.profileAvatar){
         tasks.push(new Promise((resolve,reject)=>{
           wx.uploadFile({
-            url:BASE+'/auth/upload-avatar',
+            url:BASE_URL+'/auth/upload-avatar',
             filePath:this.data.profileAvatar,
             name:'avatar',
             header:{Authorization:'Bearer '+token},
             success(res){
               try{
                 const d=JSON.parse(res.data)
-                if(d.code===0)resolve('https://mxsports.vip'+d.data.url)
+                if(d.code===0)resolve(ORIGIN+d.data.url)
                 else resolve('')
               }catch(e){resolve('')}
             },

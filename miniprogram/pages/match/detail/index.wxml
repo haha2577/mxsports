@@ -7,10 +7,13 @@
 
   <block wx:elif="{{match}}">
 
-  <!-- 固定顶部：Hero + 统计栏 -->
+  <!-- 固定顶部 -->
   <view class="page-top" id="page-top">
+
     <view class="hero" style="background:{{heroGrad}}">
-      <nav-bar title="比赛报名" background="{{heroGrad}}"/>
+      <nav-bar
+        title="比赛详情"
+        background="{{heroGrad}}"/>
       <text class="hero-deco">{{sportEmoji}}</text>
       <view class="hd-body hero-inner">
         <text class="hero-name">{{match.name}}</text>
@@ -25,11 +28,12 @@
         </view>
       </view>
     </view>
-    <!-- 统计栏：在固定区内，视觉上叠入 hero 底部 -->
-    <view class="stat-bar">
-      <view class="stat-item" bindtap="togglePlayerSheet">
+
+    <!-- 统计栏：仅在报名/暂停状态显示 -->
+    <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="stat-bar">
+      <view class="stat-item">
         <text class="stat-n">{{match.registeredCount}}</text>
-        <text class="stat-l">已报名 ›</text>
+        <text class="stat-l">已报名</text>
       </view>
       <view class="stat-sep"/>
       <view class="stat-item">
@@ -42,13 +46,26 @@
         <text class="stat-l">剩余名额</text>
       </view>
     </view>
-  </view>
 
-  <!-- 可滚动内容区，top 由 JS 测量 page-top 真实高度决定 -->
-  <scroll-view class="page-body" scroll-y enable-passive style="top:{{topHeight}}px">
+    <!-- Tab 栏：仅在进行中/已结束时显示 -->
+    <view wx:if="{{match.status==='ongoing'||match.status==='finished'}}" class="tab-bar">
+      <view class="tab-item {{activeTab==='games'?'tab-active':''}}" bindtap="switchTab" data-tab="games">
+        <text>场次记录</text>
+        <view wx:if="{{activeTab==='games'}}" class="tab-line"/>
+      </view>
+      <view class="tab-item {{activeTab==='leaderboard'?'tab-active':''}}" bindtap="switchTab" data-tab="leaderboard">
+        <text>积分排行</text>
+        <view wx:if="{{activeTab==='leaderboard'}}" class="tab-line"/>
+      </view>
+    </view>
 
-    <!-- 报名列表（进行中/已结束时隐藏） -->
-    <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card">
+  </view><!-- /page-top -->
+
+  <!-- 内容区 -->
+  <view class="page-body" style="top:{{topHeight}}px">
+
+    <!-- 报名状态：报名选手列表 -->
+    <view wx:if="{{match.status!=='ongoing'&&match.status!=='finished'}}" class="card card-flex">
       <view class="card-hd">
         <text class="card-title">报名选手</text>
         <text class="card-count">{{match.registeredCount}}人</text>
@@ -56,7 +73,7 @@
       <view wx:if="{{!match.players||!match.players.length}}" class="empty-players">
         <text>还没有人报名，快来第一个！</text>
       </view>
-      <view wx:else class="players-list">
+      <scroll-view wx:else class="players-scroll" scroll-y enable-passive>
         <view wx:for="{{match.players}}" wx:key="id" class="player-row">
           <view class="player-avatar">
             <image wx:if="{{item.avatar}}" src="{{item.avatar}}" class="av-img" mode="aspectFill"/>
@@ -70,92 +87,90 @@
             <text>移除</text>
           </view>
         </view>
-      </view>
+      </scroll-view>
     </view>
 
-    <!-- 进行中/已结束：场次 + 排行榜 -->
+    <!-- 进行中/已结束：tab 内容 -->
     <block wx:if="{{match.status==='ongoing'||match.status==='finished'}}">
 
-      <!-- 场次列表 -->
-      <view class="card">
+      <!-- Tab: 场次记录 -->
+      <view wx:if="{{activeTab==='games'}}" class="card card-flex">
         <view class="card-hd">
           <text class="card-title">场次记录</text>
           <text class="card-count">{{games.length}}场</text>
         </view>
         <view wx:if="{{!games.length}}" class="empty-players"><text>暂无场次</text></view>
-        <view wx:for="{{games}}" wx:key="id" class="game-card-item">
-          <view class="game-card-no">第 {{index+1}} 场</view>
-          <view class="game-card-body">
-            <!-- 队伍1 -->
-            <view class="game-side {{item.winnerTeam==='team1'?'side-win':item.status==='finished'?'side-lose':''}}">
-              <view class="gs-players">
-                <text class="gs-player">{{item.player1.nickname}}</text>
-                <text wx:if="{{item.partner1}}" class="gs-player">{{item.partner1.nickname}}</text>
+        <scroll-view wx:else class="players-scroll" scroll-y enable-passive>
+          <view wx:for="{{games}}" wx:key="id" class="game-card-item">
+            <view class="game-card-no">第 {{index+1}} 场</view>
+            <view class="game-card-body">
+              <view class="game-side {{item.winnerTeam==='team1'?'side-win':item.status==='finished'?'side-lose':''}}">
+                <view class="gs-players">
+                  <text class="gs-player">{{item.player1.nickname}}</text>
+                  <text wx:if="{{item.partner1}}" class="gs-player">{{item.partner1.nickname}}</text>
+                </view>
+                <view wx:if="{{isOrganizer&&match.status==='ongoing'}}" class="gs-score-wrap" catchtap="onScoreTap" data-game-id="{{item.id}}" data-team="1">
+                  <input class="gs-score-input {{item.winnerTeam==='team1'?'score-win':''}}" type="number" value="{{item.score1!=null?item.score1:''}}" placeholder="-" data-game-id="{{item.id}}" data-team="1" bindblur="onScoreBlur" bindinput="onScoreInput" maxlength="3"/>
+                </view>
+                <text wx:else class="gs-score {{item.winnerTeam==='team1'?'score-win':''}}">{{item.status==='finished'?item.score1:'-'}}</text>
               </view>
-              <view wx:if="{{isOrganizer&&match.status==='ongoing'}}" class="gs-score-wrap" catchtap="onScoreTap" data-game-id="{{item.id}}" data-team="1">
-                <input class="gs-score-input {{item.winnerTeam==='team1'?'score-win':''}}" type="number" value="{{item.score1!=null?item.score1:''}}" placeholder="-" data-game-id="{{item.id}}" data-team="1" bindblur="onScoreBlur" bindinput="onScoreInput" maxlength="3"/>
-              </view>
-              <text wx:else class="gs-score {{item.winnerTeam==='team1'?'score-win':''}}">{{item.status==='finished'?item.score1:'-'}}</text>
-            </view>
-            <!-- 分割线 -->
-            <view class="game-divider"><text class="game-vs-txt">VS</text></view>
-            <!-- 队伍2 -->
-            <view class="game-side game-side-r {{item.winnerTeam==='team2'?'side-win':item.status==='finished'?'side-lose':''}}">
-              <view wx:if="{{isOrganizer&&match.status==='ongoing'}}" class="gs-score-wrap" catchtap="onScoreTap" data-game-id="{{item.id}}" data-team="2">
-                <input class="gs-score-input {{item.winnerTeam==='team2'?'score-win':''}}" type="number" value="{{item.score2!=null?item.score2:''}}" placeholder="-" data-game-id="{{item.id}}" data-team="2" bindblur="onScoreBlur" bindinput="onScoreInput" maxlength="3"/>
-              </view>
-              <text wx:else class="gs-score {{item.winnerTeam==='team2'?'score-win':''}}">{{item.status==='finished'?item.score2:'-'}}</text>
-              <view class="gs-players gs-players-r">
-                <text class="gs-player">{{item.player2.nickname}}</text>
-                <text wx:if="{{item.partner2}}" class="gs-player">{{item.partner2.nickname}}</text>
+              <view class="game-divider"><text class="game-vs-txt">VS</text></view>
+              <view class="game-side game-side-r {{item.winnerTeam==='team2'?'side-win':item.status==='finished'?'side-lose':''}}">
+                <view wx:if="{{isOrganizer&&match.status==='ongoing'}}" class="gs-score-wrap" catchtap="onScoreTap" data-game-id="{{item.id}}" data-team="2">
+                  <input class="gs-score-input {{item.winnerTeam==='team2'?'score-win':''}}" type="number" value="{{item.score2!=null?item.score2:''}}" placeholder="-" data-game-id="{{item.id}}" data-team="2" bindblur="onScoreBlur" bindinput="onScoreInput" maxlength="3"/>
+                </view>
+                <text wx:else class="gs-score {{item.winnerTeam==='team2'?'score-win':''}}">{{item.status==='finished'?item.score2:'-'}}</text>
+                <view class="gs-players gs-players-r">
+                  <text class="gs-player">{{item.player2.nickname}}</text>
+                  <text wx:if="{{item.partner2}}" class="gs-player">{{item.partner2.nickname}}</text>
+                </view>
               </view>
             </view>
           </view>
-        </view>
+        </scroll-view>
       </view>
 
-      <!-- 积分排行榜 -->
-      <view class="card" wx:if="{{leaderboard.length}}">
+      <!-- Tab: 积分排行 -->
+      <view wx:if="{{activeTab==='leaderboard'}}" class="card card-flex">
         <view class="card-hd">
           <text class="card-title">积分排行</text>
         </view>
-        <view class="lb-header">
-          <text class="lb-rank">名次</text>
-          <text class="lb-name">选手</text>
-          <text class="lb-pts">积分</text>
-          <text class="lb-wdl">胜/平/负</text>
-        </view>
-        <view wx:for="{{leaderboard}}" wx:key="id" class="lb-row {{index<3?'lb-top':''}}">
-          <text wx:if="{{item.rank===1}}" class="lb-rank" style="color:#f59e0b;font-weight:700">1</text>
-          <text wx:elif="{{item.rank===2}}" class="lb-rank" style="color:#9ca3af;font-weight:700">2</text>
-          <text wx:elif="{{item.rank===3}}" class="lb-rank" style="color:#b45309;font-weight:700">3</text>
-          <text wx:else class="lb-rank">{{item.rank}}</text>
-          <text class="lb-name">{{item.name}}</text>
-          <text class="lb-pts lb-pts-val">{{item.points}}</text>
-          <text class="lb-wdl">{{item.wins}}/{{item.draws}}/{{item.losses}}</text>
-        </view>
-      </view>
+        <view wx:if="{{!leaderboard.length}}" class="empty-players"><text>暂无数据</text></view>
+        <scroll-view wx:else class="players-scroll" scroll-y enable-passive>
+          <view class="lb-header">
+            <text class="lb-rank">名次</text>
+            <text class="lb-name">选手</text>
+            <text class="lb-pts">积分</text>
+            <text class="lb-wdl">胜/平/负</text>
+          </view>
+          <view wx:for="{{leaderboard}}" wx:key="id" class="lb-row {{index<3?'lb-top':''}}">
+            <text wx:if="{{item.rank===1}}" class="lb-rank" style="color:#f59e0b;font-weight:700">1</text>
+            <text wx:elif="{{item.rank===2}}" class="lb-rank" style="color:#9ca3af;font-weight:700">2</text>
+            <text wx:elif="{{item.rank===3}}" class="lb-rank" style="color:#b45309;font-weight:700">3</text>
+            <text wx:else class="lb-rank">{{item.rank}}</text>
+            <text class="lb-name">{{item.name}}</text>
+            <text class="lb-pts lb-pts-val">{{item.points}}</text>
+            <text class="lb-wdl">{{item.wins}}/{{item.draws}}/{{item.losses}}</text>
+          </view>
 
-      <!-- 已结束横幅 -->
-      <view wx:if="{{match.status==='finished'}}" class="finished-banner">
-        <svg-icon name="sparkles" size="80" color="#f59e0b"/>
-        <text class="fb-txt">比赛已结束，感谢参与！</text>
+          <!-- 已结束横幅 -->
+          <view wx:if="{{match.status==='finished'}}" class="finished-banner">
+            <svg-icon name="sparkles" size="80" color="#f59e0b"/>
+            <text class="fb-txt">比赛已结束，感谢参与！</text>
+          </view>
+        </scroll-view>
       </view>
 
     </block>
 
-    <view class="safe-bottom-action"/>
-  </scroll-view>
+  </view><!-- /page-body -->
 
   <!-- 底部操作栏 -->
   <view wx:if="{{match}}" class="action-bar">
-    <!-- 分享按钮 -->
     <view class="share-btn" bindtap="shareMatch">
       <svg-icon name="share" size="36" color="#555"/>
       <text class="share-txt">分享</text>
     </view>
-
-    <!-- 组织者操作 -->
     <block wx:if="{{isOrganizer}}">
       <view wx:if="{{match.status==='open'}}" class="org-action-row">
         <view class="reg-btn reg-half" bindtap="doRegister">
@@ -193,8 +208,6 @@
         </view>
       </view>
     </block>
-
-    <!-- 普通用户 -->
     <block wx:else>
       <view wx:if="{{match.status==='open'}}"
         class="reg-btn {{isRegistered?'reg-cancel':''}} {{registering?'reg-loading':''}}"
@@ -226,31 +239,7 @@
     </view>
   </view>
 
-  <!-- 报名列表弹窗 -->
-  <view wx:if="{{showPlayerSheet}}" class="sheet-mask" bindtap="togglePlayerSheet">
-    <view class="sheet" catchtap="">
-      <view class="sheet-handle"/>
-      <text class="sheet-title">报名选手 ({{match.registeredCount}}人)</text>
-      <view wx:if="{{!match.players||!match.players.length}}" class="empty-players" style="padding:40rpx 0">
-        <text>还没有人报名</text>
-      </view>
-      <view wx:else class="players-list" style="padding:0 32rpx 20rpx">
-        <view wx:for="{{match.players}}" wx:key="id" class="player-row">
-          <view class="player-avatar">
-            <image wx:if="{{item.avatar}}" src="{{item.avatar}}" class="av-img" mode="aspectFill"/>
-            <svg-icon wx:else name="user" size="40" color="#aaa"/>
-          </view>
-          <view class="player-info">
-            <text class="player-name">{{item.name}}</text>
-            <text wx:if="{{item.level}}" class="player-level">{{item.level}}</text>
-          </view>
-          <view wx:if="{{isOrganizer}}" class="remove-btn" catchtap="adminRemove" data-reg-id="{{item.regId}}" data-name="{{item.name}}">
-            <text>移除</text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
+
 
   <!-- 赛制选择弹窗 -->
   <view wx:if="{{showFormatSheet}}" class="sheet-mask" bindtap="closeFormatSheet">
@@ -271,4 +260,4 @@
   </block><!-- /wx:elif match -->
 
   <login-sheet visible="{{showLogin}}" bindclose="hideLogin" bindsuccess="onLoginSuccess"/>
-</view><!-- /page -->
+</view>

@@ -30,6 +30,7 @@ Page({
     showPlayerSheet: false,
     showLogin: false,
     topHeight: 0,
+    activeTab: 'games',
   },
 
   onLoad(opts) {
@@ -54,6 +55,7 @@ Page({
 
   navigateBack() { wx.navigateBack() },
   togglePlayerSheet() { this.setData({ showPlayerSheet: !this.data.showPlayerSheet }) },
+  switchTab(e) { this.setData({ activeTab: e.currentTarget.dataset.tab }) },
 
   async _loadGames() {
     const { id, match } = this.data
@@ -82,8 +84,9 @@ Page({
       // 检查是否已报名
       const isRegistered = token && match.players && match.players.some(p => p.id === myId)
       const fmtMatch = { ...match, startTime: fmtTime(match.startTime) }
-      this.setData({ match: fmtMatch, loading: false, myUserId: myId, isOrganizer, isRegistered, ...getSportData(match.sport) })
-      // 数据渲染后重新测量顶部高度
+      const activeTab = (match.status === 'ongoing' || match.status === 'finished') ? 'games' : 'games'
+      this.setData({ match: fmtMatch, loading: false, myUserId: myId, isOrganizer, isRegistered, activeTab, ...getSportData(match.sport) })
+      // 数据渲染后重新测量顶部高度（tab 栏出现会改变高度）
       wx.nextTick(() => this._measureTop())
       this._loadGames()
     } catch(e) {

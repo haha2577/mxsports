@@ -9,8 +9,8 @@ Page({
     name: '',
     date: '',
     dateDisplay: '',
-    time: '09:00',
-    timeDisplay: '09:00',
+    time: '20:00',
+    timeDisplay: '20:00',
     location: '',      // 传给后端（场馆名）
     locationName: '',  // 展示名
     locationAddr: '',  // 详细地址（副标题）
@@ -33,7 +33,7 @@ Page({
       Array.from({length:24}, (_,i) => `${String(i).padStart(2,'0')}时`),
       ['00分','15分','30分','45分'],
     ],
-    timeIndex: [9, 0],
+    timeIndex: [20, 0],
     // 状态
     loading: false,
     showSuccess: false,
@@ -43,15 +43,12 @@ Page({
     const sport = wx.getStorageSync('activeSport') || 'badminton'
     const now = new Date()
     const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`
-    // 默认明天
-    const tom = new Date(now.getTime() + 86400000)
-    const defaultDate = `${tom.getFullYear()}-${String(tom.getMonth()+1).padStart(2,'0')}-${String(tom.getDate()).padStart(2,'0')}`
-    const { columns, index } = this._buildDateColumns(today, defaultDate)
+    const { columns, index } = this._buildDateColumns(today, today)
     this.setData({
       ...getSportData(sport),
       today,
-      date: defaultDate,
-      dateDisplay: this._fmtDate(defaultDate),
+      date: today,
+      dateDisplay: this._fmtDate(today),
       dateColumns: columns,
       dateIndex: index,
     })
@@ -199,6 +196,9 @@ Page({
           locationLng: res.longitude})
       },
       fail: () => {}})
+  },
+  onLocation(e) {
+    this.setData({ location: e.detail.value, locationName: e.detail.value })
   },
   clearLocation() {
     this.setData({ location: '', locationName: '', locationAddr: '', locationLat: null, locationLng: null })

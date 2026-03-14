@@ -1,5 +1,5 @@
 const { applySport, getSportData } = require('../../../utils/sport-config')
-const { api, BASE_URL } = require('../../../utils/api')
+const { api, BASE_URL, resolveUrl } = require('../../../utils/api')
 
 Page({
   data: {
@@ -12,7 +12,7 @@ Page({
   onLoad() {
     applySport(this)
     const user = wx.getStorageSync('userInfo') || {}
-    this.setData({ nickname: user.nickname || '', avatar: user.avatar || '' })
+    this.setData({ nickname: user.nickname || '', avatar: resolveUrl(user.avatar) || '' })
   },
 
   navigateBack() { wx.navigateBack() },

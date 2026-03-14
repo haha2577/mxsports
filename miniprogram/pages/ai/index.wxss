@@ -14,14 +14,18 @@
   right: 0;
   z-index: 100;
 }
-.header-sub {
+.clear-btn {
   display: flex;
-  justify-content: flex-end;
-  padding: 0 32rpx 16rpx;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
 }
-.header-clear {
-  font-size: 24rpx;
-  color: rgba(255,255,255,0.6);
+.clear-icon {
+  width: 44rpx;
+  height: 44rpx;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
 }
 
 /* ---- Chat body ---- */
@@ -29,8 +33,13 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 120rpx;
+  bottom: calc(120rpx + env(safe-area-inset-bottom));
   padding: 24rpx 24rpx 0;
+  box-sizing: border-box;
+}
+.chat-body ::-webkit-scrollbar {
+  display: none;
+  width: 0;
 }
 
 /* ---- Welcome ---- */
@@ -121,6 +130,7 @@
   height: 72rpx;
   border-radius: 50%;
   flex-shrink: 0;
+  overflow: hidden;
 }
 .ai-avatar {
   display: flex;
@@ -133,6 +143,8 @@
 }
 .user-avatar {
   margin-left: 16rpx;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 .user-avatar-default {
   display: flex;
@@ -147,18 +159,16 @@
 }
 
 .bubble {
-  max-width: 70%;
+  max-width: 82%;
   padding: 24rpx 28rpx;
   border-radius: 24rpx;
   word-break: break-all;
   line-height: 1.6;
 }
 .bubble-user {
-  background: #fff;
-  color: #1a1a1a;
+  color: #fff;
   border-top-right-radius: 6rpx;
   font-size: 30rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
 }
 .bubble-assistant {
   background: #fff;
@@ -170,6 +180,70 @@
 .bubble-text {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* ---- Markdown ---- */
+.md-body {
+  display: block;
+  font-size: 30rpx;
+  color: #1a1a1a;
+  line-height: 1.7;
+}
+.md-h {
+  font-weight: 700;
+  margin: 12rpx 0 8rpx;
+  display: block;
+}
+.md-h1 { font-size: 40rpx; }
+.md-h2 { font-size: 36rpx; }
+.md-h3 { font-size: 32rpx; }
+.md-h4, .md-h5, .md-h6 { font-size: 30rpx; }
+.md-p {
+  margin: 4rpx 0;
+  display: block;
+}
+.md-ul, .md-ol {
+  margin: 8rpx 0;
+  display: block;
+}
+.md-li {
+  display: flex;
+  align-items: flex-start;
+  margin: 4rpx 0;
+}
+.md-bullet, .md-num {
+  color: #888;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+.md-bold {
+  font-weight: 700;
+}
+.md-italic {
+  font-style: italic;
+}
+.md-code {
+  background: rgba(0,0,0,0.06);
+  border-radius: 6rpx;
+  padding: 2rpx 8rpx;
+  font-size: 26rpx;
+  font-family: monospace;
+}
+.md-code-block {
+  background: #f4f4f4;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin: 12rpx 0;
+  display: block;
+  font-size: 26rpx;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.md-hr {
+  height: 1rpx;
+  background: rgba(0,0,0,0.1);
+  margin: 16rpx 0;
 }
 
 /* ---- Typing animation ---- */
@@ -196,7 +270,7 @@
 
 /* ---- Bottom spacer ---- */
 .bottom-spacer {
-  height: 20rpx;
+  height: 40rpx;
 }
 
 /* ---- Input bar ---- */
