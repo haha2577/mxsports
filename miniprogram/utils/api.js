@@ -113,18 +113,18 @@ function aiChat(messages, onChunk, onDone, onError) {
     return out
   }
 
-  console.log('[AI] 发起请求, messages:', messages.length, 'url:', BASE_URL + '/ai/chat')
+  console.log('[AI] === 发起请求 ===, messages:', messages.length, 'url:', BASE_URL + '/ai/chat')
 
   const task = wx.request({
     url: BASE_URL + '/ai/chat',
     method: 'POST',
     data: JSON.stringify({ messages }),
     header: { 'Content-Type': 'application/json' },
-    enableChunkedTransfer: true,
-    responseType: 'text',
+    enableChunked: true,
+    responseType: 'arraybuffer',
     success: function(res) {
-      console.log('[AI] request success, statusCode:', res.statusCode, 'dataType:', typeof res.data, 'dataLen:', res.data ? res.data.length : 0)
-      console.log('[AI] response data (前200字):', typeof res.data === 'string' ? res.data.slice(0, 200) : '(非string)')
+      console.log('[AI] === success 回调 ===, statusCode:', res.statusCode, 'dataType:', typeof res.data, 'chunkReceived:', chunkReceived)
+      console.log('[AI] response data 类型:', Object.prototype.toString.call(res.data), 'byteLength:', res.data && res.data.byteLength)
       // 如果 onChunkReceived 没触发过，尝试从 success 里解析完整响应
       if (!chunkReceived && res.data) {
         console.log('[AI] onChunkReceived 未触发，从 success 回调解析')
@@ -150,27 +150,43 @@ function aiChat(messages, onChunk, onDone, onError) {
   })
 
   var chunkReceived = false
-  console.log('[AI] task.onChunkReceived 可用:', !!task.onChunkReceived)
+  var chunkCount = 0
+  console.log('[AI] === task 创建完毕 ===, onChunkReceived 可用:', !!task.onChunkReceived, 'onHeadersReceived 可用:', !!task.onHeadersReceived)
+
+  if (task.onHeadersReceived) {
+    task.onHeadersReceived(function(res) {
+      console.log('[AI] === onHeadersReceived ===, headers:', JSON.stringify(res.header || res.headers || {}).slice(0, 300))
+    })
+  }
 
   if (task.onChunkReceived) {
     task.onChunkReceived(function(res) {
+      chunkCount++
       chunkReceived = true
       try {
         var text = typeof res.data === 'string' ? res.data : decodeUTF8(res.data)
-        console.log('[AI] chunk 收到, 类型:', typeof res.data, '长度:', text.length, '内容(前100):', text.slice(0, 100))
+        console.log('[AI] === chunk #' + chunkCount + ' ===, 数据类型:', Object.prototype.toString.call(res.data), '长度:', text.length, '内容(前200):', text.slice(0, 200))
         buffer += text
         var lines = buffer.split('\n')
         buffer = lines.pop() || ''
+        console.log('[AI] chunk #' + chunkCount + ' 拆分行数:', lines.length, '剩余buffer长度:', buffer.length)
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i]
-          if (line.indexOf('data: ') !== 0) continue
+          if (!line.trim()) continue
+          if (line.indexOf('data: ') !== 0) {
+            console.log('[AI] 跳过非data行:', line.slice(0, 100))
+            continue
+          }
           var jsonStr = line.slice(6).trim()
           if (!jsonStr) continue
           try {
             var obj = JSON.parse(jsonStr)
-            console.log('[AI] 解析SSE:', JSON.stringify(obj).slice(0, 100))
+            console.log('[AI] SSE解析成功: content长度=', (obj.content || '').length, 'done=', obj.done, 'error=', obj.error)
             if (obj.error) { fail(obj.error); return }
-            if (obj.content && onChunk) onChunk(obj.content)
+            if (obj.content && onChunk) {
+              console.log('[AI] >>> 调用 onChunk, 内容:', obj.content.slice(0, 50))
+              onChunk(obj.content)
+            }
             if (obj.done) finish()
           } catch (e) {
             console.log('[AI] JSON解析失败:', jsonStr.slice(0, 100), e.message)

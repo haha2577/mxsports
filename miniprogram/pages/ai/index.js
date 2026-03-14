@@ -96,11 +96,14 @@ Page({
 
     console.log('[AI页面] 发送消息, aiMsgIndex:', aiMsgIndex, 'apiMessages:', apiMessages.length)
 
+    console.log('[AI页面] 调用 aiChat, apiMessages:', apiMessages.length)
+
     this._task = aiChat(
       apiMessages,
       // onChunk：流式阶段只更新纯文本，不做 markdown 解析
       (chunk) => {
         accumulated += chunk
+        console.log('[AI页面] onChunk 被调用, chunk长度:', chunk.length, '累计长度:', accumulated.length, '内容(前50):', accumulated.slice(0, 50))
         const key = `messages[${aiMsgIndex}].content`
         const loadKey = `messages[${aiMsgIndex}].loading`
         this.setData({
@@ -111,6 +114,7 @@ Page({
       },
       // onDone：流结束后一次性解析 markdown
       () => {
+        console.log('[AI页面] onDone 被调用, 累计长度:', accumulated.length)
         const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
         const streamingKey = `messages[${aiMsgIndex}].streaming`
