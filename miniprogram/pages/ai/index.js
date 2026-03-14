@@ -76,7 +76,7 @@ Page({
     if (!content || this.data.sending) return
 
     const userMsg = { id: 'msg-' + (++this._msgIdCounter), role: 'user', content }
-    const aiMsg = { id: 'msg-' + (++this._msgIdCounter), role: 'assistant', content: '', loading: true }
+    const aiMsg = { id: 'msg-' + (++this._msgIdCounter), role: 'assistant', content: '', loading: true, streaming: true, nodes: [] }
 
     const messages = [...this.data.messages, userMsg, aiMsg]
     this.setData({
@@ -98,27 +98,25 @@ Page({
 
     this._task = aiChat(
       apiMessages,
-      // onChunk
+      // onChunk：流式阶段只更新纯文本，不做 markdown 解析
       (chunk) => {
         accumulated += chunk
-        console.log('[AI页面] onChunk, 累计长度:', accumulated.length, '片段:', chunk.slice(0, 50))
         const key = `messages[${aiMsgIndex}].content`
-        const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
         this.setData({
           [key]: accumulated,
-          [nodesKey]: mdToNodes(accumulated),
           [loadKey]: false,
           scrollId: aiMsg.id,
         })
       },
-      // onDone
+      // onDone：流结束后一次性解析 markdown
       () => {
-        console.log('[AI页面] onDone, 总内容长度:', accumulated.length)
         const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
+        const streamingKey = `messages[${aiMsgIndex}].streaming`
         this.setData({
           [nodesKey]: mdToNodes(accumulated),
+          [streamingKey]: false,
           [loadKey]: false,
           sending: false,
         })
@@ -131,9 +129,11 @@ Page({
         const key = `messages[${aiMsgIndex}].content`
         const nodesKey = `messages[${aiMsgIndex}].nodes`
         const loadKey = `messages[${aiMsgIndex}].loading`
+        const streamingKey = `messages[${aiMsgIndex}].streaming`
         this.setData({
           [key]: text,
           [nodesKey]: mdToNodes(text),
+          [streamingKey]: false,
           [loadKey]: false,
           sending: false,
         })

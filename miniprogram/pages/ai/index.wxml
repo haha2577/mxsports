@@ -61,9 +61,8 @@
           <view class="dot d2" style="background:{{sportPrimary}}"/>
           <view class="dot d3" style="background:{{sportPrimary}}"/>
         </view>
-        <block wx:elif="{{item.role === 'assistant'}}">
-          <rich-text class="bubble-text md-body" nodes="{{item.nodes}}"/>
-        </block>
+        <text wx:elif="{{item.role === 'assistant' && item.streaming}}" class="bubble-text" user-select>{{item.content}}</text>
+        <rich-text wx:elif="{{item.role === 'assistant'}}" class="bubble-text md-body" nodes="{{item.nodes}}"/>
         <text wx:else class="bubble-text" user-select>{{item.content}}</text>
       </view>
     </view>
