@@ -111,4 +111,17 @@ function aiChat(messages, onChunk, onDone, onError) {
   return task
 }
 
-module.exports = { api, request, BASE_URL, aiChat }
+/**
+ * 将相对路径补全为完整 URL（头像等媒体资源）
+ * 已经是 http(s) 的直接返回，否则拼接 API_BASE 的域名
+ */
+function resolveUrl(path) {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  // BASE_URL 形如 https://mxsports.vip/api，取域名部分
+  const origin = BASE_URL.replace(/\/api\/?$/, '')
+  const sep = path.startsWith('/') ? '' : '/'
+  return origin + sep + path
+}
+
+module.exports = { api, request, BASE_URL, aiChat, resolveUrl }
