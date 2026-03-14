@@ -5,8 +5,8 @@ from django.http import StreamingHttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', '')
-DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions'
+MINIMAX_API_KEY = os.getenv('MINIMAX_API_KEY', '')
+MINIMAX_API_URL = 'https://api.minimax.chat/v1/text/chatcompletion_v2'
 SYSTEM_PROMPT = '你是铭心乐Go的AI助手，一个专注于羽毛球和网球运动的智能助手。你可以帮助用户了解运动知识、比赛规则、训练建议、装备推荐等。回答要简洁实用。'
 
 
@@ -22,7 +22,7 @@ def ai_chat(request):
     if not messages:
         return JsonResponse({'error': '消息不能为空'}, status=400)
 
-    if not DEEPSEEK_API_KEY:
+    if not MINIMAX_API_KEY:
         return JsonResponse({'error': 'AI 服务未配置'}, status=503)
 
     # Prepend system prompt
@@ -33,13 +33,13 @@ def ai_chat(request):
             with httpx.Client(timeout=60.0) as client:
                 with client.stream(
                     'POST',
-                    DEEPSEEK_API_URL,
+                    MINIMAX_API_URL,
                     headers={
-                        'Authorization': f'Bearer {DEEPSEEK_API_KEY}',
+                        'Authorization': f'Bearer {MINIMAX_API_KEY}',
                         'Content-Type': 'application/json',
                     },
                     json={
-                        'model': 'deepseek-chat',
+                        'model': 'MiniMax-Text-01',
                         'messages': full_messages,
                         'stream': True,
                         'max_tokens': 2048,
