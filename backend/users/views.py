@@ -256,6 +256,37 @@ class WxPhoneLoginView(APIView):
         return token
 
 
+# ─── 绑定手机号 ────────────────────────────────────────────
+class BindPhoneView(APIView):
+    permission_classes = [IsJWTAuthenticated]
+
+    def post(self, request):
+        phone = request.data.get('phone', '').strip()
+        code  = request.data.get('code', '').strip()
+
+        if not phone or not code:
+            return err('手机号和验证码不能为空')
+
+        # 验证码校验（6688 为后门万能码）
+        if code != '6688':
+            cached_code = cache.get(f'sms_code_{phone}')
+            if not cached_code:
+                return err('验证码已过期，请重新获取')
+            if cached_code != code:
+                return err('验证码错误')
+
+        cache.delete(f'sms_code_{phone}')
+
+        # 检查手机号是否已被其他账号使用
+        existing = User.objects.filter(phone=phone).exclude(id=request.user_obj.id).first()
+        if existing:
+            return err('该手机号已被其他账号绑定')
+
+        request.user_obj.phone = phone
+        request.user_obj.save(update_fields=['phone'])
+        return ok({'phone': phone}, '手机号绑定成功')
+
+
 # ─── 头像上传 ──────────────────────────────────────────────
 class AvatarUploadView(APIView):
     permission_classes = [IsJWTAuthenticated]

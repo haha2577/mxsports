@@ -9,12 +9,18 @@ Component({
     goSms(){this.setData({step:'sms',errorMsg:''})},
     onPhone(e){this.setData({phone:e.detail.value})},
     onCode(e){this.setData({code:e.detail.value})},
-    async wxLogin(){
+    async wxLogin(e){
+      // e.detail.code 是 phoneCode；用户拒绝时 errMsg 不含 'ok'
       if(this.data.loading)return
+      if(!e.detail.code){
+        this.setData({errorMsg:'需要授权手机号才能登录'})
+        return
+      }
       this.setData({loading:true,errorMsg:''})
       try{
+        const phoneCode=e.detail.code
         const res=await new Promise((ok,err)=>wx.login({success:ok,fail:err}))
-        const r=await api.wxLogin({code:res.code})
+        const r=await api.wxPhoneLogin({phone_code:phoneCode,wx_code:res.code})
         this._success(r.data)
       }catch(e){
         const msg=(e&&e.data&&e.data.message)||(e&&e.errMsg)||'微信登录失败，请重试'

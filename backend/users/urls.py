@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import WxLoginView, SendSmsView, PhoneLoginView, WxPhoneLoginView, ProfileView, FriendsView, AvatarUploadView, DeleteAccountView
+from .views import WxLoginView, SendSmsView, PhoneLoginView, WxPhoneLoginView, ProfileView, FriendsView, AvatarUploadView, DeleteAccountView, BindPhoneView
 
 urlpatterns = [
     path('auth/wx-login',        WxLoginView.as_view()),
@@ -10,5 +10,6 @@ urlpatterns = [
     path('auth/update-profile',  ProfileView.as_view()),
     path('auth/upload-avatar',   AvatarUploadView.as_view()),
     path('auth/delete-account',  DeleteAccountView.as_view()),
+    path('auth/bind-phone',      BindPhoneView.as_view()),
     path('users/friends',        FriendsView.as_view()),
 ]
